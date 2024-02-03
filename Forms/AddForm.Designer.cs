@@ -31,6 +31,7 @@
             saveButton = new Button();
             label = new Label();
             idField = new TextBox();
+            errorLabel = new Label();
             SuspendLayout();
             // 
             // saveButton
@@ -63,11 +64,24 @@
             idField.Size = new Size(227, 39);
             idField.TabIndex = 2;
             // 
+            // errorLabel
+            // 
+            errorLabel.AutoSize = true;
+            errorLabel.Font = new Font("Segoe UI", 12F);
+            errorLabel.ForeColor = Color.Red;
+            errorLabel.Location = new Point(12, 110);
+            errorLabel.Name = "errorLabel";
+            errorLabel.Size = new Size(64, 32);
+            errorLabel.TabIndex = 3;
+            errorLabel.Text = "Error";
+            errorLabel.Visible = false;
+            // 
             // AddForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(481, 218);
+            Controls.Add(errorLabel);
             Controls.Add(idField);
             Controls.Add(label);
             Controls.Add(saveButton);
@@ -82,5 +96,6 @@
         private Button saveButton;
         private Label label;
         private TextBox idField;
+        private Label errorLabel;
     }
 }

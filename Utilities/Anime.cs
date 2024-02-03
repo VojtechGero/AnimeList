@@ -1,9 +1,6 @@
-﻿using JikanDotNet;
-using JikanDotNet.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +13,7 @@ namespace AnimeList.Utills
         internal string name { get; set; }
         internal int episodes { get; set; }
         internal bool airing { get; set; }
+
         internal Anime(string line)
         {
             //read order
@@ -34,6 +32,7 @@ namespace AnimeList.Utills
             }
             else airing = false;
         }
+
         internal Anime(long id, string name, int episodes, bool airing)
         {
             ID = id;
@@ -41,13 +40,10 @@ namespace AnimeList.Utills
             this.episodes = episodes;
             this.airing = airing;
         }
+
         public override string ToString()
         {
             return $"{ID};{name};{episodes};{airing.ToString().ToLower()}";
         }
-
-
-
-
     }
 }

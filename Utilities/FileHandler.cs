@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.LinkLabel;
 
 namespace AnimeList.Utills
 {
@@ -52,5 +51,19 @@ namespace AnimeList.Utills
             data.Add(newLine);
         }
 
+        internal void removeAnime(int index)
+        {
+            using (StreamWriter output = new StreamWriter(file))
+            {
+                for (int i = 0; i < data.Count; i++)
+                {
+                    if (i != index)
+                    {
+                        output.WriteLine(data[i]);
+                    }
+                }
+            }
+            data.RemoveAt(index);
+        }
     }
 }

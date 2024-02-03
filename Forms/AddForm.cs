@@ -27,17 +27,16 @@ namespace AnimeList
             this.Dispose();
         }
 
+        internal void exceptionHandle()
+        {
+            errorLabel.Text = "Invalid Id";
+            errorLabel.Visible = true;
+        }
+
         private void saveButton_Click(object sender, EventArgs e)
         {
             long id = long.Parse(idField.Text);
-            try
-            {
-                MalInterface.pullAnime(id,this);
-            }
-            catch (JikanValidationException)
-            {
-                throw new ArgumentException("Invalid Id");
-            }
+            MalInterface.pullAnime(id,this);
         }
     }
 }

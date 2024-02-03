@@ -22,9 +22,9 @@ namespace AnimeList.Utills
                     episodes: (int)anime.Data.Episodes,
                     airing: anime.Data.Airing));
             }
-            catch (JikanValidationException)
+            catch(Exception ex)
             {
-                throw new ArgumentException("Invalid Id");
+                add.exceptionHandle();
             }
         }
     }

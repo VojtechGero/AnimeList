@@ -67,7 +67,9 @@ namespace AnimeList
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-            list.RemoveAt(listBox.SelectedIndex);
+            int toRemove = listBox.SelectedIndex;
+            list.RemoveAt(toRemove);
+            file.removeAnime(toRemove);
             writeList();
         }
     }
