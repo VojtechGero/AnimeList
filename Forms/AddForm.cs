@@ -1,4 +1,5 @@
-﻿using desktopCleanup;
+﻿using AnimeList.Utills;
+using AnimeList;
 using JikanDotNet.Exceptions;
 using System;
 using System.Collections.Generic;

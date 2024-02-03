@@ -1,7 +1,8 @@
 using AnimeList;
+using AnimeList.Utills;
 using System.Windows.Forms;
 
-namespace desktopCleanup
+namespace AnimeList
 {
     public partial class MainForm : Form
     {

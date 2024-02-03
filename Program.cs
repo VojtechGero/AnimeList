@@ -1,4 +1,4 @@
-namespace desktopCleanup
+namespace AnimeList
 {
     internal static class Program
     {
