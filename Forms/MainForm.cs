@@ -70,6 +70,7 @@ namespace AnimeList
             int toRemove = listBox.SelectedIndex;
             list.RemoveAt(toRemove);
             file.removeAnime(toRemove);
+            description.Visible = false;
             writeList();
         }
     }

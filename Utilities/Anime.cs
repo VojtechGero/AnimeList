@@ -19,7 +19,12 @@ namespace AnimeList.Utills
             //read order
             // id;name;episodes;airing
             string[] vals = line.Split(";");
-            ID = long.Parse(vals[0]);
+            if (!string.IsNullOrWhiteSpace(vals[0]))
+            {
+                ID = long.Parse(vals[0]);
+            }
+            else ID = 0;
+            
             name = vals[1];
             if (string.IsNullOrWhiteSpace(vals[2]))
             {

@@ -10,7 +10,20 @@ namespace AnimeList.Utills
 {
     internal class MalInterface
     {
-        internal async static void pullAnime(long id, AddForm add)
+       private static string getTitle(ICollection<TitleEntry> entries)
+        {
+            if(entries.Count > 1)
+            {
+                string def = "";
+                foreach(TitleEntry entry in entries)
+                {
+                    if(entry.Type=="English") return entry.Title;
+                    if (entry.Type == "Default") def = entry.Title;
+                }
+                return def;
+            }else return entries.First().Title;
+        }
+        internal async static void pullAnimeId(long id, AddForm add)
         {
             try
             {
@@ -18,13 +31,13 @@ namespace AnimeList.Utills
                 var anime = await jikan.GetAnimeAsync(id);
                 add.handleAnime(new Anime(
                     id: (long)anime.Data.MalId,
-                    name: anime.Data.Title,
+                    name: getTitle(anime.Data.Titles),
                     episodes: (int)anime.Data.Episodes,
                     airing: anime.Data.Airing));
             }
             catch(Exception ex)
             {
-                add.exceptionHandle();
+                add.idExceptionHandle();
             }
         }
     }

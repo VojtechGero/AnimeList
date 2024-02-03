@@ -28,33 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            saveButton = new Button();
-            label = new Label();
+            IdLabel = new Label();
             idField = new TextBox();
             errorLabel = new Label();
+            label1 = new Label();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
-            // saveButton
+            // IdLabel
             // 
-            saveButton.Dock = DockStyle.Bottom;
-            saveButton.Font = new Font("Segoe UI", 15F);
-            saveButton.Location = new Point(0, 150);
-            saveButton.Name = "saveButton";
-            saveButton.Size = new Size(481, 68);
-            saveButton.TabIndex = 0;
-            saveButton.Text = "Save";
-            saveButton.UseVisualStyleBackColor = true;
-            saveButton.Click += saveButton_Click;
-            // 
-            // label
-            // 
-            label.AutoSize = true;
-            label.Font = new Font("Segoe UI", 15F);
-            label.Location = new Point(12, 14);
-            label.Name = "label";
-            label.Size = new Size(115, 41);
-            label.TabIndex = 1;
-            label.Text = "MAL ID";
+            IdLabel.AutoSize = true;
+            IdLabel.Font = new Font("Segoe UI", 15F);
+            IdLabel.Location = new Point(12, 14);
+            IdLabel.Name = "IdLabel";
+            IdLabel.Size = new Size(115, 41);
+            IdLabel.TabIndex = 1;
+            IdLabel.Text = "MAL ID";
             // 
             // idField
             // 
@@ -63,6 +52,7 @@
             idField.Name = "idField";
             idField.Size = new Size(227, 39);
             idField.TabIndex = 2;
+            idField.TextChanged += idField_TextChanged;
             // 
             // errorLabel
             // 
@@ -76,15 +66,34 @@
             errorLabel.Text = "Error";
             errorLabel.Visible = false;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 15F);
+            label1.Location = new Point(289, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(190, 41);
+            label1.TabIndex = 4;
+            label1.Text = "Name search";
+            // 
+            // textBox1
+            // 
+            textBox1.Font = new Font("Segoe UI", 12F);
+            textBox1.Location = new Point(289, 58);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(471, 39);
+            textBox1.TabIndex = 5;
+            // 
             // AddForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(481, 218);
+            ClientSize = new Size(772, 388);
+            Controls.Add(textBox1);
+            Controls.Add(label1);
             Controls.Add(errorLabel);
             Controls.Add(idField);
-            Controls.Add(label);
-            Controls.Add(saveButton);
+            Controls.Add(IdLabel);
             Name = "AddForm";
             Text = "AddForm";
             ResumeLayout(false);
@@ -92,10 +101,10 @@
         }
 
         #endregion
-
-        private Button saveButton;
-        private Label label;
+        private Label IdLabel;
         private TextBox idField;
         private Label errorLabel;
+        private Label label1;
+        private TextBox textBox1;
     }
 }
