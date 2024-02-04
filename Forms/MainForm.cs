@@ -1,5 +1,4 @@
 using AnimeList;
-using AnimeList.Utilities;
 using System.Windows.Forms;
 
 namespace AnimeList
