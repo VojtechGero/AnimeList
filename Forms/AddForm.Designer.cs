@@ -32,7 +32,7 @@
             idField = new TextBox();
             errorLabel = new Label();
             label1 = new Label();
-            textBox1 = new TextBox();
+            searchBox = new TextBox();
             SuspendLayout();
             // 
             // IdLabel
@@ -76,20 +76,21 @@
             label1.TabIndex = 4;
             label1.Text = "Name search";
             // 
-            // textBox1
+            // searchBox
             // 
-            textBox1.Font = new Font("Segoe UI", 12F);
-            textBox1.Location = new Point(289, 58);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(471, 39);
-            textBox1.TabIndex = 5;
+            searchBox.Font = new Font("Segoe UI", 12F);
+            searchBox.Location = new Point(289, 58);
+            searchBox.Name = "searchBox";
+            searchBox.Size = new Size(471, 39);
+            searchBox.TabIndex = 5;
+            searchBox.TextChanged += searchBox_TextChanged;
             // 
             // AddForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(772, 388);
-            Controls.Add(textBox1);
+            ClientSize = new Size(772, 506);
+            Controls.Add(searchBox);
             Controls.Add(label1);
             Controls.Add(errorLabel);
             Controls.Add(idField);
@@ -105,6 +106,6 @@
         private TextBox idField;
         private Label errorLabel;
         private Label label1;
-        private TextBox textBox1;
+        private TextBox searchBox;
     }
 }

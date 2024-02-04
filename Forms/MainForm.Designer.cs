@@ -58,7 +58,7 @@
             listBox.ItemHeight = 41;
             listBox.Location = new Point(12, 106);
             listBox.Name = "listBox";
-            listBox.Size = new Size(282, 332);
+            listBox.Size = new Size(444, 332);
             listBox.TabIndex = 1;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
             // 
@@ -68,7 +68,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 33);
+            menuStrip1.Size = new Size(1130, 33);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -103,7 +103,7 @@
             // 
             description.AutoSize = true;
             description.Font = new Font("Segoe UI", 12F);
-            description.Location = new Point(448, 106);
+            description.Location = new Point(543, 106);
             description.Name = "description";
             description.Size = new Size(132, 32);
             description.TabIndex = 3;
@@ -115,7 +115,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15F);
             label2.ForeColor = SystemColors.ControlText;
-            label2.Location = new Point(448, 43);
+            label2.Location = new Point(543, 43);
             label2.Name = "label2";
             label2.Size = new Size(169, 41);
             label2.TabIndex = 4;
@@ -124,7 +124,7 @@
             // removeButton
             // 
             removeButton.Font = new Font("Segoe UI", 15F);
-            removeButton.Location = new Point(599, 383);
+            removeButton.Location = new Point(929, 387);
             removeButton.Name = "removeButton";
             removeButton.Size = new Size(189, 55);
             removeButton.TabIndex = 5;
@@ -137,7 +137,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 454);
+            ClientSize = new Size(1130, 454);
             Controls.Add(removeButton);
             Controls.Add(label2);
             Controls.Add(description);

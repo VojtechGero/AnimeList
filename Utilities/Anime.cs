@@ -38,11 +38,14 @@ namespace AnimeList.Utills
             else airing = false;
         }
 
-        internal Anime(long id, string name, int episodes, bool airing)
+        internal Anime(long id, string name, int? episodes, bool airing)
         {
             ID = id;
             this.name = name;
-            this.episodes = episodes;
+            if(episodes == null)
+            {
+                episodes = 1;
+            }else this.episodes = (int)episodes;
             this.airing = airing;
         }
 
