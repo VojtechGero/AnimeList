@@ -1,5 +1,4 @@
-﻿using AnimeList.Utills;
-using AnimeList;
+﻿using AnimeList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,7 +50,7 @@ namespace AnimeList
             else parseId();
         }
 
-        void parseId()
+        private void parseId()
         {
             if (long.TryParse(idField.Text, out long id))
             {
@@ -60,6 +59,7 @@ namespace AnimeList
             animeList.Clear();
             updateForm();
         }
+
 
         private void updateForm()
         {

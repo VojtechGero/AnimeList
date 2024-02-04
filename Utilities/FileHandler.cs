@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using static System.Windows.Forms.LinkLabel;
 
-namespace AnimeList.Utills
+namespace AnimeList
 {
     internal class FileHandler
     {

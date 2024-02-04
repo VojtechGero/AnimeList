@@ -1,5 +1,5 @@
 using AnimeList;
-using AnimeList.Utills;
+using AnimeList.Utilities;
 using System.Windows.Forms;
 
 namespace AnimeList
@@ -32,13 +32,8 @@ namespace AnimeList
 
         private void updateDesc(Anime anime)
         {
-            string toShow = "";
-            toShow += $"Name: {anime.name}\n";
-            if (anime.episodes > 0) toShow += $"Episodes: {anime.episodes}\n";
-            if (anime.airing) toShow += "Currently Airing\n";
-            else toShow += "Finished Airing";
+            description.Text = StringOps.animeDesc(anime);
             description.Visible = true;
-            description.Text = toShow;
         }
 
         internal void addAnime(Anime anime)

@@ -1,14 +1,14 @@
 ﻿using JikanDotNet.Exceptions;
+using JikanDotNet.Config;
 using JikanDotNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JikanDotNet.Config;
 using AnimeList.Utilities;
 
-namespace AnimeList.Utills
+namespace AnimeList
 {
     internal class MalInterface
     {

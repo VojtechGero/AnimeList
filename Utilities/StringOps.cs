@@ -1,4 +1,4 @@
-﻿using AnimeList.Utills;
+﻿using AnimeList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace AnimeList.Utilities
             return d[n, m];
         }
 
-        public static List<Anime> sortSearch(List<Anime> list,string query)
+        internal static List<Anime> sortSearch(List<Anime> list,string query)
         {
             List<int> keys = new List<int>();
             foreach(Anime anime in list)
@@ -52,6 +52,15 @@ namespace AnimeList.Utilities
             return arr.ToList();
         }
 
+        internal static string animeDesc(Anime anime)
+        {
+            string output = "";
+            output += $"Name: {anime.name}\n";
+            if (anime.episodes > 0) output += $"Episodes: {anime.episodes}\n";
+            if (anime.airing) output += "Currently Airing\n";
+            else output += "Finished Airing";
+            return output;
+        }
     }
 }
 

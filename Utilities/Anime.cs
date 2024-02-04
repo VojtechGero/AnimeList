@@ -5,7 +5,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnimeList.Utills
+namespace AnimeList
 {
     internal class Anime
     {
@@ -31,7 +31,7 @@ namespace AnimeList.Utills
                 episodes = 0;
             }
             else episodes = int.Parse(vals[2]);
-            if (vals[3] == "true")
+            if (vals[3] == "True")
             {
                 airing = true;
             }
@@ -51,7 +51,7 @@ namespace AnimeList.Utills
 
         public override string ToString()
         {
-            return $"{ID};{name};{episodes};{airing.ToString().ToLower()}";
+            return $"{ID};{name};{episodes};{airing}";
         }
     }
 }
