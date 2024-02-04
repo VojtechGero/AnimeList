@@ -36,7 +36,7 @@ namespace AnimeList
             idError = false;
 
             timer.Tick += new EventHandler(parseInput);
-            timer.Interval = 100;
+            timer.Interval = 200;
 
             
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JikanDotNet.Config;
+using AnimeList.Utilities;
 
 namespace AnimeList.Utills
 {
@@ -20,6 +21,7 @@ namespace AnimeList.Utills
             };
             jikan = new Jikan(config);
         }
+
         private string getTitle(ICollection<TitleEntry> entries)
         {
             if(entries.Count > 1)
@@ -74,6 +76,7 @@ namespace AnimeList.Utills
                         );
                     animeList.Add(a);
                 }
+                animeList= StringOps.sortSearch(animeList,query);
                 add.handleAnimes(animeList);
             }
             catch (JikanRequestException)
