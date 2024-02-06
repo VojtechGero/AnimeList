@@ -24,7 +24,12 @@ namespace AnimeList
             listBox.Items.Clear();
             foreach (Anime item in list)
             {
-                listBox.Items.Add(item.name);
+                string name = item.name;
+                if (name.Length > 29)
+                {
+                    name = StringOps.shorten(name);
+                }
+                listBox.Items.Add(name);
             }
             listBox.EndUpdate();
         }
@@ -53,12 +58,6 @@ namespace AnimeList
             }
         }
 
-        private void myAnimeListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddForm = new AddForm(this);
-            AddForm.Show();
-        }
-
         private void removeButton_Click(object sender, EventArgs e)
         {
             int toRemove = listBox.SelectedIndex;
@@ -66,6 +65,12 @@ namespace AnimeList
             file.removeAnime(toRemove);
             description.Visible = false;
             writeList();
+        }
+
+        private void malToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddForm = new AddForm(this);
+            AddForm.Show();
         }
     }
 }

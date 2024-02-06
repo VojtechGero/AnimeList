@@ -83,20 +83,20 @@
             // 
             manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { myAnimeListToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(197, 34);
+            manualToolStripMenuItem.Size = new Size(270, 34);
             manualToolStripMenuItem.Text = "Manual";
             // 
             // myAnimeListToolStripMenuItem
             // 
             myAnimeListToolStripMenuItem.Name = "myAnimeListToolStripMenuItem";
-            myAnimeListToolStripMenuItem.Size = new Size(216, 34);
+            myAnimeListToolStripMenuItem.Size = new Size(270, 34);
             myAnimeListToolStripMenuItem.Text = "MyAnimeList";
-            myAnimeListToolStripMenuItem.Click += myAnimeListToolStripMenuItem_Click;
+            myAnimeListToolStripMenuItem.Click += malToolStripMenuItem_Click;
             // 
             // textDumpToolStripMenuItem
             // 
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(197, 34);
+            textDumpToolStripMenuItem.Size = new Size(270, 34);
             textDumpToolStripMenuItem.Text = "Text dump";
             // 
             // description

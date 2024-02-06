@@ -1,4 +1,5 @@
 ﻿using AnimeList;
+using JikanDotNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace AnimeList
 {
     internal class StringOps
     {
+        
         private static int compare(string s, string t)
         {
             if (string.IsNullOrEmpty(s))
@@ -43,14 +45,32 @@ namespace AnimeList
         internal static List<Anime> sortSearch(List<Anime> list,string query)
         {
             List<int> keys = new List<int>();
-            foreach(Anime anime in list)
+            List<Anime> close = new List<Anime>();
+            foreach (Anime anime in list)
             {
-                keys.Add(compare(query, anime.name));
+                int i = compare(query, anime.name);
+                keys.Add(i);
+                if(i<6)
+                {
+                    close.Add(anime);
+                }
             }
-            Anime[] arr=list.ToArray();
-            Array.Sort(keys.ToArray(),arr);
-            return arr.ToList();
+            List<Anime> output= new List<Anime>();
+            if (close.Count > 0)
+            {
+                foreach(Anime a in close)
+                {
+                    output.Add(a);
+                    list.Remove(a);
+                }
+            }
+            foreach (Anime a in list)
+            {
+                output.Add(a);
+            }
+            return output;
         }
+
 
         internal static string animeDesc(Anime anime)
         {
@@ -60,6 +80,16 @@ namespace AnimeList
             if (anime.airing) output += "Currently Airing\n";
             else output += "Finished Airing";
             return output;
+        }
+
+        internal static string shorten(string name)
+        {
+            string output = "";
+            for (int i = 0; i < 29; i++)
+            {
+                output += name[i];
+            }
+            return output + "...";
         }
     }
 }

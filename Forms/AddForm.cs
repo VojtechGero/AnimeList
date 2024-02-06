@@ -1,4 +1,5 @@
 ﻿using AnimeList;
+using JikanDotNet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,85 +18,82 @@ namespace AnimeList
         List<Anime> animeList;
         List<Label> labels;
         List<Button> buttons;
+        bool parsing;
         bool idError;
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
-
-        public AddForm(MainForm f)
+        public AddForm(MainForm form)
         {
             InitializeComponent();
             animeList = new List<Anime>();
             buttons = new List<Button>();
             labels = new List<Label>();
-            MalI=new MalInterface();
+            MalI = new MalInterface();
             addButtons();
             addLabels();
-            this.Form1 = f;
-            idError = false;
-
+            this.Form1 = form;
+            idError = parsing = false;
             timer.Tick += new EventHandler(parseInput);
-            timer.Interval = 200;
-
-            
+            timer.Interval = 300;
         }
 
-        private void parseInput(object? sender, EventArgs e)
+        private async void parseInput(object? sender, EventArgs e)
         {
+            parsing = true;
             timer.Stop();
             if (string.IsNullOrWhiteSpace(idField.Text))
             {
-                MalI.searchAnime(searchBox.Text, this);
+                await parseSearch();
             }
-            else parseId();
+            else if (string.IsNullOrWhiteSpace(searchBox.Text))
+            {
+                await parseId();
+            }
+            updateForm();
+            parsing = false;
         }
 
-        private void parseId()
+        private async Task parseId()
         {
+            
             if (long.TryParse(idField.Text, out long id))
             {
-                MalI.pullAnimeId(id, this);
+                Anime animeFromId = await MalI.pullAnimeId(id);
+                if (animeFromId != null)
+                {
+                    animeList.Clear();
+                    animeList.Add(animeFromId);
+                    idError = false;
+                }
+                else
+                {
+                    idError = true;
+                }
             }
-            animeList.Clear();
-            updateForm();
         }
 
+        private async Task parseSearch()
+        {
+            animeList.Clear();
+            animeList.AddRange(await MalI.searchAnime(searchBox.Text));
+        }
 
         private void updateForm()
         {
-            reDrawButtons();
             idErrorCheck();
-        }
-
-        internal void handleAnime(Anime anime)
-        {
-            animeList.Clear();
-            animeList.Add(anime);
-            idError = false;
-            updateForm();
-        }
-
-        internal void handleAnimes(List<Anime> animes)
-        {
-            animeList.Clear();
-            animeList.AddRange(animes);
-            updateForm();
+            reDrawButtons();
         }
 
         private void idErrorCheck()
         {
             if (idError)
             {
+                animeList.Clear();
                 errorLabel.Text = "Invalid Id";
                 errorLabel.Visible = true;
             }
             else errorLabel.Visible = false;
-        }
-
-        internal void idExceptionHandle()
-        {
-            idError = true;
-            updateForm();
         }
 
         private void addButtons()
@@ -161,14 +159,21 @@ namespace AnimeList
 
         private void idField_TextChanged(object sender, EventArgs e)
         {
-            timer.Stop();
-            timer.Start();
+            if (!parsing)
+            {
+                timer.Stop();
+                timer.Start();
+            }
+            
         }
 
         private void searchBox_TextChanged(object sender, EventArgs e)
         {
-            timer.Stop();
-            timer.Start();
+            if(!parsing)
+            {
+                timer.Stop();
+                timer.Start();
+            }
         }
     }
 }

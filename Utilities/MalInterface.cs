@@ -35,28 +35,29 @@ namespace AnimeList
             }else return entries.First().Title;
         }
 
-        internal async void pullAnimeId(long id, AddForm add)
+        internal async Task<Anime> pullAnimeId(long id)
         {
             try
             {
-                var anime = await jikan.GetAnimeAsync(id);
-                add.handleAnime(new Anime(
-                    id: (long)anime.Data.MalId,
-                    name: getTitle(anime.Data.Titles),
-                    episodes: anime.Data.Episodes,
-                    airing: anime.Data.Airing));
-            }
-            catch (JikanValidationException)
-            {
-                add.idExceptionHandle();
+                var res = await jikan.GetAnimeAsync(id);
+                Anime? anime =new Anime(
+                    id: (long)res.Data.MalId,
+                    name: getTitle(res.Data.Titles),
+                    episodes: res.Data.Episodes,
+                    airing: res.Data.Airing);
+                return anime;
             }
             catch (JikanRequestException)
             {
-                pullAnimeId(id, add);
+                return null;
+            }
+            catch (JikanValidationException)
+            {
+                return null;
             }
         }
 
-        internal async void searchAnime(string query, AddForm add)
+        internal async Task<List<Anime>> searchAnime(string query)
         {
             try
             {
@@ -76,11 +77,11 @@ namespace AnimeList
                     animeList.Add(a);
                 }
                 animeList= StringOps.sortSearch(animeList,query);
-                add.handleAnimes(animeList);
+                return animeList;
             }
             catch (JikanRequestException)
             {
-                searchAnime(query, add);
+                return await searchAnime(query);
             }
         }
     }
