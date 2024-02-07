@@ -72,5 +72,16 @@ namespace AnimeList
             AddForm = new AddForm(this);
             AddForm.Show();
         }
+
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddForm = new AddForm(this);
+            AddForm.ShowDialog();
+        }
+
+        private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

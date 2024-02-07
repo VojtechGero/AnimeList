@@ -33,7 +33,6 @@
             menuStrip1 = new MenuStrip();
             addToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
-            myAnimeListToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             label2 = new Label();
@@ -81,23 +80,17 @@
             // 
             // manualToolStripMenuItem
             // 
-            manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { myAnimeListToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(270, 34);
+            manualToolStripMenuItem.Size = new Size(193, 34);
             manualToolStripMenuItem.Text = "Manual";
-            // 
-            // myAnimeListToolStripMenuItem
-            // 
-            myAnimeListToolStripMenuItem.Name = "myAnimeListToolStripMenuItem";
-            myAnimeListToolStripMenuItem.Size = new Size(270, 34);
-            myAnimeListToolStripMenuItem.Text = "MyAnimeList";
-            myAnimeListToolStripMenuItem.Click += malToolStripMenuItem_Click;
+            manualToolStripMenuItem.Click += manualToolStripMenuItem_Click;
             // 
             // textDumpToolStripMenuItem
             // 
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(270, 34);
-            textDumpToolStripMenuItem.Text = "Text dump";
+            textDumpToolStripMenuItem.Size = new Size(193, 34);
+            textDumpToolStripMenuItem.Text = "File dump";
+            textDumpToolStripMenuItem.Click += textDumpToolStripMenuItem_Click;
             // 
             // description
             // 
@@ -163,7 +156,6 @@
         private ToolStripMenuItem textDumpToolStripMenuItem;
         private Label description;
         private Label label2;
-        private ToolStripMenuItem myAnimeListToolStripMenuItem;
         private Button removeButton;
     }
 }

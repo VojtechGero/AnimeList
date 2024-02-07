@@ -13,7 +13,7 @@ namespace AnimeList
 {
     public partial class AddForm : Form
     {
-        MainForm Form1 { get; set; }
+        MainForm Form1;
         MalInterface MalI;
         List<Anime> animeList;
         List<Label> labels;
@@ -42,14 +42,15 @@ namespace AnimeList
         {
             parsing = true;
             timer.Stop();
-            if (string.IsNullOrWhiteSpace(idField.Text))
+            if (string.IsNullOrWhiteSpace(idField.Text) && !string.IsNullOrWhiteSpace(searchBox.Text))
             {
                 await parseSearch();
             }
-            else if (string.IsNullOrWhiteSpace(searchBox.Text))
+            else if (!string.IsNullOrWhiteSpace(idField.Text))
             {
                 await parseId();
             }
+            else animeList.Clear();
             updateForm();
             parsing = false;
         }
@@ -130,16 +131,18 @@ namespace AnimeList
             }
         }
 
-        private void Button_Click(object sender, EventArgs e)
+        private async void Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
             int index = buttons.IndexOf(clickedButton);
-            Form1.addAnime(animeList[index]);
+            Anime toAdd = animeList[index];
+            Form1.addAnime(toAdd);
             this.Dispose();
         }
 
         private void reDrawButtons()
         {
+            
             int n = animeList.Count;
             for (int i = 0; i < 5; i++)
             {
@@ -164,7 +167,6 @@ namespace AnimeList
                 timer.Stop();
                 timer.Start();
             }
-            
         }
 
         private void searchBox_TextChanged(object sender, EventArgs e)

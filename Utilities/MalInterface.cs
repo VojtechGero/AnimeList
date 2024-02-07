@@ -35,17 +35,37 @@ namespace AnimeList
             }else return entries.First().Title;
         }
 
+        private List<string> getGerners(ICollection<MalUrl> toParse)
+        {
+            var gerners = new List<string>();
+            if(toParse.Count == 0)
+            {
+                foreach (var g in toParse)
+                {
+                    gerners.Add(g.Name);
+                }
+            }
+            return gerners;
+        }
+
+        private Anime toAnime (JikanDotNet.Anime input)
+        {
+            var genres = getGerners(input.Genres);
+            Anime anime = new Anime(
+                    id: (long)input.MalId,
+                    name: getTitle(input.Titles),
+                    episodes: input.Episodes,
+                    airing: input.Airing,
+                    genres: genres);
+            return anime;
+        }
+
         internal async Task<Anime> pullAnimeId(long id)
         {
             try
             {
                 var res = await jikan.GetAnimeAsync(id);
-                Anime? anime =new Anime(
-                    id: (long)res.Data.MalId,
-                    name: getTitle(res.Data.Titles),
-                    episodes: res.Data.Episodes,
-                    airing: res.Data.Airing);
-                return anime;
+                return toAnime(res.Data);
             }
             catch (JikanRequestException)
             {
@@ -68,12 +88,7 @@ namespace AnimeList
                 {
                     if (i > 4) break;
                     i++;
-                    Anime a = new Anime(
-                        id: (long)item.MalId,
-                        name: getTitle(item.Titles),
-                        episodes: item.Episodes,
-                        airing: item.Airing
-                        );
+                    Anime a = toAnime(item);
                     animeList.Add(a);
                 }
                 animeList= StringOps.sortSearch(animeList,query);
