@@ -5,7 +5,7 @@ namespace AnimeList
 {
     public partial class MainForm : Form
     {
-        List<Anime> list = new List<Anime>();
+        List<AContent> Content = new List<AContent>();
         AddForm AddForm;
         FileHandler file;
 
@@ -13,7 +13,7 @@ namespace AnimeList
         {
             InitializeComponent();
             this.file = FileHandler.workFile();
-            list = file.GetAnimes();
+            Content = file.GetContent();
             writeList();
         }
 
@@ -22,7 +22,7 @@ namespace AnimeList
 
             listBox.BeginUpdate();
             listBox.Items.Clear();
-            foreach (Anime item in list)
+            foreach (AContent item in Content)
             {
                 string name = item.name;
                 if (name.Length > 29)
@@ -34,16 +34,16 @@ namespace AnimeList
             listBox.EndUpdate();
         }
 
-        private void updateDesc(Anime anime)
+        private void updateDesc(AContent content)
         {
-            description.Text = StringOps.animeDesc(anime);
+            description.Text = StringOps.ContentDesc(content);
             description.Visible = true;
         }
 
-        internal void addAnime(Anime anime)
+        internal void addContent(AContent content)
         {
-            list.Add(anime);
-            file.writeAnime(anime);
+            Content.Add(content);
+            file.writeContent(content);
             listBox.SelectedItems.Clear();
             writeList();
         }
@@ -53,7 +53,7 @@ namespace AnimeList
             int select = listBox.SelectedIndex;
             if (select != -1)
             {
-                updateDesc(list[select]);
+                updateDesc(Content[select]);
                 removeButton.Visible = true;
             }
         }
@@ -61,27 +61,27 @@ namespace AnimeList
         private void removeButton_Click(object sender, EventArgs e)
         {
             int toRemove = listBox.SelectedIndex;
-            list.RemoveAt(toRemove);
-            file.removeAnime(toRemove);
+            Content.RemoveAt(toRemove);
+            file.removeContent(toRemove);
             description.Visible = false;
             writeList();
-        }
-
-        private void malToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddForm = new AddForm(this);
-            AddForm.Show();
-        }
-
-        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddForm = new AddForm(this);
-            AddForm.ShowDialog();
         }
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void animeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddForm = new AddForm(this, true);
+            AddForm.ShowDialog();
+        }
+
+        private void mangaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddForm = new AddForm(this, false);
+            AddForm.ShowDialog();
         }
     }
 }

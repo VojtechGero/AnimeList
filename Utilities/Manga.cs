@@ -1,26 +1,28 @@
-﻿using JikanDotNet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AnimeList
 {
-    internal class Anime : AContent
+    internal class Manga : AContent
     {
         internal override long ID { get; set; }
         internal override string name { get; set; }
         internal override int count { get; set; }
         internal override bool notOut { get; set; }
         internal override List<string> genres { get; set; }
-        internal Anime(string line)
+        
+
+        //internal List<string> authors { get; set; }
+
+        internal Manga(string line)
         {
             //read order
             // id;name;episodes;airing;gerner1,gerner2
             string[] vals = line.Split(";");
-            if (!string.IsNullOrWhiteSpace(vals[1]))
+            if (!string.IsNullOrWhiteSpace(vals[0]))
             {
                 ID = long.Parse(vals[1]);
             }
@@ -36,25 +38,26 @@ namespace AnimeList
                 notOut = true;
             }
             else notOut = false;
-            genres = vals[5].Split(",", StringSplitOptions.RemoveEmptyEntries ).ToList();
+            genres = vals[5].Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        internal Anime(long id, string name, int? episodes, bool airing, List<string> genres)
+        internal Manga(long id, string name, int? count, bool airing, List<string> genres)
         {
             ID = id;
             this.name = name;
-            if (episodes == null)
+            if (count == null)
             {
-                episodes = 1;
+                count = 1;
             }
-            else this.count = (int)episodes;
+            else this.count = (int)count;
             this.notOut = airing;
             this.genres = genres;
         }
+        
 
         public override string ToString()
         {
-            return $"A;{ID};{name};{count};{notOut};{StringOps.toFile(genres)}";
+            return $"M;{ID};{name};{count};{notOut};{StringOps.toFile(genres)}";
         }
     }
 }

@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             listBox = new ListBox();
             menuStrip1 = new MenuStrip();
             addToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
+            animeToolStripMenuItem = new ToolStripMenuItem();
+            mangaToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             label2 = new Label();
@@ -40,24 +41,15 @@
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15F);
-            label1.Location = new Point(12, 43);
-            label1.Name = "label1";
-            label1.Size = new Size(110, 41);
-            label1.TabIndex = 0;
-            label1.Text = "Anime:";
-            // 
             // listBox
             // 
+            listBox.Dock = DockStyle.Left;
             listBox.Font = new Font("Segoe UI", 15F);
             listBox.FormattingEnabled = true;
             listBox.ItemHeight = 41;
-            listBox.Location = new Point(12, 106);
+            listBox.Location = new Point(0, 33);
             listBox.Name = "listBox";
-            listBox.Size = new Size(444, 332);
+            listBox.Size = new Size(518, 470);
             listBox.TabIndex = 1;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
             // 
@@ -67,7 +59,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1130, 33);
+            menuStrip1.Size = new Size(1373, 33);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -80,15 +72,29 @@
             // 
             // manualToolStripMenuItem
             // 
+            manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animeToolStripMenuItem, mangaToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(193, 34);
+            manualToolStripMenuItem.Size = new Size(270, 34);
             manualToolStripMenuItem.Text = "Manual";
-            manualToolStripMenuItem.Click += manualToolStripMenuItem_Click;
+            // 
+            // animeToolStripMenuItem
+            // 
+            animeToolStripMenuItem.Name = "animeToolStripMenuItem";
+            animeToolStripMenuItem.Size = new Size(270, 34);
+            animeToolStripMenuItem.Text = "Anime";
+            animeToolStripMenuItem.Click += animeToolStripMenuItem_Click;
+            // 
+            // mangaToolStripMenuItem
+            // 
+            mangaToolStripMenuItem.Name = "mangaToolStripMenuItem";
+            mangaToolStripMenuItem.Size = new Size(270, 34);
+            mangaToolStripMenuItem.Text = "Manga";
+            mangaToolStripMenuItem.Click += mangaToolStripMenuItem_Click;
             // 
             // textDumpToolStripMenuItem
             // 
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(193, 34);
+            textDumpToolStripMenuItem.Size = new Size(270, 34);
             textDumpToolStripMenuItem.Text = "File dump";
             textDumpToolStripMenuItem.Click += textDumpToolStripMenuItem_Click;
             // 
@@ -116,8 +122,9 @@
             // 
             // removeButton
             // 
+            removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             removeButton.Font = new Font("Segoe UI", 15F);
-            removeButton.Location = new Point(929, 387);
+            removeButton.Location = new Point(1172, 436);
             removeButton.Name = "removeButton";
             removeButton.Size = new Size(189, 55);
             removeButton.TabIndex = 5;
@@ -130,12 +137,11 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1130, 454);
+            ClientSize = new Size(1373, 503);
             Controls.Add(removeButton);
             Controls.Add(label2);
             Controls.Add(description);
             Controls.Add(listBox);
-            Controls.Add(label1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
@@ -147,8 +153,6 @@
         }
 
         #endregion
-
-        private Label label1;
         private ListBox listBox;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem addToolStripMenuItem;
@@ -157,5 +161,7 @@
         private Label description;
         private Label label2;
         private Button removeButton;
+        private ToolStripMenuItem animeToolStripMenuItem;
+        private ToolStripMenuItem mangaToolStripMenuItem;
     }
 }

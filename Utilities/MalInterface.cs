@@ -38,7 +38,7 @@ namespace AnimeList
         private List<string> getGerners(ICollection<MalUrl> toParse)
         {
             var gerners = new List<string>();
-            if(toParse.Count == 0)
+            if(toParse.Count > 0)
             {
                 foreach (var g in toParse)
                 {
@@ -60,6 +60,18 @@ namespace AnimeList
             return anime;
         }
 
+        private Manga toManga(JikanDotNet.Manga input)
+        {
+            var genres = getGerners(input.Genres);
+            Manga manga = new Manga(
+                    id: (long)input.MalId,
+                    name: getTitle(input.Titles),
+                    count: input.Chapters,
+                    airing: input.Publishing,
+                    genres: genres);
+            return manga;
+        }
+
         internal async Task<Anime> pullAnimeId(long id)
         {
             try
@@ -77,12 +89,29 @@ namespace AnimeList
             }
         }
 
-        internal async Task<List<Anime>> searchAnime(string query)
+        internal async Task<Manga> pullMangaId(long id)
+        {
+            try
+            {
+                var res = await jikan.GetMangaAsync(id);
+                return toManga(res.Data);
+            }
+            catch (JikanRequestException)
+            {
+                return null;
+            }
+            catch (JikanValidationException)
+            {
+                return null;
+            }
+        }
+
+        internal async Task<List<AContent>> searchAnime(string query)
         {
             try
             {
                 var animes = await jikan.SearchAnimeAsync(query);
-                List<Anime> animeList = new List<Anime>();
+                List<AContent> animeList = new List<AContent>();
                 int i = 0;
                 foreach (var item in animes.Data)
                 {
@@ -97,6 +126,29 @@ namespace AnimeList
             catch (JikanRequestException)
             {
                 return await searchAnime(query);
+            }
+        }
+
+        internal async Task<List<AContent>> searchManga(string query)
+        {
+            try
+            {
+                var mangas = await jikan.SearchMangaAsync(query);
+                List<AContent> mangaList = new List<AContent>();
+                int i = 0;
+                foreach (var item in mangas.Data)
+                {
+                    if (i > 4) break;
+                    i++;
+                    Manga a = toManga(item);
+                    mangaList.Add(a);
+                }
+                mangaList = StringOps.sortSearch(mangaList, query);
+                return mangaList;
+            }
+            catch (JikanRequestException)
+            {
+                return await searchManga(query);
             }
         }
     }

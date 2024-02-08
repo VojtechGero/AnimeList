@@ -2,6 +2,7 @@
 using JikanDotNet;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Security;
 using System.Text;
@@ -11,7 +12,7 @@ namespace AnimeList
 {
     internal class StringOps
     {
-        internal static List<Anime> sortSearch(List<Anime> list, string query)
+        internal static List<AContent> sortSearch(List<AContent> list, string query)
         {
             return list
             .OrderBy(s => distance(s.name, query) - 50 * relevanceByWords(s.name, query))
@@ -56,28 +57,44 @@ namespace AnimeList
             str=str.ToLower();
             query=query.ToLower();
             string[] wordsInQuery = query.Split(' ');
-            return wordsInQuery.Sum(word => str.Split(' ').Count(s => s.Equals(word, StringComparison.OrdinalIgnoreCase)));
+            int count=0;
+            foreach(string word in wordsInQuery)
+            {
+                if (str.Contains(word)) count++;
+            }
+            return count;
         }
 
-        internal static string animeDesc(Anime anime)
+        internal static string ContentDesc(AContent content)
         {
+            
             string output = "";
             const string tab = "    ";
-            output += $"Name: {anime.name}\n";
-            if (anime.episodes > 0) output += $"Episodes: {anime.episodes}\n";
-            if (anime.airing) output += "Currently Airing\n";
-            else output += "Finished Airing\n";
-            if (anime.genres.Count > 0)
+            output += $"Name: {content.name}\n";
+            if (content.GetType() == typeof(Anime))
+            {
+                output += "Anime" + tab;
+                if (content.notOut) output += "Currently Airing\n";
+                else output += "Finished Airing\n";
+                if (content.count > 0) output += $"Episodes: {content.count}\n";
+            }
+            else
+            {
+                output += "Manga" + tab;
+                if (content.notOut) output += "Currently Publishing\n";
+                else output += "Finished Publishing\n";
+                if (content.count > 0) output += $"Chapters: {content.count}\n";
+            }
+            if (content.genres.Count > 0)
             {
                 output += "Genres:\n";
-                foreach (string g in anime.genres)
+                foreach (string g in content.genres)
                 {
                     output += $"{tab}{g}\n";
                 }
             }
             return output;
         }
-
 
         internal static string shorten(string name)
         {

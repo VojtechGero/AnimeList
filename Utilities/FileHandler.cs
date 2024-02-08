@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using static System.Windows.Forms.LinkLabel;
 
 namespace AnimeList
 {
-    internal class FileHandler
+    public class FileHandler
     {
         string file;
         List<string> data;
@@ -28,30 +29,36 @@ namespace AnimeList
             return new FileHandler(file);
         }
 
-        void readAnime()
+        void readContent()
         {
             data = File.ReadAllLines(file).ToList();
         }
 
-        internal List<Anime> GetAnimes()
+        internal List<AContent> GetContent()
         {
-            List<Anime> animes = new List<Anime>();
-            readAnime();
+            List<AContent> contents = new List<AContent>();
+            readContent();
             foreach (string s in data)
             {
-                animes.Add(new Anime(s));
+                AContent c;
+                if (s[0] == 'A')
+                {
+                    c = new Anime(s);
+                }
+                else c=new Manga(s);
+                contents.Add(c);
             }
-            return animes;
+            return contents;
         }
 
-        internal void writeAnime(Anime a)
+        internal void writeContent(AContent a)
         {
             string newLine = a.ToString();
             File.AppendAllText(file, newLine + Environment.NewLine);
             data.Add(newLine);
         }
 
-        internal void removeAnime(int index)
+        internal void removeContent(int index)
         {
             using (StreamWriter output = new StreamWriter(file))
             {
