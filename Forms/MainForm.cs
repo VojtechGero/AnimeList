@@ -23,6 +23,7 @@ namespace AnimeList
         private bool needsChage()
         {
             int n;
+            MessageBox.Show(listBox.Size.Height.ToString());
             if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
             {
                 n = 36;
@@ -33,13 +34,13 @@ namespace AnimeList
             }
             if (n != textLimit)
             {
+                textLimit = n;
                 return true;
             }
             else return false;
         }
         private void writeList()
         {
-            
             listBox.BeginUpdate();
             listBox.Items.Clear();
             foreach (AContent item in Content)
