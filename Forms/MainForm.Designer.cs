@@ -49,7 +49,7 @@
             listBox.ItemHeight = 41;
             listBox.Location = new Point(0, 33);
             listBox.Name = "listBox";
-            listBox.Size = new Size(518, 470);
+            listBox.Size = new Size(523, 470);
             listBox.TabIndex = 1;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
             // 
@@ -74,27 +74,27 @@
             // 
             manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animeToolStripMenuItem, mangaToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(270, 34);
+            manualToolStripMenuItem.Size = new Size(193, 34);
             manualToolStripMenuItem.Text = "Manual";
             // 
             // animeToolStripMenuItem
             // 
             animeToolStripMenuItem.Name = "animeToolStripMenuItem";
-            animeToolStripMenuItem.Size = new Size(270, 34);
+            animeToolStripMenuItem.Size = new Size(169, 34);
             animeToolStripMenuItem.Text = "Anime";
             animeToolStripMenuItem.Click += animeToolStripMenuItem_Click;
             // 
             // mangaToolStripMenuItem
             // 
             mangaToolStripMenuItem.Name = "mangaToolStripMenuItem";
-            mangaToolStripMenuItem.Size = new Size(270, 34);
+            mangaToolStripMenuItem.Size = new Size(169, 34);
             mangaToolStripMenuItem.Text = "Manga";
             mangaToolStripMenuItem.Click += mangaToolStripMenuItem_Click;
             // 
             // textDumpToolStripMenuItem
             // 
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(270, 34);
+            textDumpToolStripMenuItem.Size = new Size(193, 34);
             textDumpToolStripMenuItem.Text = "File dump";
             textDumpToolStripMenuItem.Click += textDumpToolStripMenuItem_Click;
             // 
@@ -146,6 +146,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "THE LIST";
+            Resize += MainForm_Resize;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

@@ -17,13 +17,13 @@ namespace AnimeList
         public int count { get; set; }
         public bool notOut { get; set; }
         public List<string> genres { get; set; }
-        public string? author { get; set; }
+        public List<string> authors { get; set; }
 
         public AContent()
         {
 
         }
-        public AContent(bool isAnime, long iD, string name, int count, bool notOut, List<string> genres, string? author)
+        public AContent(bool isAnime, long iD, string name, int count, bool notOut, List<string> genres, List<string> authors)
         {
             IsAnime = isAnime;
             ID = iD;
@@ -31,7 +31,7 @@ namespace AnimeList
             this.count = count;
             this.notOut = notOut;
             this.genres = genres;
-            this.author = author;
+            this.authors = authors;
         }
 
         internal string ToJson()

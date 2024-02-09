@@ -23,22 +23,22 @@ namespace AnimeList
 
         private string getTitle(ICollection<TitleEntry> entries)
         {
-            if(entries.Count > 1)
+            if (entries.Count > 1)
             {
                 string def = "";
-                foreach(TitleEntry entry in entries)
+                foreach (TitleEntry entry in entries)
                 {
-                    if(entry.Type=="English") return entry.Title;
+                    if (entry.Type == "English") return entry.Title;
                     if (entry.Type == "Default") def = entry.Title;
                 }
                 return def;
-            }else return entries.First().Title;
+            } else return entries.First().Title;
         }
 
         private List<string> getGerners(ICollection<MalUrl> toParse)
         {
             var gerners = new List<string>();
-            if(toParse.Count > 0)
+            if (toParse.Count > 0)
             {
                 foreach (var g in toParse)
                 {
@@ -48,7 +48,7 @@ namespace AnimeList
             return gerners;
         }
 
-        private Anime toAnime (JikanDotNet.Anime input)
+        private Anime toAnime(JikanDotNet.Anime input)
         {
             var genres = getGerners(input.Genres);
             Anime anime = new Anime(
@@ -68,8 +68,19 @@ namespace AnimeList
                     name: getTitle(input.Titles),
                     count: input.Chapters,
                     airing: input.Publishing,
-                    genres: genres);
+                    genres: genres,
+                    authors: getAuthors(input.Authors));
             return manga;
+        }
+
+        private List<string> getAuthors(ICollection<MalUrl> C)
+        {
+            var authors = new List<string>();
+            foreach (var url in C)
+            {
+                authors.Add(StringOps.formatName(url.Name));
+            }
+            return authors;
         }
 
         internal async Task<Anime> pullAnimeId(long id)

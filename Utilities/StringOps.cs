@@ -67,11 +67,10 @@ namespace AnimeList
 
         internal static string ContentDesc(AContent content)
         {
-            
             string output = "";
             const string tab = "    ";
             output += $"Name: {content.name}\n";
-            if (content.GetType() == typeof(Anime))
+            if (content.IsAnime)
             {
                 output += "Anime" + tab;
                 if (content.notOut) output += "Currently Airing\n";
@@ -84,6 +83,18 @@ namespace AnimeList
                 if (content.notOut) output += "Currently Publishing\n";
                 else output += "Finished Publishing\n";
                 if (content.count > 0) output += $"Chapters: {content.count}\n";
+                if(content.authors is not null)
+                {
+                    int c = content.authors.Count;
+                    if (c > 0)
+                    {
+                        output += "Author:\n";
+                        foreach (string author in content.authors)
+                        {
+                            output += $"{tab}{author}\n";
+                        }
+                    }
+                }
             }
             if (content.genres.Count > 0)
             {
@@ -96,25 +107,29 @@ namespace AnimeList
             return output;
         }
 
-        internal static string shorten(string name)
+        internal static string formatName(string name)
         {
+            if(name.Contains(", "))
+            {
+                string[] s = name.Split(", ");
+                name = s[1]+" "+s[0];
+            }
+            return name;
+
+        }
+
+        internal static string shorten(string name,int limit)
+        {
+            if (name.Length <= limit)
+            {
+                return name;
+            }
             string output = "";
-            for (int i = 0; i < 29; i++)
+            for (int i = 0; i < limit; i++)
             {
                 output += name[i];
             }
-            return output + "...";
-        }
-
-        internal static string toFile(List<string> genres)
-        {
-            string output = "";
-            for(int i = 0;i < genres.Count-1;i++)
-            {
-                output += genres[i] + ",";
-            }
-            output += genres.Last();
-            return output;
+            return output.Trim() + "...";
         }
     }
 }

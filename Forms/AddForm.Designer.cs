@@ -81,21 +81,21 @@
             searchBox.Font = new Font("Segoe UI", 12F);
             searchBox.Location = new Point(289, 58);
             searchBox.Name = "searchBox";
-            searchBox.Size = new Size(471, 39);
+            searchBox.Size = new Size(791, 39);
             searchBox.TabIndex = 5;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
-            // AnimeAddForm
+            // AddForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(772, 506);
+            ClientSize = new Size(1092, 506);
             Controls.Add(searchBox);
             Controls.Add(label1);
             Controls.Add(errorLabel);
             Controls.Add(idField);
             Controls.Add(IdLabel);
-            Name = "AnimeAddForm";
+            Name = "AddForm";
             Text = "AnimeAddForm";
             ResumeLayout(false);
             PerformLayout();

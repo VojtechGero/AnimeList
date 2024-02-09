@@ -9,9 +9,6 @@ namespace AnimeList
 {
     internal class Manga : AContent
     {
-        
-
-        //internal List<string> authors { get; set; }
 
         internal Manga(AContent a)
         {
@@ -21,7 +18,7 @@ namespace AnimeList
             }
         }
 
-        internal Manga(long id, string name, int? count, bool airing, List<string> genres)
+        internal Manga(long id, string name, int? count, bool airing, List<string> genres,List<string> authors)
         {
             IsAnime = false;
             ID = id;
@@ -33,17 +30,7 @@ namespace AnimeList
             else this.count = (int)count;
             this.notOut = airing;
             this.genres = genres;
-        }
-        
-        /*
-        internal override string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-        */
-        public override string ToString()
-        {
-            return $"M;{ID};{name};{count};{notOut};{StringOps.toFile(genres)}";
+            this.authors = authors;
         }
     }
 }

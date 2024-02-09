@@ -32,15 +32,5 @@ namespace AnimeList
             this.notOut = airing;
             this.genres = genres;
         }
-
-        internal string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        public override string ToString()
-        {
-            return $"A;{ID};{name};{count};{notOut};{StringOps.toFile(genres)}";
-        }
     }
 }
