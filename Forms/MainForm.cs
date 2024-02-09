@@ -83,5 +83,6 @@ namespace AnimeList
             AddForm = new AddForm(this, false);
             AddForm.ShowDialog();
         }
+
     }
 }

@@ -2,47 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AnimeList
 {
     internal class Manga : AContent
     {
-        internal override long ID { get; set; }
-        internal override string name { get; set; }
-        internal override int count { get; set; }
-        internal override bool notOut { get; set; }
-        internal override List<string> genres { get; set; }
         
 
         //internal List<string> authors { get; set; }
 
-        internal Manga(string line)
+        internal Manga(AContent a)
         {
-            //read order
-            // id;name;episodes;airing;gerner1,gerner2
-            string[] vals = line.Split(";");
-            if (!string.IsNullOrWhiteSpace(vals[0]))
+            foreach (var prop in a.GetType().GetProperties())
             {
-                ID = long.Parse(vals[1]);
+                this.GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(a, null), null);
             }
-            else ID = 0;
-            name = vals[2];
-            if (string.IsNullOrWhiteSpace(vals[3]))
-            {
-                count = 0;
-            }
-            else count = int.Parse(vals[3]);
-            if (vals[4] == "True")
-            {
-                notOut = true;
-            }
-            else notOut = false;
-            genres = vals[5].Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         internal Manga(long id, string name, int? count, bool airing, List<string> genres)
         {
+            IsAnime = false;
             ID = id;
             this.name = name;
             if (count == null)
@@ -54,7 +35,12 @@ namespace AnimeList
             this.genres = genres;
         }
         
-
+        /*
+        internal override string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+        */
         public override string ToString()
         {
             return $"M;{ID};{name};{count};{notOut};{StringOps.toFile(genres)}";

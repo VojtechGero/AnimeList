@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json;
 using static System.Windows.Forms.LinkLabel;
 
 namespace AnimeList
@@ -21,7 +22,7 @@ namespace AnimeList
         internal static FileHandler workFile()
         {
             string path = Path.GetDirectoryName(Application.ExecutablePath);
-            string file = path + "\\AnimeList.txt";
+            string file = path + "\\AnimeList.json";
             if (!File.Exists(file))
             {
                 File.Create(file);
@@ -40,20 +41,22 @@ namespace AnimeList
             readContent();
             foreach (string s in data)
             {
-                AContent c;
-                if (s[0] == 'A')
+                AContent content = JsonSerializer.Deserialize<AContent>(s.Trim());
+                if(content.IsAnime)
                 {
-                    c = new Anime(s);
+                    contents.Add(new Anime(content));
                 }
-                else c=new Manga(s);
-                contents.Add(c);
+                else
+                {
+                    contents.Add(new Manga(content));
+                }
             }
             return contents;
         }
 
         internal void writeContent(AContent a)
         {
-            string newLine = a.ToString();
+            string newLine = a.ToJson();
             File.AppendAllText(file, newLine + Environment.NewLine);
             data.Add(newLine);
         }
@@ -72,5 +75,7 @@ namespace AnimeList
             }
             data.RemoveAt(index);
         }
+
+
     }
 }

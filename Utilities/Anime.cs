@@ -4,43 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AnimeList
 {
     internal class Anime : AContent
     {
-        internal override long ID { get; set; }
-        internal override string name { get; set; }
-        internal override int count { get; set; }
-        internal override bool notOut { get; set; }
-        internal override List<string> genres { get; set; }
-        internal Anime(string line)
+        internal Anime(AContent a)
         {
-            //read order
-            // id;name;episodes;airing;gerner1,gerner2
-            string[] vals = line.Split(";");
-            if (!string.IsNullOrWhiteSpace(vals[1]))
+            foreach (var prop in a.GetType().GetProperties())
             {
-                ID = long.Parse(vals[1]);
+                this.GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(a, null), null);
             }
-            else ID = 0;
-            name = vals[2];
-            if (string.IsNullOrWhiteSpace(vals[3]))
-            {
-                count = 0;
-            }
-            else count = int.Parse(vals[3]);
-            if (vals[4] == "True")
-            {
-                notOut = true;
-            }
-            else notOut = false;
-            genres = vals[5].Split(",", StringSplitOptions.RemoveEmptyEntries ).ToList();
         }
 
         internal Anime(long id, string name, int? episodes, bool airing, List<string> genres)
         {
+            IsAnime=true;
             ID = id;
             this.name = name;
             if (episodes == null)
@@ -50,6 +31,11 @@ namespace AnimeList
             else this.count = (int)episodes;
             this.notOut = airing;
             this.genres = genres;
+        }
+
+        internal string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
         }
 
         public override string ToString()
