@@ -3,10 +3,13 @@ using JikanDotNet;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AnimeList
 {
@@ -115,21 +118,35 @@ namespace AnimeList
                 name = s[1]+" "+s[0];
             }
             return name;
-
         }
 
-        internal static string shorten(string name,int limit)
+        public static string shorten(string inputString,ListBox listBox1)
         {
-            if (name.Length <= limit)
+            int listBoxWidth = listBox1.ClientSize.Width;
+            Graphics g = listBox1.CreateGraphics();
+            float maxLength = g.MeasureString(inputString, listBox1.Font).Width;
+            if (maxLength > listBoxWidth)
             {
-                return name;
+                float availableLength = listBoxWidth;
+                string shortenedString = "";
+                foreach(char c in inputString)
+                {
+                    string temp = shortenedString + c;
+                    if (g.MeasureString(temp, listBox1.Font).Width > availableLength) break;
+                    shortenedString += c;
+                }
+                return shortenedString.Trim()+"...";
             }
-            string output = "";
-            for (int i = 0; i < limit; i++)
+            else
             {
-                output += name[i];
+                return inputString;
             }
-            return output.Trim() + "...";
+        }
+
+        internal static string getFileName(string filePath)
+        {
+            string[] strings = filePath.Split("\\");
+            return strings.Last();
         }
     }
 }

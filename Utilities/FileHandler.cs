@@ -29,6 +29,11 @@ namespace AnimeList
             }
             return new FileHandler(file);
         }
+        
+        internal static List<string> getLines(string path)
+        {
+            return File.ReadAllLines(path).ToList();
+        }
 
         void readContent()
         {

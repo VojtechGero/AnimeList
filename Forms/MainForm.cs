@@ -1,4 +1,5 @@
 using AnimeList;
+using Microsoft.VisualBasic.FileIO;
 using System.Windows.Forms;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -10,45 +11,59 @@ namespace AnimeList
         List<AContent> Content = new List<AContent>();
         AddForm AddForm;
         FileHandler file;
-        int textLimit = 33;
+        bool hasScroll;
 
         public MainForm()
         {
             InitializeComponent();
             this.file = FileHandler.workFile();
             Content = file.GetContent();
+            if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
+            {
+                hasScroll = false;
+            }
+            else
+            {
+                hasScroll = true;
+            }
             writeList();
+            
         }
 
         private bool needsChage()
         {
-            int n;
-            MessageBox.Show(listBox.Size.Height.ToString());
+            bool n;
             if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
             {
-                n = 36;
+                n = false;
             }
             else
             {
-                n = 33;
+                n = true;
             }
-            if (n != textLimit)
+            if (n != hasScroll)
             {
-                textLimit = n;
+                hasScroll = n;
                 return true;
             }
             else return false;
         }
+
         private void writeList()
         {
             listBox.BeginUpdate();
             listBox.Items.Clear();
+            int width=listBox.Width;
             foreach (AContent item in Content)
             {
                 string name = item.name;
-                name = StringOps.shorten(name, textLimit);
                 listBox.Items.Add(name);
             }
+            for(int i = 0; i < listBox.Items.Count; i++)
+            {
+                listBox.Items[i]= StringOps.shorten(listBox.Items[i].ToString(), listBox);
+            }
+                
             listBox.EndUpdate();
         }
 
@@ -87,7 +102,15 @@ namespace AnimeList
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            var openFile=new OpenFileDialog();
+            openFile.InitialDirectory = SpecialDirectories.Desktop;
+            openFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFile.CheckFileExists = true;
+            openFile.CheckPathExists = true;
+            openFile.ShowDialog();
+            string inputFile = openFile.FileName;
+            var FileHandleDialog = new FileHandleDialog(inputFile);
+            FileHandleDialog.ShowDialog();
         }
 
         private void animeToolStripMenuItem_Click(object sender, EventArgs e)

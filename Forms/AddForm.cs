@@ -59,28 +59,26 @@ namespace AnimeList
 
         private async Task parseId()
         {
-            
-            if (long.TryParse(idField.Text, out long id))
+
+            long id=long.Parse(idField.Text);
+            AContent contentFromId;
+            if (IsAnime)
             {
-                AContent contentFromId;
-                if (IsAnime)
-                {
-                    contentFromId = await MalI.pullAnimeId(id);
-                }
-                else
-                {
-                    contentFromId = await MalI.pullMangaId(id);
-                }
-                if (contentFromId != null)
-                {
-                    List.Clear();
-                    List.Add(contentFromId);
-                    IdError = false;
-                }
-                else
-                {
-                    IdError = true;
-                }
+                contentFromId = await MalI.pullAnimeId(id);
+            }
+            else
+            {
+                contentFromId = await MalI.pullMangaId(id);
+            }
+            if (contentFromId != null)
+            {
+                List.Clear();
+                List.Add(contentFromId);
+                IdError = false;
+            }
+            else
+            {
+                IdError = true;
             }
         }
 
@@ -95,7 +93,7 @@ namespace AnimeList
             {
                 List.AddRange(await MalI.searchManga(searchBox.Text));
             }
-            
+
         }
 
         private void updateForm()
@@ -160,7 +158,6 @@ namespace AnimeList
 
         private void reDrawButtons()
         {
-            
             int n = List.Count;
             for (int i = 0; i < 5; i++)
             {
@@ -189,10 +186,19 @@ namespace AnimeList
 
         private void searchBox_TextChanged(object sender, EventArgs e)
         {
-            if(!Parsing)
+            if (!Parsing)
             {
                 timer.Stop();
                 timer.Start();
+            }
+        }
+
+        //allow only digits
+        private void idField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled= true;
             }
         }
     }

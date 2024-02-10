@@ -53,6 +53,7 @@
             idField.Size = new Size(227, 39);
             idField.TabIndex = 2;
             idField.TextChanged += idField_TextChanged;
+            idField.KeyPress += idField_KeyPress;
             // 
             // errorLabel
             // 
