@@ -1,6 +1,6 @@
 ﻿namespace AnimeList
 {
-    partial class AddForm
+    partial class AddDialog
     {
         /// <summary>
         /// Required designer variable.

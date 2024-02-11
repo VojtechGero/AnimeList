@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AnimeList
 {
-    public partial class AddForm : Form
+    public partial class AddDialog : Form
     {
         MainForm Form1;
         MalInterface MalI;
@@ -24,7 +24,7 @@ namespace AnimeList
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
-        public AddForm(MainForm form, bool isAnime)
+        public AddDialog(MainForm form, bool isAnime)
         {
             InitializeComponent();
             List = new List<AContent>();

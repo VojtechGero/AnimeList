@@ -17,6 +17,14 @@ namespace AnimeList
     {
         internal static List<AContent> sortSearch(List<AContent> list, string query)
         {
+            /*
+            string s = "";
+            foreach(var item in list)
+            {
+                s += $"{item.name}: {distance(item.name, query) - 50 * relevanceByWords(item.name, query)}";
+            }
+            MessageBox.Show(s);
+            */
             return list
             .OrderBy(s => distance(s.name, query) - 50 * relevanceByWords(s.name, query))
             .ToList();
@@ -120,7 +128,7 @@ namespace AnimeList
             return name;
         }
 
-        public static string shorten(string inputString,ListBox listBox1)
+        internal static string shorten(string inputString,ListBox listBox1)
         {
             int listBoxWidth = listBox1.ClientSize.Width;
             Graphics g = listBox1.CreateGraphics();

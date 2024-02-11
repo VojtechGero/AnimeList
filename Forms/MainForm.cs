@@ -9,7 +9,7 @@ namespace AnimeList
     public partial class MainForm : Form
     {
         List<AContent> Content = new List<AContent>();
-        AddForm AddForm;
+        AddDialog AddForm;
         FileHandler file;
         bool hasScroll;
 
@@ -109,19 +109,22 @@ namespace AnimeList
             openFile.CheckPathExists = true;
             openFile.ShowDialog();
             string inputFile = openFile.FileName;
-            var FileHandleDialog = new FileHandleDialog(inputFile);
-            FileHandleDialog.ShowDialog();
+            var fileHandleDialog = new FileHandleDialog(inputFile);
+            fileHandleDialog.MaximizeBox = false;
+            fileHandleDialog.MinimizeBox = false;
+            fileHandleDialog.ShowDialog();
         }
+
 
         private void animeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddForm = new AddForm(this, true);
+            AddForm = new AddDialog(this, true);
             AddForm.ShowDialog();
         }
 
         private void mangaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddForm = new AddForm(this, false);
+            AddForm = new AddDialog(this, false);
             AddForm.ShowDialog();
         }
 

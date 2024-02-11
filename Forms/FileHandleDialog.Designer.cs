@@ -30,55 +30,59 @@
         {
             progressBar = new ProgressBar();
             fileNameLabel = new Label();
-            button1 = new Button();
+            CurrentNameLabel = new Label();
             SuspendLayout();
             // 
             // progressBar
             // 
-            progressBar.Dock = DockStyle.Bottom;
-            progressBar.Location = new Point(0, 202);
+            progressBar.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            progressBar.Location = new Point(12, 167);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(657, 34);
+            progressBar.Size = new Size(633, 37);
             progressBar.TabIndex = 0;
             // 
             // fileNameLabel
             // 
-            fileNameLabel.AutoSize = true;
+            fileNameLabel.Dock = DockStyle.Top;
             fileNameLabel.Font = new Font("Segoe UI", 15F);
-            fileNameLabel.Location = new Point(51, 14);
+            fileNameLabel.Location = new Point(0, 0);
             fileNameLabel.Name = "fileNameLabel";
-            fileNameLabel.Size = new Size(114, 41);
+            fileNameLabel.Size = new Size(657, 41);
             fileNameLabel.TabIndex = 1;
             fileNameLabel.Text = "Parsing";
             // 
-            // button1
+            // CurrentNameLabel
             // 
-            button1.Location = new Point(281, 75);
-            button1.Name = "button1";
-            button1.Size = new Size(262, 68);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            CurrentNameLabel.Dock = DockStyle.Top;
+            CurrentNameLabel.Font = new Font("Segoe UI", 12F);
+            CurrentNameLabel.Location = new Point(0, 41);
+            CurrentNameLabel.Margin = new Padding(15, 0, 15, 0);
+            CurrentNameLabel.Name = "CurrentNameLabel";
+            CurrentNameLabel.Size = new Size(657, 88);
+            CurrentNameLabel.TabIndex = 3;
+            CurrentNameLabel.Text = "Processing";
+            CurrentNameLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // FileHandleDialog
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(657, 236);
-            Controls.Add(button1);
+            Controls.Add(CurrentNameLabel);
             Controls.Add(fileNameLabel);
             Controls.Add(progressBar);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FileHandleDialog";
             Text = "FileHandleDialog";
+            FormClosing += FileHandleDialog_FormClosing;
+            Shown += FileHandleDialog_Shown;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private ProgressBar progressBar;
         private Label fileNameLabel;
-        private Button button1;
+        private Label CurrentNameLabel;
     }
 }
