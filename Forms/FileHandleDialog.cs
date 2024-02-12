@@ -15,10 +15,12 @@ namespace AnimeList
     {
         string path;
         List<string> names;
-        public FileHandleDialog(string path)
+        MainForm mainForm;
+        public FileHandleDialog(string path,MainForm main)
         {
             InitializeComponent();
             this.path = path;
+            this.mainForm = main;
             fileNameLabel.Text = "Parsing: " + StringOps.getFileName(path);
             names = FileHandler.getLines(path);
             setupProgressBar();
@@ -31,20 +33,32 @@ namespace AnimeList
             progressBar.Maximum = names.Count * 10;
         }
 
-        void parseList()
+        AContent bestCandidate(List<AContent> content,string query)
         {
-            List<Anime> animes = new List<Anime>();
-            List<Manga> mangas = new List<Manga>();
+            if (!content.Any()) return null;
+            content = StringOps.sortSearch(content,query);
+            return content.First();
+        }
+
+        async Task parseList()
+        {
+            MalInterface mal=new MalInterface();
+            List<AContent> content = new List<AContent>();
             foreach (string name in names)
             {
-                //Application.DoEvents();
-                //MessageBox.Show(name);
-                animes.Clear();
-                mangas.Clear();
-                CurrentNameLabel.Text = "Processing: " + name;
+                string query = name.Trim();
+                CurrentNameLabel.Text = "Processing: " + query;
+                content.Clear();
+                content.AddRange(await mal.searchAnime(query));
+                content.AddRange(await mal.searchManga(query));
+                AContent candidate = bestCandidate(content,query);
+                if (candidate != null)
+                {
+                    mainForm.addContent(candidate);
+                }
                 progressBar.PerformStep();
-                
             }
+            progressBar.PerformStep();
         }
 
 
@@ -53,9 +67,9 @@ namespace AnimeList
 
         }
 
-        private void FileHandleDialog_Shown(object sender, EventArgs e)
+        private async void FileHandleDialog_Shown(object sender, EventArgs e)
         {
-            parseList();
+            await parseList();
             Close();
         }
     }

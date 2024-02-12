@@ -131,7 +131,6 @@ namespace AnimeList
                     Anime a = toAnime(item);
                     animeList.Add(a);
                 }
-                animeList= StringOps.sortSearch(animeList,query);
                 return animeList;
             }
             catch (JikanRequestException)
@@ -154,7 +153,6 @@ namespace AnimeList
                     Manga a = toManga(item);
                     mangaList.Add(a);
                 }
-                mangaList = StringOps.sortSearch(mangaList, query);
                 return mangaList;
             }
             catch (JikanRequestException)

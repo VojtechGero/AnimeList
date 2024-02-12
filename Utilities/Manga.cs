@@ -30,7 +30,16 @@ namespace AnimeList
             else this.count = (int)count;
             this.notOut = airing;
             this.genres = genres;
-            this.authors = authors;
+            if(authors.Count > 3)
+            {
+                List<string> a=new List<string>();
+                for(int i=0; i<3; i++)
+                {
+                    a.Add(authors[i]);
+                }
+                this.authors = a;
+            }else this.authors = authors;
+
         }
     }
 }

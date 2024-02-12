@@ -17,16 +17,8 @@ namespace AnimeList
     {
         internal static List<AContent> sortSearch(List<AContent> list, string query)
         {
-            /*
-            string s = "";
-            foreach(var item in list)
-            {
-                s += $"{item.name}: {distance(item.name, query) - 50 * relevanceByWords(item.name, query)}";
-            }
-            MessageBox.Show(s);
-            */
             return list
-            .OrderBy(s => distance(s.name, query) - 50 * relevanceByWords(s.name, query))
+            .OrderByDescending(s => 50 * relevanceByWords(s.name, query) - distance(s.name, query))
             .ToList();
         }
 

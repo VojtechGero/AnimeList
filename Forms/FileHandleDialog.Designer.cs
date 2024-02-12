@@ -50,6 +50,7 @@
             fileNameLabel.Size = new Size(657, 41);
             fileNameLabel.TabIndex = 1;
             fileNameLabel.Text = "Parsing";
+            fileNameLabel.UseMnemonic = false;
             // 
             // CurrentNameLabel
             // 
@@ -62,6 +63,7 @@
             CurrentNameLabel.TabIndex = 3;
             CurrentNameLabel.Text = "Processing";
             CurrentNameLabel.TextAlign = ContentAlignment.MiddleLeft;
+            CurrentNameLabel.UseMnemonic = false;
             // 
             // FileHandleDialog
             // 

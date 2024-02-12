@@ -15,7 +15,7 @@ namespace AnimeList
     {
         MainForm Form1;
         MalInterface MalI;
-        List<AContent> List;
+        List<AContent> list;
         List<Label> Labels;
         List<Button> Buttons;
         bool Parsing;
@@ -27,7 +27,7 @@ namespace AnimeList
         public AddDialog(MainForm form, bool isAnime)
         {
             InitializeComponent();
-            List = new List<AContent>();
+            list = new List<AContent>();
             Buttons = new List<Button>();
             Labels = new List<Label>();
             MalI = new MalInterface();
@@ -52,7 +52,7 @@ namespace AnimeList
             {
                 await parseId();
             }
-            else List.Clear();
+            else list.Clear();
             updateForm();
             Parsing = false;
         }
@@ -72,8 +72,8 @@ namespace AnimeList
             }
             if (contentFromId != null)
             {
-                List.Clear();
-                List.Add(contentFromId);
+                list.Clear();
+                list.Add(contentFromId);
                 IdError = false;
             }
             else
@@ -84,15 +84,16 @@ namespace AnimeList
 
         private async Task parseSearch()
         {
-            List.Clear();
+            list.Clear();
             if (IsAnime)
             {
-                List.AddRange(await MalI.searchAnime(searchBox.Text));
+                list.AddRange(await MalI.searchAnime(searchBox.Text));
             }
             else
             {
-                List.AddRange(await MalI.searchManga(searchBox.Text));
+                list.AddRange(await MalI.searchManga(searchBox.Text));
             }
+            list = StringOps.sortSearch(list, searchBox.Text);
 
         }
 
@@ -106,7 +107,7 @@ namespace AnimeList
         {
             if (IdError)
             {
-                List.Clear();
+                list.Clear();
                 errorLabel.Text = "Invalid Id";
                 errorLabel.Visible = true;
             }
@@ -151,20 +152,20 @@ namespace AnimeList
         {
             Button clickedButton = (Button)sender;
             int index = Buttons.IndexOf(clickedButton);
-            AContent toAdd = List[index];
+            AContent toAdd = list[index];
             Form1.addContent(toAdd);
             this.Dispose();
         }
 
         private void reDrawButtons()
         {
-            int n = List.Count;
+            int n = list.Count;
             for (int i = 0; i < 5; i++)
             {
                 if (i < n)
                 {
                     Buttons[i].Visible = true;
-                    Labels[i].Text = List[i].name;
+                    Labels[i].Text = list[i].name;
                     Labels[i].Visible = true;
                 }
                 else

@@ -25,14 +25,15 @@ namespace AnimeList
             string file = path + "\\AnimeList.json";
             if (!File.Exists(file))
             {
-                File.Create(file);
+                var f=File.Create(file);
+                f.Close();
             }
             return new FileHandler(file);
         }
         
         internal static List<string> getLines(string path)
         {
-            return File.ReadAllLines(path).ToList();
+            return File.ReadAllLines(path,Encoding.UTF8).ToList();
         }
 
         void readContent()

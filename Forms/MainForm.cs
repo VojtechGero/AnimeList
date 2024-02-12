@@ -12,7 +12,15 @@ namespace AnimeList
         AddDialog AddForm;
         FileHandler file;
         bool hasScroll;
-
+        /*
+         * misses:
+         * revenge classroom -- not translated on mal
+         * Sounan desu ka? -- japanese name
+         * inobato -- cant search by synonym
+         * Mahou Shoujo ni Akogarete -- japanese name
+         * Oyasumi Punpun -- japanese name
+         * Yuru Camp -- japanese name
+        */
         public MainForm()
         {
             InitializeComponent();
@@ -109,7 +117,7 @@ namespace AnimeList
             openFile.CheckPathExists = true;
             openFile.ShowDialog();
             string inputFile = openFile.FileName;
-            var fileHandleDialog = new FileHandleDialog(inputFile);
+            var fileHandleDialog = new FileHandleDialog(inputFile,this);
             fileHandleDialog.MaximizeBox = false;
             fileHandleDialog.MinimizeBox = false;
             fileHandleDialog.ShowDialog();
