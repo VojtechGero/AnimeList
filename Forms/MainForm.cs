@@ -91,20 +91,32 @@ namespace AnimeList
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int select = listBox.SelectedIndex;
-            if (select != -1)
+            if (listBox.SelectedIndices.Count > 1)
             {
-                updateDesc(Content[select]);
+                description.Visible = false;
                 removeButton.Visible = true;
+            }
+            else
+            {
+                int select = listBox.SelectedIndex;
+                if (select != -1)
+                {
+                    updateDesc(Content[select]);
+                    removeButton.Visible = true;
+                }
             }
         }
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-            int toRemove = listBox.SelectedIndex;
-            Content.RemoveAt(toRemove);
-            file.removeContent(toRemove);
             description.Visible = false;
+            var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
+            selected.Reverse();
+            foreach (int x in selected)
+            {
+                Content.RemoveAt(x);
+                file.removeContent(x);
+            }
             writeList();
         }
 
@@ -117,10 +129,13 @@ namespace AnimeList
             openFile.CheckPathExists = true;
             openFile.ShowDialog();
             string inputFile = openFile.FileName;
-            var fileHandleDialog = new FileHandleDialog(inputFile,this);
-            fileHandleDialog.MaximizeBox = false;
-            fileHandleDialog.MinimizeBox = false;
-            fileHandleDialog.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(inputFile))
+            {
+                var fileHandleDialog = new FileHandleDialog(inputFile, this);
+                fileHandleDialog.MaximizeBox = false;
+                fileHandleDialog.MinimizeBox = false;
+                fileHandleDialog.ShowDialog();
+            }
         }
 
 

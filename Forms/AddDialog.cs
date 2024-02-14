@@ -18,9 +18,7 @@ namespace AnimeList
         List<AContent> list;
         List<Label> Labels;
         List<Button> Buttons;
-        bool Parsing;
-        bool IdError;
-        bool IsAnime;
+        bool Parsing, IdError,IsAnime;
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
@@ -60,7 +58,7 @@ namespace AnimeList
         private async Task parseId()
         {
 
-            long id=long.Parse(idField.Text);
+            long id = long.Parse(idField.Text);
             AContent contentFromId;
             if (IsAnime)
             {
@@ -85,25 +83,34 @@ namespace AnimeList
         private async Task parseSearch()
         {
             list.Clear();
+            var content = new List<AContent>();
             if (IsAnime)
             {
-                list.AddRange(await MalI.searchAnime(searchBox.Text));
+                content=await MalI.searchAnime(searchBox.Text);
             }
             else
             {
-                list.AddRange(await MalI.searchManga(searchBox.Text));
+                content=await MalI.searchManga(searchBox.Text);
             }
-            list = StringOps.sortSearch(list, searchBox.Text);
-
+            if(content is null)
+            {
+                MessageBox.Show("Server or internet error");
+                this.Close();
+            }
+            else
+            {
+                list.AddRange(content);
+                list = StringOps.sortSearch(list, searchBox.Text);
+            }
         }
 
         private void updateForm()
         {
-            idErrorCheck();
+            ErrorCheck();
             reDrawButtons();
         }
 
-        private void idErrorCheck()
+        private void ErrorCheck()
         {
             if (IdError)
             {
@@ -194,13 +201,13 @@ namespace AnimeList
             }
         }
 
-        //allow only digits
         private void idField_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
-                e.Handled= true;
+                e.Handled = true;
             }
         }
+
     }
 }

@@ -49,6 +49,7 @@
             listBox.ItemHeight = 41;
             listBox.Location = new Point(0, 33);
             listBox.Name = "listBox";
+            listBox.SelectionMode = SelectionMode.MultiExtended;
             listBox.Size = new Size(523, 470);
             listBox.TabIndex = 1;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;

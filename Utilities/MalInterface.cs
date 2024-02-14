@@ -122,6 +122,10 @@ namespace AnimeList
             try
             {
                 var animes = await jikan.SearchAnimeAsync(query);
+                if(animes is null)
+                {
+                    return null;
+                }
                 List<AContent> animeList = new List<AContent>();
                 int i = 0;
                 foreach (var item in animes.Data)
@@ -144,6 +148,10 @@ namespace AnimeList
             try
             {
                 var mangas = await jikan.SearchMangaAsync(query);
+                if (mangas is null)
+                {
+                    return null;
+                }
                 List<AContent> mangaList = new List<AContent>();
                 int i = 0;
                 foreach (var item in mangas.Data)

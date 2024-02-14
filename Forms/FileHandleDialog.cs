@@ -5,9 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace AnimeList
 {
@@ -16,13 +18,15 @@ namespace AnimeList
         string path;
         List<string> names;
         MainForm mainForm;
-        public FileHandleDialog(string path,MainForm main)
+        bool stopParsing;
+        public FileHandleDialog(string path, MainForm main)
         {
             InitializeComponent();
             this.path = path;
             this.mainForm = main;
             fileNameLabel.Text = "Parsing: " + StringOps.getFileName(path);
             names = FileHandler.getLines(path);
+            stopParsing = false;
             setupProgressBar();
 
         }
@@ -33,44 +37,44 @@ namespace AnimeList
             progressBar.Maximum = names.Count * 10;
         }
 
-        AContent bestCandidate(List<AContent> content,string query)
+        AContent bestCandidate(List<AContent> content, string query)
         {
             if (!content.Any()) return null;
-            content = StringOps.sortSearch(content,query);
+            content = StringOps.sortSearch(content, query);
             return content.First();
         }
 
-        async Task parseList()
+        async Task parseLine(string name,MalInterface mal)
         {
-            MalInterface mal=new MalInterface();
             List<AContent> content = new List<AContent>();
-            foreach (string name in names)
+            string query = name.Trim();
+            CurrentNameLabel.Text = "Processing: " + query;
+            content.Clear();
+            content.AddRange(await mal.searchAnime(query));
+            content.AddRange(await mal.searchManga(query));
+            AContent candidate = bestCandidate(content, query);
+            if (candidate != null)
             {
-                string query = name.Trim();
-                CurrentNameLabel.Text = "Processing: " + query;
-                content.Clear();
-                content.AddRange(await mal.searchAnime(query));
-                content.AddRange(await mal.searchManga(query));
-                AContent candidate = bestCandidate(content,query);
-                if (candidate != null)
-                {
-                    mainForm.addContent(candidate);
-                }
-                progressBar.PerformStep();
+                mainForm.addContent(candidate);
             }
             progressBar.PerformStep();
-        }
-
-
-        private void FileHandleDialog_FormClosing(object sender, FormClosingEventArgs e)
-        {
 
         }
 
         private async void FileHandleDialog_Shown(object sender, EventArgs e)
         {
-            await parseList();
+            MalInterface mal = new MalInterface();
+            foreach (string name in names)
+            {
+                if (stopParsing) break;
+                await parseLine(name,mal);
+            }
             Close();
+        }
+
+        private void FileHandleDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            stopParsing = true;
         }
     }
 }

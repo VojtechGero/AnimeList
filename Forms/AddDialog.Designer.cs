@@ -86,7 +86,7 @@
             searchBox.TabIndex = 5;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
-            // AddForm
+            // AddDialog
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -96,7 +96,7 @@
             Controls.Add(errorLabel);
             Controls.Add(idField);
             Controls.Add(IdLabel);
-            Name = "AddForm";
+            Name = "AddDialog";
             Text = "AnimeAddForm";
             ResumeLayout(false);
             PerformLayout();
