@@ -1,8 +1,4 @@
-using AnimeList;
 using Microsoft.VisualBasic.FileIO;
-using System.Windows.Forms;
-
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AnimeList
 {

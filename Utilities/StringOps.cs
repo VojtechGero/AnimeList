@@ -1,17 +1,4 @@
-﻿using AnimeList;
-using JikanDotNet;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
-namespace AnimeList
+﻿namespace AnimeList
 {
     internal class StringOps
     {
