@@ -28,7 +28,6 @@ namespace AnimeList
             names = FileHandler.getLines(path);
             stopParsing = false;
             setupProgressBar();
-
         }
 
         void setupProgressBar()

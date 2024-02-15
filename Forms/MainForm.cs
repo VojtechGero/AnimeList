@@ -86,7 +86,7 @@ namespace AnimeList
             Content.Add(content);
             file.writeContent(content);
             listBox.SelectedItems.Clear();
-            writeList();
+            listBox.Items.Add(StringOps.shorten(content.name, listBox));
         }
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -112,12 +112,13 @@ namespace AnimeList
             description.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             selected.Reverse();
+            listBox.SelectedItems.Clear();
             foreach (int x in selected)
             {
                 Content.RemoveAt(x);
                 file.removeContent(x);
+                listBox.Items.RemoveAt(x);
             }
-            writeList();
         }
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
