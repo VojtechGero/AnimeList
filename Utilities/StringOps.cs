@@ -86,9 +86,9 @@
                     }
                 }
             }
-            if (content.genres.Count > 0)
+            if (content.genres is not null)
             {
-                output += "Genres:\n";
+                if(content.genres.Count > 0) output += "Genres:\n";
                 foreach (string g in content.genres)
                 {
                     output += $"{tab}{g}\n";

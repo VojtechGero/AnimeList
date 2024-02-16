@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.Json;
 
 namespace AnimeList
@@ -28,7 +29,7 @@ namespace AnimeList
         
         internal static List<string> getLines(string path)
         {
-            return File.ReadAllLines(path,Encoding.UTF8).ToList();
+            return File.ReadAllLines(path).ToList();
         }
 
         void readContent()
@@ -62,21 +63,23 @@ namespace AnimeList
             data.Add(newLine);
         }
 
-        internal void removeContent(int index)
+        internal void writeAll()
         {
-            using (StreamWriter output = new StreamWriter(file))
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    if (i != index)
-                    {
-                        output.WriteLine(data[i]);
-                    }
-                }
-            }
-            data.RemoveAt(index);
+            File.WriteAllText(file, string.Empty);
+            File.AppendAllLines(file, data);
         }
 
+        internal void updateLines(List<int> indices,List<AContent> contents)
+        {
+            foreach (int i in indices)
+            {
+                data[i] = contents[i].ToJson();
+            }
+        }
 
+        internal void removeContent(int index)
+        {
+            data.RemoveAt(index);
+        }
     }
 }

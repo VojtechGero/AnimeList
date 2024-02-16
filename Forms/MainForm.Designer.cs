@@ -38,6 +38,7 @@
             description = new Label();
             label2 = new Label();
             removeButton = new Button();
+            RefreshButton = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -134,11 +135,25 @@
             removeButton.Visible = false;
             removeButton.Click += removeButton_Click;
             // 
+            // RefreshButton
+            // 
+            RefreshButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            RefreshButton.Font = new Font("Segoe UI", 15F);
+            RefreshButton.Location = new Point(977, 436);
+            RefreshButton.Name = "RefreshButton";
+            RefreshButton.Size = new Size(189, 55);
+            RefreshButton.TabIndex = 6;
+            RefreshButton.Text = "Refresh";
+            RefreshButton.UseVisualStyleBackColor = true;
+            RefreshButton.Visible = false;
+            RefreshButton.Click += RefreshButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1373, 503);
+            Controls.Add(RefreshButton);
             Controls.Add(removeButton);
             Controls.Add(label2);
             Controls.Add(description);
@@ -165,5 +180,6 @@
         private Button removeButton;
         private ToolStripMenuItem animeToolStripMenuItem;
         private ToolStripMenuItem mangaToolStripMenuItem;
+        private Button RefreshButton;
     }
 }

@@ -31,7 +31,7 @@ namespace AnimeList
                 hasScroll = true;
             }
             writeList();
-            
+
         }
 
         private bool needsChage()
@@ -57,17 +57,17 @@ namespace AnimeList
         {
             listBox.BeginUpdate();
             listBox.Items.Clear();
-            int width=listBox.Width;
+            int width = listBox.Width;
             foreach (AContent item in Content)
             {
                 string name = item.name;
                 listBox.Items.Add(name);
             }
-            for(int i = 0; i < listBox.Items.Count; i++)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                listBox.Items[i]= StringOps.shorten(listBox.Items[i].ToString(), listBox);
+                listBox.Items[i] = StringOps.shorten(listBox.Items[i].ToString(), listBox);
             }
-                
+
             listBox.EndUpdate();
         }
 
@@ -91,6 +91,7 @@ namespace AnimeList
             {
                 description.Visible = false;
                 removeButton.Visible = true;
+                RefreshButton.Visible = true;
             }
             else
             {
@@ -99,6 +100,7 @@ namespace AnimeList
                 {
                     updateDesc(Content[select]);
                     removeButton.Visible = true;
+                    RefreshButton.Visible = true;
                 }
             }
         }
@@ -115,11 +117,12 @@ namespace AnimeList
                 file.removeContent(x);
                 listBox.Items.RemoveAt(x);
             }
+            file.writeAll();
         }
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var openFile=new OpenFileDialog();
+            var openFile = new OpenFileDialog();
             openFile.InitialDirectory = SpecialDirectories.Desktop;
             openFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             openFile.CheckFileExists = true;
@@ -154,6 +157,37 @@ namespace AnimeList
             {
                 writeList();
             }
+        }
+
+
+        private async void RefreshButton_Click(object sender, EventArgs e)
+        {
+            var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
+            MalInterface m=new MalInterface();
+            foreach (int i in selected)
+            {
+                AContent temp;
+                if (Content[i].IsAnime)
+                {
+                    temp = await m.pullAnimeId(Content[i].ID);
+                }
+                else
+                {
+                    temp = await m.pullMangaId(Content[i].ID);
+                }
+                Content[i] = temp;
+            }
+            if (selected.Count == 1)
+            {
+                updateDesc(Content[selected.First()]);
+            }
+            List<AContent> list = new List<AContent>();
+            foreach (int i in selected)
+            {
+                list.Add(Content[i]);
+            }
+            file.updateLines(selected,list);
+            file.writeAll();
         }
     }
 }

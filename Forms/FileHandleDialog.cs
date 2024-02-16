@@ -2,7 +2,6 @@
 {
     public partial class FileHandleDialog : Form
     {
-        string path;
         List<string> names;
         MainForm mainForm;
         bool stopParsing;
