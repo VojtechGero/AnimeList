@@ -51,7 +51,8 @@ namespace AnimeList
                     name: getTitle(input.Titles),
                     episodes: input.Episodes,
                     airing: input.Airing,
-                    genres: genres);
+                    genres: genres,
+                    year: input.Aired.From.Value.Year);
             return anime;
         }
 
@@ -64,7 +65,8 @@ namespace AnimeList
                     count: input.Chapters,
                     airing: input.Publishing,
                     genres: genres,
-                    authors: getAuthors(input.Authors));
+                    authors: getAuthors(input.Authors),
+                    year: input.Published.From.Value.Year);
             return manga;
         }
 
@@ -87,7 +89,7 @@ namespace AnimeList
             }
             catch (JikanRequestException)
             {
-                return null;
+                return await pullAnimeId(id);
             }
             catch (JikanValidationException)
             {
@@ -104,7 +106,7 @@ namespace AnimeList
             }
             catch (JikanRequestException)
             {
-                return null;
+                return await pullMangaId(id);
             }
             catch (JikanValidationException)
             {

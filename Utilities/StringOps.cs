@@ -67,6 +67,17 @@
                 else output += "Finished Airing\n";
                 if (content.count > 0) output += $"Episodes: {content.count}\n";
             }
+            if(content.started is not null)
+            {
+                string t;
+                if (content.IsAnime)
+                {
+                    if (content.count == 1) t = "Aired";
+                    else t = "Started airing";
+                }
+                else t = "Started publishing";
+                output += $"{t}: {content.started}\n";
+            }
             else
             {
                 output += "Manga" + tab;

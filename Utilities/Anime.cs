@@ -10,7 +10,7 @@
             }
         }
 
-        internal Anime(long id, string name, int? episodes, bool airing, List<string> genres)
+        internal Anime(long id, string name, int? episodes, bool airing, List<string> genres,int? year)
         {
             IsAnime=true;
             ID = id;
@@ -22,6 +22,7 @@
             else this.count = (int)episodes;
             this.notOut = airing;
             this.genres = genres;
+            this.started = year;
         }
     }
 }

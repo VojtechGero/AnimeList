@@ -63,7 +63,7 @@ namespace AnimeList
             data.Add(newLine);
         }
 
-        internal void writeAll()
+        private void writeAll()
         {
             File.WriteAllText(file, string.Empty);
             File.AppendAllLines(file, data);
@@ -75,11 +75,16 @@ namespace AnimeList
             {
                 data[i] = contents[i].ToJson();
             }
+            writeAll();
         }
 
-        internal void removeContent(int index)
+        internal void removeContents(List<int> indices)
         {
-            data.RemoveAt(index);
+            foreach(int i in indices)
+            {
+                data.RemoveAt(i);
+            }
+            writeAll();
         }
     }
 }

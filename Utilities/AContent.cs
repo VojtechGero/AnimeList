@@ -12,7 +12,7 @@ namespace AnimeList
         public bool notOut { get; set; }
         public List<string> genres { get; set; }
         public List<string> authors { get; set; }
-        public DateOnly startedAiring { get; set; }
+        public int? started { get; set; }
 
 
         //required for json

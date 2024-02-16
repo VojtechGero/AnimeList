@@ -114,10 +114,9 @@ namespace AnimeList
             foreach (int x in selected)
             {
                 Content.RemoveAt(x);
-                file.removeContent(x);
                 listBox.Items.RemoveAt(x);
             }
-            file.writeAll();
+            file.removeContents(selected);
         }
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -163,31 +162,28 @@ namespace AnimeList
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
-            MalInterface m=new MalInterface();
-            foreach (int i in selected)
-            {
-                AContent temp;
-                if (Content[i].IsAnime)
-                {
-                    temp = await m.pullAnimeId(Content[i].ID);
-                }
-                else
-                {
-                    temp = await m.pullMangaId(Content[i].ID);
-                }
-                Content[i] = temp;
-            }
-            if (selected.Count == 1)
-            {
-                updateDesc(Content[selected.First()]);
-            }
             List<AContent> list = new List<AContent>();
             foreach (int i in selected)
             {
                 list.Add(Content[i]);
             }
-            file.updateLines(selected,list);
-            file.writeAll();
+            using (var form = new UpdateDialog(list))
+            {
+                var result= form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    var output = form.content;
+                    for (int i = 0; i < output.Count; i++)
+                    {
+                        Content[selected[i]] = output[i];
+                    }
+                }
+            }
+            if (selected.Count == 1)
+            {
+                updateDesc(Content[selected.First()]);
+            }
+            file.updateLines(selected,Content);
         }
     }
 }

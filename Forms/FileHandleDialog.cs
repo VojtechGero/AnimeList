@@ -8,7 +8,6 @@
         public FileHandleDialog(string path, MainForm main)
         {
             InitializeComponent();
-            this.path = path;
             this.mainForm = main;
             fileNameLabel.Text = "Parsing: " + StringOps.getFileName(path);
             names = FileHandler.getLines(path);

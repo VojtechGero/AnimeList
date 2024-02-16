@@ -1,6 +1,6 @@
 ﻿namespace AnimeList
 {
-    partial class UpradeRemoveDialog
+    partial class UpdateDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             progressBar = new ProgressBar();
-            fileNameLabel = new Label();
-            CurrentNameLabel = new Label();
+            ContentNameLabel = new Label();
             SuspendLayout();
             // 
             // progressBar
@@ -41,51 +40,37 @@
             progressBar.Size = new Size(633, 37);
             progressBar.TabIndex = 0;
             // 
-            // fileNameLabel
+            // ContentNameLabel
             // 
-            fileNameLabel.Dock = DockStyle.Top;
-            fileNameLabel.Font = new Font("Segoe UI", 15F);
-            fileNameLabel.Location = new Point(0, 0);
-            fileNameLabel.Name = "fileNameLabel";
-            fileNameLabel.Size = new Size(657, 41);
-            fileNameLabel.TabIndex = 1;
-            fileNameLabel.Text = "Parsing";
-            fileNameLabel.UseMnemonic = false;
+            ContentNameLabel.Dock = DockStyle.Top;
+            ContentNameLabel.Font = new Font("Segoe UI", 12F);
+            ContentNameLabel.Location = new Point(0, 0);
+            ContentNameLabel.Name = "ContentNameLabel";
+            ContentNameLabel.Size = new Size(657, 146);
+            ContentNameLabel.TabIndex = 1;
+            ContentNameLabel.Text = "Parsing";
+            ContentNameLabel.TextAlign = ContentAlignment.MiddleLeft;
+            ContentNameLabel.UseMnemonic = false;
             // 
-            // CurrentNameLabel
-            // 
-            CurrentNameLabel.Dock = DockStyle.Top;
-            CurrentNameLabel.Font = new Font("Segoe UI", 12F);
-            CurrentNameLabel.Location = new Point(0, 41);
-            CurrentNameLabel.Margin = new Padding(15, 0, 15, 0);
-            CurrentNameLabel.Name = "CurrentNameLabel";
-            CurrentNameLabel.Size = new Size(657, 88);
-            CurrentNameLabel.TabIndex = 3;
-            CurrentNameLabel.Text = "Processing";
-            CurrentNameLabel.TextAlign = ContentAlignment.MiddleLeft;
-            CurrentNameLabel.UseMnemonic = false;
-            // 
-            // UpradeRemoveDialog
+            // UpdateDialog
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(657, 236);
-            Controls.Add(CurrentNameLabel);
-            Controls.Add(fileNameLabel);
+            Controls.Add(ContentNameLabel);
             Controls.Add(progressBar);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Name = "UpradeRemoveDialog";
+            Name = "UpdateDialog";
             Text = "FileHandleDialog";
             FormClosing += UpradeRemoveDialog_FormClosing;
-            Shown += UpradeRemoveDialog_Shown;
+            Shown += UpdateDialog_Shown;
             ResumeLayout(false);
         }
 
         #endregion
 
         private ProgressBar progressBar;
-        private Label fileNameLabel;
-        private Label CurrentNameLabel;
+        private Label ContentNameLabel;
 
     }
 }

@@ -11,7 +11,7 @@
             }
         }
 
-        internal Manga(long id, string name, int? count, bool airing, List<string> genres,List<string> authors)
+        internal Manga(long id, string name, int? count, bool airing, List<string> genres,List<string> authors, int year)
         {
             IsAnime = false;
             ID = id;
@@ -32,6 +32,7 @@
                 }
                 this.authors = a;
             }else this.authors = authors;
+            this.started = year;
 
         }
     }
