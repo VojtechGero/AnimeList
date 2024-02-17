@@ -10,11 +10,11 @@
             }
         }
 
-        internal Anime(long id, string name, int? episodes, bool airing, List<string> genres,int? year)
+        internal Anime(long id, List<string> names, int? episodes, bool airing, List<string> genres,int? year)
         {
             IsAnime=true;
             ID = id;
-            this.name = name;
+            this.name = names.Last();
             if (episodes == null)
             {
                 episodes = 1;
@@ -23,6 +23,11 @@
             this.notOut = airing;
             this.genres = genres;
             this.started = year;
+            if (names.Count > 1)
+            {
+                this.otherName = names.First();
+            }
+            else this.otherName = null;
         }
     }
 }

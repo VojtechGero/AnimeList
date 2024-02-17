@@ -5,8 +5,30 @@
         internal static List<AContent> sortSearch(List<AContent> list, string query)
         {
             return list
-            .OrderByDescending(s => 50 * relevanceByWords(s.name, query) - distance(s.name, query))
+            .OrderByDescending(s => relevance(s,query))
             .ToList();
+        }
+
+        private static int relevance(AContent content, string query)
+        {
+            string name;
+            if (content.otherName is null)
+            {
+                name = content.name;
+            }
+            else
+            {
+                if (value(content.name, query) > value(content.otherName, query))
+                {
+                    name = content.name;
+                }else name= content.otherName;
+            }
+            return value(name,query);
+        }
+
+        private static int value(string name, string query)
+        {
+            return 50 * relevanceByWords(name, query) - distance(name, query);
         }
 
         private static int distance(string s, string t)
@@ -59,7 +81,10 @@
         {
             string output = "";
             const string tab = "    ";
-            output += $"Name: {content.name}\n";
+            if(content.otherName is not null)
+            {
+                output += $"({content.otherName})\n";
+            }
             if (content.IsAnime)
             {
                 output += "Anime" + tab;

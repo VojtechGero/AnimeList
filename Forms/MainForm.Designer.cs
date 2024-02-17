@@ -36,7 +36,7 @@
             mangaToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
-            label2 = new Label();
+            NameLabel = new Label();
             removeButton = new Button();
             RefreshButton = new Button();
             menuStrip1.SuspendLayout();
@@ -104,23 +104,24 @@
             // 
             description.AutoSize = true;
             description.Font = new Font("Segoe UI", 12F);
-            description.Location = new Point(543, 106);
+            description.Location = new Point(543, 105);
             description.Name = "description";
             description.Size = new Size(132, 32);
             description.TabIndex = 3;
             description.Text = "description";
             description.Visible = false;
             // 
-            // label2
+            // NameLabel
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 15F);
-            label2.ForeColor = SystemColors.ControlText;
-            label2.Location = new Point(543, 43);
-            label2.Name = "label2";
-            label2.Size = new Size(169, 41);
-            label2.TabIndex = 4;
-            label2.Text = "Description";
+            NameLabel.AutoSize = true;
+            NameLabel.Font = new Font("Segoe UI", 15F);
+            NameLabel.ForeColor = SystemColors.ControlText;
+            NameLabel.Location = new Point(543, 43);
+            NameLabel.Name = "NameLabel";
+            NameLabel.Size = new Size(97, 41);
+            NameLabel.TabIndex = 4;
+            NameLabel.Text = "Name";
+            NameLabel.Visible = false;
             // 
             // removeButton
             // 
@@ -155,7 +156,7 @@
             ClientSize = new Size(1373, 503);
             Controls.Add(RefreshButton);
             Controls.Add(removeButton);
-            Controls.Add(label2);
+            Controls.Add(NameLabel);
             Controls.Add(description);
             Controls.Add(listBox);
             Controls.Add(menuStrip1);
@@ -176,7 +177,7 @@
         private ToolStripMenuItem manualToolStripMenuItem;
         private ToolStripMenuItem textDumpToolStripMenuItem;
         private Label description;
-        private Label label2;
+        private Label NameLabel;
         private Button removeButton;
         private ToolStripMenuItem animeToolStripMenuItem;
         private ToolStripMenuItem mangaToolStripMenuItem;

@@ -42,7 +42,6 @@
                 mainForm.addContent(candidate);
             }
             progressBar.PerformStep();
-
         }
 
         private async void FileHandleDialog_Shown(object sender, EventArgs e)

@@ -16,18 +16,42 @@ namespace AnimeList
             jikan = new Jikan(config);
         }
 
-        private string getTitle(ICollection<TitleEntry> entries)
+        private List<string> getTitles(ICollection<TitleEntry> entries)
         {
+            List<string> titles=new List<string>();
             if (entries.Count > 1)
             {
-                string def = "";
+                string english,def;
+                def = english = "";
                 foreach (TitleEntry entry in entries)
                 {
-                    if (entry.Type == "English") return entry.Title;
+                    if (entry.Type == "English") english =entry.Title;
                     if (entry.Type == "Default") def = entry.Title;
                 }
-                return def;
-            } else return entries.First().Title;
+                if (english == def)
+                {
+                    titles.Add(def);
+                }
+                else
+                {
+                    if (def == "")
+                    {
+                        titles.Add (english);
+                    }else if (english == "")
+                    {
+                        titles.Add(def);
+                    }
+                    else
+                    {
+                        titles.Add(def);
+                        titles.Add(english);
+                    }
+                }
+            } else
+            {
+                titles.Add(entries.First().Title);
+            }
+            return titles;
         }
 
         private List<string> getGerners(ICollection<MalUrl> toParse)
@@ -48,7 +72,7 @@ namespace AnimeList
             var genres = getGerners(input.Genres);
             Anime anime = new Anime(
                     id: (long)input.MalId,
-                    name: getTitle(input.Titles),
+                    names: getTitles(input.Titles),
                     episodes: input.Episodes,
                     airing: input.Airing,
                     genres: genres,
@@ -61,7 +85,7 @@ namespace AnimeList
             var genres = getGerners(input.Genres);
             Manga manga = new Manga(
                     id: (long)input.MalId,
-                    name: getTitle(input.Titles),
+                    names: getTitles(input.Titles),
                     count: input.Chapters,
                     airing: input.Publishing,
                     genres: genres,

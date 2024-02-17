@@ -73,8 +73,10 @@ namespace AnimeList
 
         private void updateDesc(AContent content)
         {
+            NameLabel.Text = content.name;
             description.Text = StringOps.ContentDesc(content);
             description.Visible = true;
+            NameLabel.Visible = true;
         }
 
         internal void addContent(AContent content)
@@ -90,6 +92,7 @@ namespace AnimeList
             if (listBox.SelectedIndices.Count > 1)
             {
                 description.Visible = false;
+                NameLabel.Visible=false;
                 removeButton.Visible = true;
                 RefreshButton.Visible = true;
             }
@@ -108,6 +111,7 @@ namespace AnimeList
         private void removeButton_Click(object sender, EventArgs e)
         {
             description.Visible = false;
+            NameLabel.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             selected.Reverse();
             listBox.SelectedItems.Clear();
@@ -117,6 +121,10 @@ namespace AnimeList
                 listBox.Items.RemoveAt(x);
             }
             file.removeContents(selected);
+            if (needsChage())
+            {
+                writeList();
+            }
         }
 
         private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -136,7 +144,6 @@ namespace AnimeList
                 fileHandleDialog.ShowDialog();
             }
         }
-
 
         private void animeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -169,6 +176,8 @@ namespace AnimeList
             }
             using (var form = new UpdateDialog(list))
             {
+                form.MaximizeBox = false;
+                form.MinimizeBox = false;
                 var result= form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -176,6 +185,7 @@ namespace AnimeList
                     for (int i = 0; i < output.Count; i++)
                     {
                         Content[selected[i]] = output[i];
+                        listBox.Items[selected[i]] = output[i].name;
                     }
                 }
             }

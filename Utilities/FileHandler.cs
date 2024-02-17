@@ -23,6 +23,8 @@ namespace AnimeList
             {
                 var f=File.Create(file);
                 f.Close();
+                string[] start = { "[", "]" };
+                File.AppendAllLines(file,start);
             }
             return new FileHandler(file);
         }
@@ -43,7 +45,13 @@ namespace AnimeList
             readContent();
             foreach (string s in data)
             {
-                AContent content = JsonSerializer.Deserialize<AContent>(s.Trim());
+                string temp = s.Trim();
+                if (temp == "[" || temp == "]") continue;
+                if(temp.Remove(0,temp.Length - 1) == ",")
+                {
+                    temp = temp.Remove(temp.Length - 1);
+                }
+                AContent content = JsonSerializer.Deserialize<AContent>(temp);
                 if(content.IsAnime)
                 {
                     contents.Add(new Anime(content));
@@ -59,8 +67,9 @@ namespace AnimeList
         internal void writeContent(AContent a)
         {
             string newLine = a.ToJson();
-            File.AppendAllText(file, newLine + Environment.NewLine);
-            data.Add(newLine);
+            data[data.Count - 2] = data[data.Count - 2]+",";
+            data.Insert(data.Count-1,newLine);
+            writeAll();
         }
 
         private void writeAll()
@@ -73,7 +82,15 @@ namespace AnimeList
         {
             foreach (int i in indices)
             {
-                data[i] = contents[i].ToJson();
+                int t = i + 1;
+                if (t == data.Count - 2)
+                {
+                    data[t] = contents[t-1].ToJson();
+                }
+                else
+                {
+                    data[t] = contents[t-1].ToJson()+",";
+                }
             }
             writeAll();
         }
@@ -82,7 +99,12 @@ namespace AnimeList
         {
             foreach(int i in indices)
             {
-                data.RemoveAt(i);
+                int t = i + 1;
+                if (t== data.Count - 2&&t!=2)
+                {
+                    data[t -1]= data[t -1].Remove(data[t - 1].Length - 1);
+                }
+                data.RemoveAt(t);
             }
             writeAll();
         }

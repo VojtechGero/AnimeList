@@ -11,11 +11,11 @@
             }
         }
 
-        internal Manga(long id, string name, int? count, bool airing, List<string> genres,List<string> authors, int year)
+        internal Manga(long id, List<string> names, int? count, bool airing, List<string> genres,List<string> authors, int year)
         {
             IsAnime = false;
             ID = id;
-            this.name = name;
+            this.name = names.Last();
             if (count == null)
             {
                 count = 1;
@@ -33,7 +33,11 @@
                 this.authors = a;
             }else this.authors = authors;
             this.started = year;
-
+            if (names.Count > 1)
+            {
+                this.otherName = names.First();
+            }
+            else this.otherName = null;
         }
     }
 }
