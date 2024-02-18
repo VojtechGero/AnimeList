@@ -90,9 +90,14 @@
                 output += "Anime" + tab;
                 if (content.notOut) output += "Currently Airing\n";
                 else output += "Finished Airing\n";
-                if (content.count > 0) output += $"Episodes: {content.count}\n";
             }
-            if(content.started is not null)
+            else
+            {
+                output += "Manga" + tab;
+                if (content.notOut) output += "Currently Publishing\n";
+                else output += "Finished Publishing\n";
+            }
+            if (content.started is not null)
             {
                 string t;
                 if (content.IsAnime)
@@ -103,22 +108,20 @@
                 else t = "Started publishing";
                 output += $"{t}: {content.started}\n";
             }
-            else
+            if (content.IsAnime)
             {
-                output += "Manga" + tab;
-                if (content.notOut) output += "Currently Publishing\n";
-                else output += "Finished Publishing\n";
-                if (content.count > 0) output += $"Chapters: {content.count}\n";
-                if(content.authors is not null)
+                if (content.count > 0) output += $"Episodes: {content.count}\n";
+            }
+            else if (content.count > 0) output += $"Chapters: {content.count}\n";
+            if (content.authors is not null)
+            {
+                int c = content.authors.Count;
+                if (c > 0)
                 {
-                    int c = content.authors.Count;
-                    if (c > 0)
+                    output += "Author:\n";
+                    foreach (string author in content.authors)
                     {
-                        output += "Author:\n";
-                        foreach (string author in content.authors)
-                        {
-                            output += $"{tab}{author}\n";
-                        }
+                        output += $"{tab}{author}\n";
                     }
                 }
             }

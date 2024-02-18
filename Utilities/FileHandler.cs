@@ -95,6 +95,20 @@ namespace AnimeList
             writeAll();
         }
 
+        internal void updateLine(int index, AContent content)
+        {
+            int t = index + 1;
+            if (t == data.Count - 2)
+            {
+                data[t] = content.ToJson();
+            }
+            else
+            {
+                data[t] = content.ToJson() + ",";
+            }
+            writeAll();
+        }
+
         internal void removeContents(List<int> indices)
         {
             foreach(int i in indices)

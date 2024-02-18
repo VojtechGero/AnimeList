@@ -68,15 +68,20 @@ namespace AnimeList
         }
 
         private Anime toAnime(JikanDotNet.Anime input)
-        {
+       {
             var genres = getGerners(input.Genres);
+            int? year;
+            if (input.Aired.From is null)
+            {
+                year = null;
+            } else year = input.Aired.From.Value.Year;
             Anime anime = new Anime(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
                     episodes: input.Episodes,
                     airing: input.Airing,
                     genres: genres,
-                    year: input.Aired.From.Value.Year);
+                    year: year);
             return anime;
         }
 
@@ -153,8 +158,11 @@ namespace AnimeList
                 {
                     if (i > 4) break;
                     i++;
-                    Anime a = toAnime(item);
-                    animeList.Add(a);
+                    if(item is not null)
+                    {
+                        Anime a = toAnime(item);
+                        animeList.Add(a);
+                    }
                 }
                 return animeList;
             }

@@ -39,6 +39,7 @@
             NameLabel = new Label();
             removeButton = new Button();
             RefreshButton = new Button();
+            SwapButton = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -149,11 +150,25 @@
             RefreshButton.Visible = false;
             RefreshButton.Click += RefreshButton_Click;
             // 
+            // SwapButton
+            // 
+            SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SwapButton.Font = new Font("Segoe UI", 15F);
+            SwapButton.Location = new Point(977, 375);
+            SwapButton.Name = "SwapButton";
+            SwapButton.Size = new Size(384, 55);
+            SwapButton.TabIndex = 7;
+            SwapButton.Text = "Swap names🔁";
+            SwapButton.UseVisualStyleBackColor = true;
+            SwapButton.Visible = false;
+            SwapButton.Click += SwapButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1373, 503);
+            Controls.Add(SwapButton);
             Controls.Add(RefreshButton);
             Controls.Add(removeButton);
             Controls.Add(NameLabel);
@@ -182,5 +197,6 @@
         private ToolStripMenuItem animeToolStripMenuItem;
         private ToolStripMenuItem mangaToolStripMenuItem;
         private Button RefreshButton;
+        private Button SwapButton;
     }
 }

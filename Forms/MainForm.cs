@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic.FileIO;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace AnimeList
 {
@@ -75,6 +76,11 @@ namespace AnimeList
         {
             NameLabel.Text = content.name;
             description.Text = StringOps.ContentDesc(content);
+            if (content.otherName is not null)
+            {
+                SwapButton.Visible = true;
+            }
+            else SwapButton.Visible = false;
             description.Visible = true;
             NameLabel.Visible = true;
         }
@@ -92,7 +98,8 @@ namespace AnimeList
             if (listBox.SelectedIndices.Count > 1)
             {
                 description.Visible = false;
-                NameLabel.Visible=false;
+                NameLabel.Visible = false;
+                SwapButton.Visible = false;
                 removeButton.Visible = true;
                 RefreshButton.Visible = true;
             }
@@ -112,6 +119,7 @@ namespace AnimeList
         {
             description.Visible = false;
             NameLabel.Visible = false;
+            SwapButton.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             selected.Reverse();
             listBox.SelectedItems.Clear();
@@ -178,7 +186,7 @@ namespace AnimeList
             {
                 form.MaximizeBox = false;
                 form.MinimizeBox = false;
-                var result= form.ShowDialog();
+                var result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
                     var output = form.content;
@@ -193,7 +201,18 @@ namespace AnimeList
             {
                 updateDesc(Content[selected.First()]);
             }
-            file.updateLines(selected,Content);
+            file.updateLines(selected, Content);
+        }
+
+        private void SwapButton_Click(object sender, EventArgs e)
+        {
+            int index = listBox.SelectedIndex;
+            string temp = Content[index].name;
+            Content[index].name = Content[index].otherName;
+            Content[index].otherName = temp;
+            listBox.Items[index] = Content[index].name;
+            updateDesc(Content[index]);
+            file.updateLine(index, Content[index]);
         }
     }
 }

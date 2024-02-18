@@ -11,7 +11,7 @@
             }
         }
 
-        internal Manga(long id, List<string> names, int? count, bool airing, List<string> genres,List<string> authors, int year)
+        internal Manga(long id, List<string> names, int? count, bool airing, List<string> genres,List<string> authors, int? year)
         {
             IsAnime = false;
             ID = id;
