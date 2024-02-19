@@ -70,11 +70,11 @@ namespace AnimeList
         private Anime toAnime(JikanDotNet.Anime input)
        {
             var genres = getGerners(input.Genres);
-            int? year;
-            if (input.Aired.From is null)
+            int? year= null;
+            if (input.Aired.From is not null)
             {
-                year = null;
-            } else year = input.Aired.From.Value.Year;
+                year = input.Aired.From.Value.Year; ;
+            }
             Anime anime = new Anime(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
@@ -88,6 +88,11 @@ namespace AnimeList
         private Manga toManga(JikanDotNet.Manga input)
         {
             var genres = getGerners(input.Genres);
+            int? year = null;
+            if (input.Published.From is not null)
+            {
+                year = input.Published.From.Value.Year; ;
+            }
             Manga manga = new Manga(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
@@ -95,7 +100,7 @@ namespace AnimeList
                     airing: input.Publishing,
                     genres: genres,
                     authors: getAuthors(input.Authors),
-                    year: input.Published.From.Value.Year);
+                    year: year);
             return manga;
         }
 
