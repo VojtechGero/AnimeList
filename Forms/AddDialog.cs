@@ -20,6 +20,7 @@
             MalI = new MalInterface();
             addButtons();
             addLabels();
+            this.Height = Buttons.Last().Top+Buttons.Last().Height *2;
             this.Form1 = form;
             IdError = Parsing = false;
             timer.Tick += new EventHandler(parseInput);

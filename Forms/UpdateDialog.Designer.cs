@@ -35,9 +35,10 @@
             // progressBar
             // 
             progressBar.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            progressBar.Location = new Point(12, 167);
+            progressBar.Location = new Point(8, 100);
+            progressBar.Margin = new Padding(2, 2, 2, 2);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(633, 37);
+            progressBar.Size = new Size(443, 22);
             progressBar.TabIndex = 0;
             // 
             // ContentNameLabel
@@ -45,8 +46,9 @@
             ContentNameLabel.Dock = DockStyle.Top;
             ContentNameLabel.Font = new Font("Segoe UI", 12F);
             ContentNameLabel.Location = new Point(0, 0);
+            ContentNameLabel.Margin = new Padding(2, 0, 2, 0);
             ContentNameLabel.Name = "ContentNameLabel";
-            ContentNameLabel.Size = new Size(657, 146);
+            ContentNameLabel.Size = new Size(460, 88);
             ContentNameLabel.TabIndex = 1;
             ContentNameLabel.Text = "Parsing";
             ContentNameLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -54,14 +56,15 @@
             // 
             // UpdateDialog
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(657, 236);
+            ClientSize = new Size(460, 142);
             Controls.Add(ContentNameLabel);
             Controls.Add(progressBar);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(2, 2, 2, 2);
             Name = "UpdateDialog";
-            Text = "FileHandleDialog";
+            Text = "UpdateDialog";
             FormClosing += UpradeRemoveDialog_FormClosing;
             Shown += UpdateDialog_Shown;
             ResumeLayout(false);

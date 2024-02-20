@@ -8,6 +8,7 @@ namespace AnimeList
     {
         string file;
         List<string> data;
+        private static readonly string[] start = { "[", "]" };
 
         FileHandler(string file)
         {
@@ -23,7 +24,6 @@ namespace AnimeList
             {
                 var f=File.Create(file);
                 f.Close();
-                string[] start = { "[", "]" };
                 File.AppendAllLines(file,start);
             }
             return new FileHandler(file);
@@ -67,7 +67,10 @@ namespace AnimeList
         internal void writeContent(AContent a)
         {
             string newLine = a.ToJson();
-            data[data.Count - 2] = data[data.Count - 2]+",";
+            if(data.Count-2 > 1)
+            {
+                data[data.Count - 2] = data[data.Count - 2] + ",";
+            }
             data.Insert(data.Count-1,newLine);
             writeAll();
         }
@@ -116,7 +119,7 @@ namespace AnimeList
                 int t = i + 1;
                 if (t== data.Count - 2&&t!=2)
                 {
-                    data[t -1]= data[t -1].Remove(data[t - 1].Length - 1);
+                    data[t -1]= data[t -1].Remove(data[t - 1].Length);
                 }
                 data.RemoveAt(t);
             }
