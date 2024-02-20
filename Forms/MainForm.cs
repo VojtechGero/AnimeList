@@ -1,5 +1,4 @@
 using Microsoft.VisualBasic.FileIO;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace AnimeList
 {
