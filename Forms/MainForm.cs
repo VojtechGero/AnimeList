@@ -8,6 +8,7 @@ namespace AnimeList
         List<AContent> Sorted = new List<AContent>();
         AddDialog AddForm;
         FileHandler file;
+        string query;
         bool hasScroll;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         /*
@@ -39,7 +40,8 @@ namespace AnimeList
 
         private void searchList(object? sender, EventArgs e)
         {
-            Sorted = StringOps.sortSearch(Content, searchBox.Text);
+            timer.Stop();
+            Sorted = StringOps.sortSearch(Content, query);
             writeList();
         }
 
@@ -240,12 +242,15 @@ namespace AnimeList
         {
             if (string.IsNullOrWhiteSpace(searchBox.Text))
             {
+                timer.Stop();
                 Sorted.Clear();
+                writeList();
             }
             else
             {
                 timer.Stop();
                 timer.Start();
+                query = searchBox.Text;
             }
         }
     }
