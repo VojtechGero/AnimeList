@@ -24,7 +24,7 @@
             this.Form1 = form;
             IdError = Parsing = false;
             timer.Tick += new EventHandler(parseInput);
-            timer.Interval = 300;
+            timer.Interval = 500;
             IsAnime = isAnime;
         }
 

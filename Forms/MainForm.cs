@@ -5,9 +5,11 @@ namespace AnimeList
     public partial class MainForm : Form
     {
         List<AContent> Content = new List<AContent>();
+        List<AContent> Sorted = new List<AContent>();
         AddDialog AddForm;
         FileHandler file;
         bool hasScroll;
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         /*
          * misses:
          * revenge classroom -- not translated on mal
@@ -31,7 +33,14 @@ namespace AnimeList
                 hasScroll = true;
             }
             writeList();
+            timer.Tick += new EventHandler(searchList);
+            timer.Interval = 500;
+        }
 
+        private void searchList(object? sender, EventArgs e)
+        {
+            Sorted = StringOps.sortSearch(Content, searchBox.Text);
+            writeList();
         }
 
         private bool needsChage()
@@ -57,8 +66,10 @@ namespace AnimeList
         {
             listBox.BeginUpdate();
             listBox.Items.Clear();
-            int width = listBox.Width;
-            foreach (AContent item in Content)
+            var list=new List<AContent>();
+            if (Sorted.Any()) list = Sorted;
+            else list = Content;
+            foreach (AContent item in list)
             {
                 string name = item.name;
                 listBox.Items.Add(name);
@@ -107,7 +118,8 @@ namespace AnimeList
                 int select = listBox.SelectedIndex;
                 if (select != -1)
                 {
-                    updateDesc(Content[select]);
+                    if(Sorted.Any() ) updateDesc(Sorted[select]);
+                    else updateDesc(Content[select]);
                     removeButton.Visible = true;
                     RefreshButton.Visible = true;
                 }
@@ -212,6 +224,29 @@ namespace AnimeList
             listBox.Items[index] = Content[index].name;
             updateDesc(Content[index]);
             file.updateLine(index, Content[index]);
+        }
+
+        private void randomSelectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Content.Any())
+            {
+                listBox.ClearSelected();
+                var rand = new Random();
+                listBox.SelectedIndex = rand.Next(Content.Count);
+            }
+        }
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(searchBox.Text))
+            {
+                Sorted.Clear();
+            }
+            else
+            {
+                timer.Stop();
+                timer.Start();
+            }
         }
     }
 }

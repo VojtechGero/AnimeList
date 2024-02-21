@@ -35,22 +35,25 @@
             animeToolStripMenuItem = new ToolStripMenuItem();
             mangaToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
+            randomSelectToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             NameLabel = new Label();
             removeButton = new Button();
             RefreshButton = new Button();
             SwapButton = new Button();
+            searchBox = new TextBox();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // listBox
             // 
+            listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.Dock = DockStyle.Left;
             listBox.Font = new Font("Segoe UI", 15F);
             listBox.FormattingEnabled = true;
             listBox.ItemHeight = 28;
             listBox.Location = new Point(0, 24);
-            listBox.Margin = new Padding(2, 2, 2, 2);
+            listBox.Margin = new Padding(2);
             listBox.Name = "listBox";
             listBox.SelectionMode = SelectionMode.MultiExtended;
             listBox.Size = new Size(367, 278);
@@ -60,7 +63,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, randomSelectToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(4, 1, 0, 1);
@@ -103,11 +106,18 @@
             textDumpToolStripMenuItem.Text = "File dump";
             textDumpToolStripMenuItem.Click += textDumpToolStripMenuItem_Click;
             // 
+            // randomSelectToolStripMenuItem
+            // 
+            randomSelectToolStripMenuItem.Name = "randomSelectToolStripMenuItem";
+            randomSelectToolStripMenuItem.Size = new Size(97, 22);
+            randomSelectToolStripMenuItem.Text = "Random select";
+            randomSelectToolStripMenuItem.Click += randomSelectToolStripMenuItem_Click;
+            // 
             // description
             // 
             description.AutoSize = true;
             description.Font = new Font("Segoe UI", 12F);
-            description.Location = new Point(380, 63);
+            description.Location = new Point(371, 84);
             description.Margin = new Padding(2, 0, 2, 0);
             description.Name = "description";
             description.Size = new Size(87, 21);
@@ -120,7 +130,7 @@
             NameLabel.AutoSize = true;
             NameLabel.Font = new Font("Segoe UI", 15F);
             NameLabel.ForeColor = SystemColors.ControlText;
-            NameLabel.Location = new Point(380, 26);
+            NameLabel.Location = new Point(371, 56);
             NameLabel.Margin = new Padding(2, 0, 2, 0);
             NameLabel.Name = "NameLabel";
             NameLabel.Size = new Size(64, 28);
@@ -133,7 +143,7 @@
             removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             removeButton.Font = new Font("Segoe UI", 14F);
             removeButton.Location = new Point(820, 262);
-            removeButton.Margin = new Padding(2, 2, 2, 2);
+            removeButton.Margin = new Padding(2);
             removeButton.Name = "removeButton";
             removeButton.Size = new Size(132, 33);
             removeButton.TabIndex = 5;
@@ -147,7 +157,7 @@
             RefreshButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             RefreshButton.Font = new Font("Segoe UI", 14F);
             RefreshButton.Location = new Point(684, 262);
-            RefreshButton.Margin = new Padding(2, 2, 2, 2);
+            RefreshButton.Margin = new Padding(2);
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(132, 33);
             RefreshButton.TabIndex = 6;
@@ -161,7 +171,7 @@
             SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SwapButton.Font = new Font("Segoe UI", 14F);
             SwapButton.Location = new Point(684, 225);
-            SwapButton.Margin = new Padding(2, 2, 2, 2);
+            SwapButton.Margin = new Padding(2);
             SwapButton.Name = "SwapButton";
             SwapButton.Size = new Size(269, 33);
             SwapButton.TabIndex = 7;
@@ -170,11 +180,23 @@
             SwapButton.Visible = false;
             SwapButton.Click += SwapButton_Click;
             // 
+            // searchBox
+            // 
+            searchBox.BorderStyle = BorderStyle.FixedSingle;
+            searchBox.Dock = DockStyle.Top;
+            searchBox.Font = new Font("Segoe UI", 12F);
+            searchBox.Location = new Point(367, 24);
+            searchBox.Name = "searchBox";
+            searchBox.Size = new Size(594, 29);
+            searchBox.TabIndex = 8;
+            searchBox.TextChanged += searchBox_TextChanged;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(961, 302);
+            Controls.Add(searchBox);
             Controls.Add(SwapButton);
             Controls.Add(RefreshButton);
             Controls.Add(removeButton);
@@ -183,7 +205,7 @@
             Controls.Add(listBox);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "MainForm";
             Text = "THE LIST";
             Resize += MainForm_Resize;
@@ -206,5 +228,7 @@
         private ToolStripMenuItem mangaToolStripMenuItem;
         private Button RefreshButton;
         private Button SwapButton;
+        private ToolStripMenuItem randomSelectToolStripMenuItem;
+        private TextBox searchBox;
     }
 }

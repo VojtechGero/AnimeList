@@ -20,8 +20,6 @@ namespace AnimeList
             string file = path + "\\AnimeList.json";
             if (!File.Exists(file))
             {
-                var f=File.Create(file);
-                f.Close();
                 File.AppendAllLines(file,start);
             }
             return new FileHandler(file);
@@ -65,7 +63,7 @@ namespace AnimeList
         internal void writeContent(AContent a)
         {
             string newLine = a.ToJson();
-            if(data.Count-2 > 1)
+            if(data.Count-2 > 0)
             {
                 data[data.Count - 2] = data[data.Count - 2] + ",";
             }
