@@ -49,7 +49,7 @@ namespace AnimeList
         {
             listBox.BeginUpdate();
             listBox.Items.Clear();
-            var list=new List<AContent>();
+            var list = new List<AContent>();
             if (Sorted.Any()) list = Sorted;
             else list = Content;
             foreach (AContent item in list)
@@ -101,7 +101,7 @@ namespace AnimeList
                 int select = listBox.SelectedIndex;
                 if (select != -1)
                 {
-                    if(Sorted.Any() ) updateDesc(Sorted[select]);
+                    if (Sorted.Any()) updateDesc(Sorted[select]);
                     else updateDesc(Content[select]);
                     removeButton.Visible = true;
                     RefreshButton.Visible = true;
@@ -232,6 +232,26 @@ namespace AnimeList
                 Sorted = StringOps.sortSearch(Content, query);
                 writeList();
             }
+        }
+
+        private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<long> map = new List<long>();
+            List<int> toRemove = new List<int>();
+            for(int i=0; i<Content.Count; i++)
+            {
+                if (map.Contains(Content[i].ID))
+                {
+                    toRemove.Add(i);
+                }else map.Add(Content[i].ID);
+            }
+            toRemove.Reverse();
+            foreach(int i in toRemove)
+            {
+                Content.RemoveAt(i);
+            }
+            file.removeContents(toRemove);
+            writeList();
         }
     }
 }

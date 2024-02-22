@@ -114,7 +114,7 @@ namespace AnimeList
                 int t = i + 1;
                 if (t== data.Count - 2&&t!=2)
                 {
-                    data[t -1]= data[t -1].Remove(data[t - 1].Length);
+                    data[t -1]= data[t -1].Remove(data[t - 1].Length-1);
                 }
                 data.RemoveAt(t);
             }
