@@ -10,16 +10,6 @@ namespace AnimeList
         FileHandler file;
         string query;
         bool hasScroll;
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        /*
-         * misses:
-         * revenge classroom -- not translated on mal
-         * Sounan desu ka? -- japanese name
-         * inobato -- cant search by synonym
-         * Mahou Shoujo ni Akogarete -- japanese name
-         * Oyasumi Punpun -- japanese name
-         * Yuru Camp -- japanese name
-        */
         public MainForm()
         {
             InitializeComponent();
@@ -33,15 +23,6 @@ namespace AnimeList
             {
                 hasScroll = true;
             }
-            writeList();
-            timer.Tick += new EventHandler(searchList);
-            timer.Interval = 500;
-        }
-
-        private void searchList(object? sender, EventArgs e)
-        {
-            timer.Stop();
-            Sorted = StringOps.sortSearch(Content, query);
             writeList();
         }
 
@@ -242,15 +223,14 @@ namespace AnimeList
         {
             if (string.IsNullOrWhiteSpace(searchBox.Text))
             {
-                timer.Stop();
                 Sorted.Clear();
                 writeList();
             }
             else
             {
-                timer.Stop();
-                timer.Start();
                 query = searchBox.Text;
+                Sorted = StringOps.sortSearch(Content, query);
+                writeList();
             }
         }
     }

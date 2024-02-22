@@ -73,8 +73,7 @@ namespace AnimeList
 
         private void writeAll()
         {
-            File.WriteAllText(file, string.Empty);
-            File.AppendAllLines(file, data);
+            File.WriteAllLines(file, data);
         }
 
         internal void updateLines(List<int> indices,List<AContent> contents)
