@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace AnimeList
+namespace AnimeList.Data
 {
     public class AContent
     {
@@ -15,7 +15,7 @@ namespace AnimeList
         public int? started { get; set; }
 
 
-        //required for json
+        //required for json deserialization
         public AContent() { }
 
         internal string ToJson()

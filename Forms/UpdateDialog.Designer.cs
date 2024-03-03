@@ -1,4 +1,4 @@
-﻿namespace AnimeList
+﻿namespace AnimeList.Forms
 {
     partial class UpdateDialog
     {

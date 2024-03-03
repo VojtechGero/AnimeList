@@ -1,6 +1,8 @@
 using Microsoft.VisualBasic.FileIO;
+using AnimeList.Utilities;
+using AnimeList.Data;
 
-namespace AnimeList
+namespace AnimeList.Forms
 {
     public partial class MainForm : Form
     {
@@ -23,6 +25,8 @@ namespace AnimeList
             {
                 hasScroll = true;
             }
+            var NameToolTip = new ToolTip();
+            NameToolTip.SetToolTip(NameLabel, "Click to Copy");
             writeList();
         }
 
@@ -226,32 +230,79 @@ namespace AnimeList
                 Sorted.Clear();
                 writeList();
             }
-            else
+            else if (Content.Any())
             {
                 query = searchBox.Text;
                 Sorted = StringOps.sortSearch(Content, query);
+                /*
+                if (Sorted[0].name.ToLower().Contains(query.ToLower()))
+                {
+                    searchBox.Text = Sorted[0].name;
+                    int start= Sorted[0].name.ToLower().IndexOf(query.ToLower());
+                    if(start == 0)
+                    {
+                        searchBox.SelectionStart = query.Length;
+                        searchBox.SelectionLength = Sorted[0].name.Length - query.Length;
+                    }
+                    else
+                    {
+                        searchBox.SelectionStart = 0;
+                        searchBox.SelectionLength = start;
+                        searchBox.SelectionStart=start+query.Length;
+
+                    } 
+
+                }
+                */
                 writeList();
             }
+        }
+
+        private int getDuplicate(long id)
+        {
+            int output = -1;
+            for (int i = 0; i < Content.Count; i++)
+            {
+                if (Content[i].ID == id) return i;
+            }
+            return output;
         }
 
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<long> map = new List<long>();
             List<int> toRemove = new List<int>();
-            for(int i=0; i<Content.Count; i++)
+            for (int i = 0; i < Content.Count; i++)
             {
                 if (map.Contains(Content[i].ID))
                 {
                     toRemove.Add(i);
-                }else map.Add(Content[i].ID);
+                }
+                else map.Add(Content[i].ID);
             }
-            toRemove.Reverse();
-            foreach(int i in toRemove)
+            if (toRemove.Any())
             {
-                Content.RemoveAt(i);
+                if (listBox.SelectedIndices.Count == 1)
+                {
+                    if (toRemove.Contains(listBox.SelectedIndex))
+                    {
+                        listBox.SelectedIndex = getDuplicate(Content[listBox.SelectedIndex].ID);
+                    }
+                }
+                toRemove.Reverse();
+                foreach (int i in toRemove)
+                {
+                    Content.RemoveAt(i);
+                }
+                file.removeContents(toRemove);
+                writeList();
             }
-            file.removeContents(toRemove);
-            writeList();
+        }
+
+        private void NameLabel_MouseClick(object sender, MouseEventArgs e)
+        {
+            var index = listBox.SelectedIndex;
+            Clipboard.SetText(Content[index].name);
         }
     }
 }

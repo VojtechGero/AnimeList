@@ -1,8 +1,11 @@
 ﻿using JikanDotNet.Exceptions;
 using JikanDotNet.Config;
 using JikanDotNet;
+using AnimeList.Data;
+using Anime = AnimeList.Data.Anime;
+using Manga = AnimeList.Data.Manga;
 
-namespace AnimeList
+namespace AnimeList.Utilities
 {
     internal class MalInterface
     {
@@ -79,7 +82,7 @@ namespace AnimeList
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
                     episodes: input.Episodes,
-                    airing: input.Airing,
+                    notOut: input.Airing,
                     genres: genres,
                     year: year);
             return anime;
@@ -97,7 +100,7 @@ namespace AnimeList
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
                     count: input.Chapters,
-                    airing: input.Publishing,
+                    notOut: input.Publishing,
                     genres: genres,
                     authors: getAuthors(input.Authors),
                     year: year);

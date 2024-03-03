@@ -1,4 +1,6 @@
-﻿namespace AnimeList
+﻿using AnimeList.Data;
+
+namespace AnimeList.Utilities
 {
     internal class StringOps
     {

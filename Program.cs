@@ -1,3 +1,4 @@
+using AnimeList.Forms;
 namespace AnimeList
 {
     internal static class Program

@@ -1,4 +1,4 @@
-﻿namespace AnimeList
+﻿namespace AnimeList.Forms
 {
     partial class MainForm
     {
@@ -36,13 +36,13 @@
             mangaToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
             randomSelectToolStripMenuItem = new ToolStripMenuItem();
+            removeDuplicatesToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             NameLabel = new Label();
             removeButton = new Button();
             RefreshButton = new Button();
             SwapButton = new Button();
             searchBox = new TextBox();
-            removeDuplicatesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -112,6 +112,13 @@
             randomSelectToolStripMenuItem.Text = "Random select";
             randomSelectToolStripMenuItem.Click += randomSelectToolStripMenuItem_Click;
             // 
+            // removeDuplicatesToolStripMenuItem
+            // 
+            removeDuplicatesToolStripMenuItem.Name = "removeDuplicatesToolStripMenuItem";
+            removeDuplicatesToolStripMenuItem.Size = new Size(177, 29);
+            removeDuplicatesToolStripMenuItem.Text = "Remove duplicates";
+            removeDuplicatesToolStripMenuItem.Click += removeDuplicatesToolStripMenuItem_Click;
+            // 
             // description
             // 
             description.AutoSize = true;
@@ -134,6 +141,7 @@
             NameLabel.TabIndex = 4;
             NameLabel.Text = "Name";
             NameLabel.Visible = false;
+            NameLabel.MouseClick += NameLabel_MouseClick;
             // 
             // removeButton
             // 
@@ -185,13 +193,6 @@
             searchBox.Size = new Size(850, 39);
             searchBox.TabIndex = 8;
             searchBox.TextChanged += searchBox_TextChanged;
-            // 
-            // removeDuplicatesToolStripMenuItem
-            // 
-            removeDuplicatesToolStripMenuItem.Name = "removeDuplicatesToolStripMenuItem";
-            removeDuplicatesToolStripMenuItem.Size = new Size(177, 29);
-            removeDuplicatesToolStripMenuItem.Text = "Remove duplicates";
-            removeDuplicatesToolStripMenuItem.Click += removeDuplicatesToolStripMenuItem_Click;
             // 
             // MainForm
             // 

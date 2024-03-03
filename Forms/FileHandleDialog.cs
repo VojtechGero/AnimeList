@@ -1,4 +1,6 @@
-﻿namespace AnimeList
+﻿using AnimeList.Data;
+using AnimeList.Utilities;
+namespace AnimeList.Forms
 {
     public partial class FileHandleDialog : Form
     {

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
+using AnimeList.Data;
 
-namespace AnimeList
+namespace AnimeList.Utilities
 {
     public class FileHandler
     {
