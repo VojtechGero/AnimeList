@@ -17,8 +17,7 @@ namespace AnimeList.Utilities
 
         internal static FileHandler workFile()
         {
-            string path = Path.GetDirectoryName(Application.ExecutablePath);
-            string file = path + "\\AnimeList.json";
+            string file = ".\\AnimeList.json";
             if (!File.Exists(file))
             {
                 File.AppendAllLines(file,start);

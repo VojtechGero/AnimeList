@@ -16,12 +16,11 @@
             IsAnime = true;
             ID = id;
             name = names.Last();
-            if (episodes == null)
+            if (episodes is not null)
             {
-                episodes = 1;
+                this.count = (int)episodes;
             }
-            else count = (int)episodes;
-            notOut = notOut;
+            this.notOut = notOut;
             this.genres = genres;
             started = year;
             if (names.Count > 1)

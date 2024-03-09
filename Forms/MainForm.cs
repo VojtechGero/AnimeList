@@ -65,7 +65,6 @@ namespace AnimeList.Forms
             {
                 listBox.Items[i] = StringOps.shorten(listBox.Items[i].ToString(), listBox);
             }
-
             listBox.EndUpdate();
         }
 
@@ -200,6 +199,7 @@ namespace AnimeList.Forms
                 updateDesc(Content[selected.First()]);
             }
             file.updateLines(selected, Content);
+            
         }
 
         private void SwapButton_Click(object sender, EventArgs e)

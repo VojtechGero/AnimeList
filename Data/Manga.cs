@@ -17,12 +17,11 @@
             IsAnime = false;
             ID = id;
             name = names.Last();
-            if (count == null)
+            if (count is not null)
             {
-                count = 1;
+                this.count = (int)count;
             }
-            else this.count = (int)count;
-            notOut = notOut;
+            this.notOut = notOut;
             this.genres = genres;
             if (authors.Count > 3)
             {
