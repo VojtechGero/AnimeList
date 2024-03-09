@@ -43,6 +43,7 @@
             RefreshButton = new Button();
             SwapButton = new Button();
             searchBox = new TextBox();
+            selectAllToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -63,7 +64,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, randomSelectToolStripMenuItem, removeDuplicatesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, randomSelectToolStripMenuItem, removeDuplicatesToolStripMenuItem, selectAllToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1373, 33);
@@ -194,6 +195,13 @@
             searchBox.TabIndex = 8;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
+            // selectAllToolStripMenuItem
+            // 
+            selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            selectAllToolStripMenuItem.Size = new Size(96, 29);
+            selectAllToolStripMenuItem.Text = "Select all";
+            selectAllToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -233,5 +241,6 @@
         private ToolStripMenuItem randomSelectToolStripMenuItem;
         private TextBox searchBox;
         private ToolStripMenuItem removeDuplicatesToolStripMenuItem;
+        private ToolStripMenuItem selectAllToolStripMenuItem;
     }
 }

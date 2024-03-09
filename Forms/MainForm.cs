@@ -1,6 +1,7 @@
 using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
+using System.Windows.Forms;
 
 namespace AnimeList.Forms
 {
@@ -199,7 +200,7 @@ namespace AnimeList.Forms
                 updateDesc(Content[selected.First()]);
             }
             file.updateLines(selected, Content);
-            
+
         }
 
         private void SwapButton_Click(object sender, EventArgs e)
@@ -303,6 +304,14 @@ namespace AnimeList.Forms
         {
             var index = listBox.SelectedIndex;
             Clipboard.SetText(Content[index].name);
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < listBox.Items.Count; i++)
+            {
+                listBox.SetSelected(i, true);
+            }
         }
     }
 }

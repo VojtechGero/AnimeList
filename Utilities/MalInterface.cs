@@ -24,11 +24,11 @@ namespace AnimeList.Utilities
             List<string> titles=new List<string>();
             if (entries.Count > 1)
             {
-                string english,def;
+                string english, def;
                 def = english = "";
                 foreach (TitleEntry entry in entries)
                 {
-                    if (entry.Type == "English") english =entry.Title;
+                    if (entry.Type == "English") english = entry.Title;
                     if (entry.Type == "Default") def = entry.Title;
                 }
                 if (english == def)
@@ -50,7 +50,8 @@ namespace AnimeList.Utilities
                         titles.Add(english);
                     }
                 }
-            } else
+            } 
+            else
             {
                 titles.Add(entries.First().Title);
             }
