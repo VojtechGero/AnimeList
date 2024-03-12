@@ -191,7 +191,7 @@ namespace AnimeList.Forms
                     for (int i = 0; i < output.Count; i++)
                     {
                         Content[selected[i]] = output[i];
-                        listBox.Items[selected[i]] = output[i].name;
+                        listBox.Items[selected[i]] = StringOps.shorten(output[i].name,listBox);
                     }
                 }
             }
@@ -209,7 +209,7 @@ namespace AnimeList.Forms
             string temp = Content[index].name;
             Content[index].name = Content[index].otherName;
             Content[index].otherName = temp;
-            listBox.Items[index] = Content[index].name;
+            listBox.Items[index] = StringOps.shorten(Content[index].name, listBox);
             updateDesc(Content[index]);
             file.updateLine(index, Content[index]);
         }
@@ -235,26 +235,6 @@ namespace AnimeList.Forms
             {
                 query = searchBox.Text;
                 Sorted = StringOps.sortSearch(Content, query);
-                /*
-                if (Sorted[0].name.ToLower().Contains(query.ToLower()))
-                {
-                    searchBox.Text = Sorted[0].name;
-                    int start= Sorted[0].name.ToLower().IndexOf(query.ToLower());
-                    if(start == 0)
-                    {
-                        searchBox.SelectionStart = query.Length;
-                        searchBox.SelectionLength = Sorted[0].name.Length - query.Length;
-                    }
-                    else
-                    {
-                        searchBox.SelectionStart = 0;
-                        searchBox.SelectionLength = start;
-                        searchBox.SelectionStart=start+query.Length;
-
-                    } 
-
-                }
-                */
                 writeList();
             }
         }

@@ -1,5 +1,7 @@
 ﻿using AnimeList.Data;
 using AnimeList.Utilities;
+using System;
+using System.Reflection;
 namespace AnimeList.Forms
 {
     public partial class UpdateDialog : Form
@@ -32,6 +34,10 @@ namespace AnimeList.Forms
             else
             {
                 temp = await m.pullMangaId(a.ID);
+            }
+            if (temp.otherName == a.name)
+            {
+                (temp.name, temp.otherName) = (temp.otherName, temp.name);
             }
             progressBar.PerformStep();
             return temp;
