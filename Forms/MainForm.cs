@@ -88,6 +88,12 @@ namespace AnimeList.Forms
             file.writeContent(content);
             listBox.SelectedItems.Clear();
             listBox.Items.Add(StringOps.shorten(content.name, listBox));
+            if (!string.IsNullOrWhiteSpace(searchBox.Text))
+            {
+                query = searchBox.Text;
+                Sorted = StringOps.sortSearch(Content, query);
+                writeList();
+            }
         }
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -120,9 +126,19 @@ namespace AnimeList.Forms
             SwapButton.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             selected.Reverse();
+            if(Sorted.Any())
+            {
+                List<int> temp = new List<int>(selected);
+                selected.Clear();
+                foreach(var i in temp)
+                {
+                    selected.Add(getIndex(Sorted[i].ID));
+                }
+            }
             listBox.SelectedItems.Clear();
             foreach (int x in selected)
             {
+                MessageBox.Show(Content[x].name);
                 Content.RemoveAt(x);
                 listBox.Items.RemoveAt(x);
             }
@@ -176,6 +192,15 @@ namespace AnimeList.Forms
         {
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             List<AContent> list = new List<AContent>();
+            if (Sorted.Any())
+            {
+                List<int> temp = new List<int>(selected);
+                selected.Clear();
+                foreach (var i in temp)
+                {
+                    selected.Add(getIndex(Sorted[i].ID));
+                }
+            }
             foreach (int i in selected)
             {
                 list.Add(Content[i]);
@@ -203,13 +228,27 @@ namespace AnimeList.Forms
 
         }
 
+        private int getIndex(long id)
+        {
+            for(int i = 0; i < Content.Count; i++)
+            {
+                if (Content[i].ID == id) return i;
+            }
+            return -1;
+        }
+
         private void SwapButton_Click(object sender, EventArgs e)
         {
-            int index = listBox.SelectedIndex;
+            int index;
+            int current = listBox.SelectedIndex;
+            if (Sorted.Any())
+            {
+                index = getIndex(Sorted[current].ID);
+            }else index = current;
             string temp = Content[index].name;
             Content[index].name = Content[index].otherName;
             Content[index].otherName = temp;
-            listBox.Items[index] = StringOps.shorten(Content[index].name, listBox);
+            listBox.Items[current] = StringOps.shorten(Content[index].name, listBox);
             updateDesc(Content[index]);
             file.updateLine(index, Content[index]);
         }
