@@ -23,7 +23,7 @@ namespace AnimeList.Forms
             progressBar.Maximum = names.Count * 10;
         }
 
-        AContent bestCandidate(List<AContent> content, string query)
+        Content bestCandidate(List<Content> content, string query)
         {
             if (!content.Any()) return null;
             content = StringOps.sortSearch(content, query);
@@ -32,13 +32,13 @@ namespace AnimeList.Forms
 
         async Task parseLine(string name,MalInterface mal)
         {
-            List<AContent> content = new List<AContent>();
+            List<Content> content = new List<Content>();
             string query = name.Trim();
             CurrentNameLabel.Text = "Processing: " + query;
             content.Clear();
             content.AddRange(await mal.searchAnime(query));
             content.AddRange(await mal.searchManga(query));
-            AContent candidate = bestCandidate(content, query);
+            Content candidate = bestCandidate(content, query);
             if (candidate != null)
             {
                 mainForm.addContent(candidate);

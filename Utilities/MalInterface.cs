@@ -2,8 +2,6 @@
 using JikanDotNet.Config;
 using JikanDotNet;
 using AnimeList.Data;
-using Anime = AnimeList.Data.Anime;
-using Manga = AnimeList.Data.Manga;
 
 namespace AnimeList.Utilities
 {
@@ -71,15 +69,15 @@ namespace AnimeList.Utilities
             return gerners;
         }
 
-        private Anime toAnime(JikanDotNet.Anime input)
-       {
+        private Content toAnime(Anime input)
+        {
             var genres = getGerners(input.Genres);
             int? year= null;
             if (input.Aired.From is not null)
             {
                 year = input.Aired.From.Value.Year; ;
             }
-            Anime anime = new Anime(
+            Content anime = Content.ToAnime(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
                     episodes: input.Episodes,
@@ -89,7 +87,7 @@ namespace AnimeList.Utilities
             return anime;
         }
 
-        private Manga toManga(JikanDotNet.Manga input)
+        private Content toManga(Manga input)
         {
             var genres = getGerners(input.Genres);
             int? year = null;
@@ -97,8 +95,8 @@ namespace AnimeList.Utilities
             {
                 year = input.Published.From.Value.Year; ;
             }
-            Manga manga = new Manga(
-                    id: (long)input.MalId,
+            Content manga = Content.ToManga(
+                    id: input.MalId,
                     names: getTitles(input.Titles),
                     count: input.Chapters,
                     notOut: input.Publishing,
@@ -118,7 +116,7 @@ namespace AnimeList.Utilities
             return authors;
         }
 
-        internal async Task<Anime> pullAnimeId(long id)
+        internal async Task<Content> pullAnimeId(long id)
         {
             try
             {
@@ -135,7 +133,7 @@ namespace AnimeList.Utilities
             }
         }
 
-        internal async Task<Manga> pullMangaId(long id)
+        internal async Task<Content> pullMangaId(long id)
         {
             try
             {
@@ -152,7 +150,7 @@ namespace AnimeList.Utilities
             }
         }
 
-        internal async Task<List<AContent>> searchAnime(string query)
+        internal async Task<List<Content>> searchAnime(string query)
         {
             try
             {
@@ -161,7 +159,7 @@ namespace AnimeList.Utilities
                 {
                     return null;
                 }
-                List<AContent> animeList = new List<AContent>();
+                List<Content> animeList = new List<Content>();
                 int i = 0;
                 foreach (var item in animes.Data)
                 {
@@ -169,8 +167,8 @@ namespace AnimeList.Utilities
                     i++;
                     if(item is not null)
                     {
-                        Anime a = toAnime(item);
-                        animeList.Add(a);
+                        Content anime = toAnime(item);
+                        animeList.Add(anime);
                     }
                 }
                 return animeList;
@@ -181,7 +179,7 @@ namespace AnimeList.Utilities
             }
         }
 
-        internal async Task<List<AContent>> searchManga(string query)
+        internal async Task<List<Content>> searchManga(string query)
         {
             try
             {
@@ -190,14 +188,14 @@ namespace AnimeList.Utilities
                 {
                     return null;
                 }
-                List<AContent> mangaList = new List<AContent>();
+                List<Content> mangaList = new List<Content>();
                 int i = 0;
                 foreach (var item in mangas.Data)
                 {
                     if (i > 4) break;
                     i++;
-                    Manga a = toManga(item);
-                    mangaList.Add(a);
+                    Content manga = toManga(item);
+                    mangaList.Add(manga);
                 }
                 return mangaList;
             }

@@ -7,7 +7,7 @@ namespace AnimeList.Forms
     {
         MainForm Form1;
         MalInterface MalI;
-        List<AContent> list;
+        List<Content> list;
         List<Label> Labels;
         List<Button> Buttons;
         bool Parsing, IdError,IsAnime;
@@ -17,7 +17,7 @@ namespace AnimeList.Forms
         public AddDialog(MainForm form, bool isAnime)
         {
             InitializeComponent();
-            list = new List<AContent>();
+            list = new List<Content>();
             Buttons = new List<Button>();
             Labels = new List<Label>();
             MalI = new MalInterface();
@@ -52,7 +52,7 @@ namespace AnimeList.Forms
         {
 
             long id = long.Parse(idField.Text);
-            AContent contentFromId;
+            Content contentFromId;
             if (IsAnime)
             {
                 contentFromId = await MalI.pullAnimeId(id);
@@ -76,7 +76,7 @@ namespace AnimeList.Forms
         private async Task parseSearch()
         {
             list.Clear();
-            var content = new List<AContent>();
+            var content = new List<Content>();
             if (IsAnime)
             {
                 content=await MalI.searchAnime(searchBox.Text);
@@ -152,7 +152,7 @@ namespace AnimeList.Forms
         {
             Button clickedButton = (Button)sender;
             int index = Buttons.IndexOf(clickedButton);
-            AContent toAdd = list[index];
+            Content toAdd = list[index];
             Form1.addContent(toAdd);
             this.Dispose();
         }

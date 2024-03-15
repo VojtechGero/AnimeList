@@ -35,9 +35,9 @@ namespace AnimeList.Utilities
             data = File.ReadAllLines(file).ToList();
         }
 
-        internal List<AContent> GetContent()
+        internal List<Content> GetContent()
         {
-            List<AContent> contents = new List<AContent>();
+            List<Content> contents = new List<Content>();
             readContent();
             foreach (string s in data)
             {
@@ -47,20 +47,13 @@ namespace AnimeList.Utilities
                 {
                     temp = temp.Remove(temp.Length - 1);
                 }
-                AContent content = JsonSerializer.Deserialize<AContent>(temp);
-                if(content.IsAnime)
-                {
-                    contents.Add(new Anime(content));
-                }
-                else
-                {
-                    contents.Add(new Manga(content));
-                }
+                Content content = JsonSerializer.Deserialize<Content>(temp);
+                contents.Add(content);
             }
             return contents;
         }
 
-        internal void writeContent(AContent a)
+        internal void writeContent(Content a)
         {
             string newLine = a.ToJson();
             if(data.Count-2 > 0)
@@ -76,7 +69,7 @@ namespace AnimeList.Utilities
             File.WriteAllLines(file, data);
         }
 
-        internal void updateLines(List<int> indices,List<AContent> contents)
+        internal void updateLines(List<int> indices,List<Content> contents)
         {
             foreach (int i in indices)
             {
@@ -93,7 +86,7 @@ namespace AnimeList.Utilities
             writeAll();
         }
 
-        internal void updateLine(int index, AContent content)
+        internal void updateLine(int index, Content content)
         {
             int t = index + 1;
             if (t == data.Count - 2)
