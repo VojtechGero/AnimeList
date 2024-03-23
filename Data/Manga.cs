@@ -3,7 +3,7 @@
     internal class Manga : AContent
     {
 
-        internal Manga(UnclassifiedContent a)
+        internal Manga(AContent a)
         {
             foreach (var prop in a.GetType().GetProperties())
             {
@@ -39,46 +39,6 @@
                 otherName = names.First();
             }
             else otherName = null;
-            inProgress = false;
-        }
-
-        internal override string Description()
-        {
-            string output = "";
-            const string tab = "    ";
-            if (otherName is not null)
-            {
-                output += $"({otherName})\n";
-            }
-            output += "Manga" + tab;
-            if (notOut) output += "Currently Publishing\n";
-            else output += "Finished Publishing\n";
-            if (started is not null)
-            {
-                output += $"Started publishing: {started}\n";
-            }
-            if (count > 0) output += $"Chapters: {count}\n";
-            if (authors is not null)
-            {
-                int c = authors.Count;
-                if (c > 0)
-                {
-                    output += "Author:\n";
-                    foreach (string author in authors)
-                    {
-                        output += $"{tab}{author}\n";
-                    }
-                }
-            }
-            if (genres is not null)
-            {
-                if (genres.Count > 0) output += "Genres:\n";
-                foreach (string g in genres)
-                {
-                    output += $"{tab}{g}\n";
-                }
-            }
-            return output;
         }
     }
 }

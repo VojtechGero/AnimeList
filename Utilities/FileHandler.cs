@@ -47,7 +47,7 @@ namespace AnimeList.Utilities
                 {
                     temp = temp.Remove(temp.Length - 1);
                 }
-                UnclassifiedContent content = JsonSerializer.Deserialize<UnclassifiedContent>(temp);
+                AContent content = JsonSerializer.Deserialize<AContent>(temp);
                 if(content.IsAnime)
                 {
                     contents.Add(new Anime(content));

@@ -79,6 +79,65 @@ namespace AnimeList.Utilities
             return count;
         }
 
+        internal static string ContentDesc(AContent content)
+        {
+            string output = "";
+            const string tab = "    ";
+            if(content.otherName is not null)
+            {
+                output += $"({content.otherName})\n";
+            }
+            if (content.IsAnime)
+            {
+                output += "Anime" + tab;
+                if (content.notOut) output += "Currently Airing\n";
+                else output += "Finished Airing\n";
+            }
+            else
+            {
+                output += "Manga" + tab;
+                if (content.notOut) output += "Currently Publishing\n";
+                else output += "Finished Publishing\n";
+            }
+            if (content.started is not null)
+            {
+                string t;
+                if (content.IsAnime)
+                {
+                    if (content.count == 1) t = "Aired";
+                    else t = "Started airing";
+                }
+                else t = "Started publishing";
+                output += $"{t}: {content.started}\n";
+            }
+            if (content.IsAnime)
+            {
+                if (content.count > 0) output += $"Episodes: {content.count}\n";
+            }
+            else if (content.count > 0) output += $"Chapters: {content.count}\n";
+            if (content.authors is not null)
+            {
+                int c = content.authors.Count;
+                if (c > 0)
+                {
+                    output += "Author:\n";
+                    foreach (string author in content.authors)
+                    {
+                        output += $"{tab}{author}\n";
+                    }
+                }
+            }
+            if (content.genres is not null)
+            {
+                if(content.genres.Count > 0) output += "Genres:\n";
+                foreach (string g in content.genres)
+                {
+                    output += $"{tab}{g}\n";
+                }
+            }
+            return output;
+        }
+
         internal static string formatName(string name)
         {
             if(name.Contains(", "))

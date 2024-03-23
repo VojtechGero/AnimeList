@@ -2,7 +2,7 @@
 {
     internal class Anime : AContent
     {
-        internal Anime(UnclassifiedContent a)
+        internal Anime(AContent a)
         {
             foreach (var prop in a.GetType().GetProperties())
             {
@@ -28,35 +28,6 @@
                 otherName = names.First();
             }
             else otherName = null;
-            inProgress = false;
-        }
-
-        internal override string Description()
-        {
-            string output = "";
-            const string tab = "    ";
-            if (otherName is not null)
-            {
-                output += $"({otherName})\n";
-            }
-            output += "Anime" + tab;
-            if (notOut) output += "Currently Airing\n";
-            else output += "Finished Airing\n";
-            if (started is not null)
-            {
-                if (count == 1) output += $"Aired: {started}\n";
-                else output += $"Started airing: {started}\n";
-            }
-            if (count > 0) output += $"Episodes: {count}\n";
-            if (genres is not null)
-            {
-                if (genres.Count > 0) output += "Genres:\n";
-                foreach (string g in genres)
-                {
-                    output += $"{tab}{g}\n";
-                }
-            }
-            return output;
         }
     }
 }
