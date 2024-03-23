@@ -7,8 +7,8 @@ namespace AnimeList.Forms
 {
     public partial class MainForm : Form
     {
-        List<Content> Content = new List<Content>();
-        List<Content> Sorted = new List<Content>();
+        List<AContent> Content = new List<AContent>();
+        List<AContent> Sorted = new List<AContent>();
         AddDialog AddForm;
         FileHandler file;
         string query;
@@ -54,10 +54,10 @@ namespace AnimeList.Forms
         {
             listBox.BeginUpdate();
             listBox.Items.Clear();
-            var list = new List<Content>();
+            var list = new List<AContent>();
             if (Sorted.Any()) list = Sorted;
             else list = Content;
-            foreach (Content item in list)
+            foreach (AContent item in list)
             {
                 string name = item.name;
                 listBox.Items.Add(name);
@@ -69,7 +69,7 @@ namespace AnimeList.Forms
             listBox.EndUpdate();
         }
 
-        private void updateDesc(Content content)
+        private void updateDesc(AContent content)
         {
             NameLabel.Text = content.name;
             description.Text = StringOps.ContentDesc(content);
@@ -82,7 +82,7 @@ namespace AnimeList.Forms
             NameLabel.Visible = true;
         }
 
-        internal void addContent(Content content)
+        internal void addContent(AContent content)
         {
             Content.Add(content);
             file.writeContent(content);
@@ -191,7 +191,7 @@ namespace AnimeList.Forms
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
-            List<Content> list = new List<Content>();
+            List<AContent> list = new List<AContent>();
             if (Sorted.Any())
             {
                 List<int> temp = new List<int>(selected);

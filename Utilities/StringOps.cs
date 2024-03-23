@@ -4,17 +4,14 @@ namespace AnimeList.Utilities
 {
     internal class StringOps
     {
-
-        private static readonly string[] AnimeSet = ["anime", "airing", "aired", "episodes"];
-        private static readonly string[] MangaSet = ["manga", "publishing", "published", "chapters"];
-        internal static List<Content> sortSearch(List<Content> list, string query)
+        internal static List<AContent> sortSearch(List<AContent> list, string query)
         {
             return list
             .OrderByDescending(s => relevance(s,query))
             .ToList();
         }
 
-        private static int relevance(Content content, string query)
+        private static int relevance(AContent content, string query)
         {
             string name;
             if (content.otherName is null)
@@ -82,28 +79,42 @@ namespace AnimeList.Utilities
             return count;
         }
 
-        internal static string ContentDesc(Content content)
+        internal static string ContentDesc(AContent content)
         {
             string output = "";
             const string tab = "    ";
-            string[] set;
-            if (content.IsAnime) set = AnimeSet;
-            else set = MangaSet;
             if(content.otherName is not null)
             {
                 output += $"({content.otherName})\n";
             }
-            output += set[0] + tab;
-            if (content.notOut) output += $"Currently {set[1]}\n";
-            else output += $"Finished {set[1]}\n";
+            if (content.IsAnime)
+            {
+                output += "Anime" + tab;
+                if (content.notOut) output += "Currently Airing\n";
+                else output += "Finished Airing\n";
+            }
+            else
+            {
+                output += "Manga" + tab;
+                if (content.notOut) output += "Currently Publishing\n";
+                else output += "Finished Publishing\n";
+            }
             if (content.started is not null)
             {
                 string t;
-                if (content.count == 1) t = set[2];
-                else t = $"Started {set[1]}";
+                if (content.IsAnime)
+                {
+                    if (content.count == 1) t = "Aired";
+                    else t = "Started airing";
+                }
+                else t = "Started publishing";
                 output += $"{t}: {content.started}\n";
             }
-            if (content.count > 0) output += $"{set[3]}: {content.count}\n";
+            if (content.IsAnime)
+            {
+                if (content.count > 0) output += $"Episodes: {content.count}\n";
+            }
+            else if (content.count > 0) output += $"Chapters: {content.count}\n";
             if (content.authors is not null)
             {
                 int c = content.authors.Count;

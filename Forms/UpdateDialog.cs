@@ -6,9 +6,9 @@ namespace AnimeList.Forms
 {
     public partial class UpdateDialog : Form
     {
-        public List<Content> content;
+        public List<AContent> content;
         bool stopParsing;
-        public UpdateDialog(List<Content> content)
+        public UpdateDialog(List<AContent> content)
         {
             InitializeComponent();
             stopParsing = false;
@@ -23,10 +23,10 @@ namespace AnimeList.Forms
             progressBar.Maximum = content.Count * 10;
         }
 
-        private async Task<Content> update(Content a,MalInterface m)
+        private async Task<AContent> update(AContent a,MalInterface m)
         {
             ContentNameLabel.Text = $"Updating {a.name}";
-            Content temp;
+            AContent temp;
             if (a.IsAnime)
             {
                 temp = await m.pullAnimeId(a.ID);
