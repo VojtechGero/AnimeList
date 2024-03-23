@@ -1,8 +1,10 @@
 using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
+using System;
+using System.Reflection;
+using System.Drawing;
 using System.Windows.Forms;
-
 namespace AnimeList.Forms
 {
     public partial class MainForm : Form
@@ -16,7 +18,7 @@ namespace AnimeList.Forms
         public MainForm()
         {
             InitializeComponent();
-            this.file = FileHandler.workFile();
+            file = FileHandler.workFile();
             Content = file.GetContent();
             if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
             {
@@ -69,17 +71,19 @@ namespace AnimeList.Forms
             listBox.EndUpdate();
         }
 
-        private void updateDesc(AContent content)
+        private void updateDesc(AContent content,int index)
         {
             NameLabel.Text = content.name;
-            description.Text = StringOps.ContentDesc(content);
+            description.Text = content.Description();
             if (content.otherName is not null)
             {
                 SwapButton.Visible = true;
             }
             else SwapButton.Visible = false;
+            WatchButton.Visible = true;
             description.Visible = true;
             NameLabel.Visible = true;
+            watchButtonUpdate(content.inProgress,index);
         }
 
         internal void addContent(AContent content)
@@ -105,20 +109,32 @@ namespace AnimeList.Forms
                 SwapButton.Visible = false;
                 removeButton.Visible = true;
                 RefreshButton.Visible = true;
+                WatchButton.Visible = false;
             }
             else
             {
                 int select = listBox.SelectedIndex;
                 if (select != -1)
                 {
-                    if (Sorted.Any()) updateDesc(Sorted[select]);
-                    else updateDesc(Content[select]);
+                    if (Sorted.Any()) updateDesc(Sorted[select], select);
+                    else updateDesc(Content[select], select);
                     removeButton.Visible = true;
                     RefreshButton.Visible = true;
                 }
             }
         }
 
+        private void watchButtonUpdate(bool inProgress,int index)
+        {
+            if (inProgress)
+            {
+                WatchButton.Text = "UnWatch";
+            }
+            else
+            {
+                WatchButton.Text = "Watch";
+            }
+        }
         private void removeButton_Click(object sender, EventArgs e)
         {
             description.Visible = false;
@@ -126,11 +142,11 @@ namespace AnimeList.Forms
             SwapButton.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
             selected.Reverse();
-            if(Sorted.Any())
+            if (Sorted.Any())
             {
                 List<int> temp = new List<int>(selected);
                 selected.Clear();
-                foreach(var i in temp)
+                foreach (var i in temp)
                 {
                     selected.Add(getIndex(Sorted[i].ID));
                 }
@@ -216,13 +232,13 @@ namespace AnimeList.Forms
                     for (int i = 0; i < output.Count; i++)
                     {
                         Content[selected[i]] = output[i];
-                        listBox.Items[selected[i]] = StringOps.shorten(output[i].name,listBox);
+                        listBox.Items[selected[i]] = StringOps.shorten(output[i].name, listBox);
                     }
                 }
             }
             if (selected.Count == 1)
             {
-                updateDesc(Content[selected.First()]);
+                updateDesc(Content[selected.First()],selected.First());
             }
             file.updateLines(selected, Content);
 
@@ -230,7 +246,7 @@ namespace AnimeList.Forms
 
         private int getIndex(long id)
         {
-            for(int i = 0; i < Content.Count; i++)
+            for (int i = 0; i < Content.Count; i++)
             {
                 if (Content[i].ID == id) return i;
             }
@@ -244,12 +260,11 @@ namespace AnimeList.Forms
             if (Sorted.Any())
             {
                 index = getIndex(Sorted[current].ID);
-            }else index = current;
-            string temp = Content[index].name;
-            Content[index].name = Content[index].otherName;
-            Content[index].otherName = temp;
+            }
+            else index = current;
+            (Content[index].name, Content[index].otherName) = (Content[index].otherName, Content[index].name);
             listBox.Items[current] = StringOps.shorten(Content[index].name, listBox);
-            updateDesc(Content[index]);
+            updateDesc(Content[index], index);
             file.updateLine(index, Content[index]);
         }
 
@@ -332,5 +347,14 @@ namespace AnimeList.Forms
                 listBox.SetSelected(i, true);
             }
         }
+
+        private void WatchButton_Click(object sender, EventArgs e)
+        {
+            int index = listBox.SelectedIndex;
+            Content[index].inProgress = !Content[index].inProgress;
+            watchButtonUpdate(Content[index].inProgress,index);
+            file.updateLine(index, Content[index]);
+        }
+
     }
 }
