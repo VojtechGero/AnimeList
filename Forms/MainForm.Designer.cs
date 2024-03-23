@@ -1,4 +1,6 @@
-﻿namespace AnimeList.Forms
+﻿using AnimeList.Components;
+
+namespace AnimeList.Forms
 {
     partial class MainForm
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listBox = new ListBox();
+            listBox = new MyListBox();
             menuStrip1 = new MenuStrip();
             addToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
@@ -52,6 +54,7 @@
             // 
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.Dock = DockStyle.Left;
+            listBox.DrawMode = DrawMode.OwnerDrawFixed;
             listBox.Font = new Font("Segoe UI", 15F);
             listBox.FormattingEnabled = true;
             listBox.ItemHeight = 41;
@@ -60,6 +63,7 @@
             listBox.SelectionMode = SelectionMode.MultiExtended;
             listBox.Size = new Size(523, 470);
             listBox.TabIndex = 1;
+            listBox.DrawItem += listBox_DrawItem;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
             // 
             // menuStrip1
@@ -241,7 +245,7 @@
         }
 
         #endregion
-        private ListBox listBox;
+        private MyListBox listBox;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem addToolStripMenuItem;
         private ToolStripMenuItem manualToolStripMenuItem;

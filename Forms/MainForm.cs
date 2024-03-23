@@ -1,10 +1,7 @@
 using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
-using System;
 using System.Reflection;
-using System.Drawing;
-using System.Windows.Forms;
 namespace AnimeList.Forms
 {
     public partial class MainForm : Form
@@ -342,10 +339,12 @@ namespace AnimeList.Forms
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            listBox.BeginUpdate();
             for (int i = 0; i < listBox.Items.Count; i++)
             {
                 listBox.SetSelected(i, true);
             }
+            listBox.EndUpdate();
         }
 
         private void WatchButton_Click(object sender, EventArgs e)
@@ -354,6 +353,30 @@ namespace AnimeList.Forms
             Content[index].inProgress = !Content[index].inProgress;
             watchButtonUpdate(Content[index].inProgress,index);
             file.updateLine(index, Content[index]);
+        }
+
+        private void listBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index == -1) return;
+            e.DrawBackground();
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(0, 120, 215)), e.Bounds);
+                e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+            }
+            else
+            {
+                if (Content[e.Index].inProgress)
+                {
+                    e.Graphics.FillRectangle(Brushes.Green, e.Bounds);
+                    e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+                }
+                else
+                {
+                    e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds, StringFormat.GenericDefault);
+                }
+            }
+            e.DrawFocusRectangle();
         }
 
     }
