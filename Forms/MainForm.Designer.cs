@@ -37,13 +37,14 @@
             textDumpToolStripMenuItem = new ToolStripMenuItem();
             randomSelectToolStripMenuItem = new ToolStripMenuItem();
             removeDuplicatesToolStripMenuItem = new ToolStripMenuItem();
+            selectAllToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             NameLabel = new Label();
             removeButton = new Button();
             RefreshButton = new Button();
             SwapButton = new Button();
             searchBox = new TextBox();
-            selectAllToolStripMenuItem = new ToolStripMenuItem();
+            WatchButton = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -120,6 +121,13 @@
             removeDuplicatesToolStripMenuItem.Text = "Remove duplicates";
             removeDuplicatesToolStripMenuItem.Click += removeDuplicatesToolStripMenuItem_Click;
             // 
+            // selectAllToolStripMenuItem
+            // 
+            selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            selectAllToolStripMenuItem.Size = new Size(96, 29);
+            selectAllToolStripMenuItem.Text = "Select all";
+            selectAllToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
+            // 
             // description
             // 
             description.AutoSize = true;
@@ -148,7 +156,7 @@
             // 
             removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             removeButton.Font = new Font("Segoe UI", 14F);
-            removeButton.Location = new Point(1171, 437);
+            removeButton.Location = new Point(1172, 437);
             removeButton.Name = "removeButton";
             removeButton.Size = new Size(189, 55);
             removeButton.TabIndex = 5;
@@ -174,11 +182,11 @@
             // 
             SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SwapButton.Font = new Font("Segoe UI", 14F);
-            SwapButton.Location = new Point(977, 375);
+            SwapButton.Location = new Point(977, 376);
             SwapButton.Name = "SwapButton";
-            SwapButton.Size = new Size(384, 55);
+            SwapButton.Size = new Size(189, 55);
             SwapButton.TabIndex = 7;
-            SwapButton.Text = "Swap names🔁";
+            SwapButton.Text = "Swap names";
             SwapButton.UseVisualStyleBackColor = true;
             SwapButton.Visible = false;
             SwapButton.Click += SwapButton_Click;
@@ -195,18 +203,25 @@
             searchBox.TabIndex = 8;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
-            // selectAllToolStripMenuItem
+            // WatchButton
             // 
-            selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            selectAllToolStripMenuItem.Size = new Size(96, 29);
-            selectAllToolStripMenuItem.Text = "Select all";
-            selectAllToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
+            WatchButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            WatchButton.Font = new Font("Segoe UI", 14F);
+            WatchButton.Location = new Point(1172, 376);
+            WatchButton.Name = "WatchButton";
+            WatchButton.Size = new Size(189, 55);
+            WatchButton.TabIndex = 9;
+            WatchButton.Text = "Watch";
+            WatchButton.UseVisualStyleBackColor = true;
+            WatchButton.Visible = false;
+            WatchButton.Click += WatchButton_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1373, 503);
+            Controls.Add(WatchButton);
             Controls.Add(searchBox);
             Controls.Add(SwapButton);
             Controls.Add(RefreshButton);
@@ -242,5 +257,6 @@
         private TextBox searchBox;
         private ToolStripMenuItem removeDuplicatesToolStripMenuItem;
         private ToolStripMenuItem selectAllToolStripMenuItem;
+        private Button WatchButton;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AnimeList.Data
 {
-    public class AContent
+    public abstract class AContent
     {
         public bool IsAnime { get; set; }
         public long ID { get; set; }
@@ -13,14 +13,14 @@ namespace AnimeList.Data
         public List<string> genres { get; set; }
         public List<string> authors { get; set; }
         public int? started { get; set; }
+        public bool inProgress { get; set; }
 
-
-        //required for json deserialization
-        public AContent() { }
 
         internal string ToJson()
         {
             return JsonSerializer.Serialize(this);
         }
+
+        internal abstract string Description();
     }
 }
