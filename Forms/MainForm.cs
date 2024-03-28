@@ -9,15 +9,14 @@ namespace AnimeList.Forms
         List<AContent> Content = new List<AContent>();
         List<AContent> Sorted = new List<AContent>();
         AddDialog AddForm;
-        FileHandler fileHandler;
+        FileHandler file;
         string query;
         bool hasScroll;
         public MainForm()
         {
             InitializeComponent();
-            fileHandler = FileHandler.workFile();
-            Content = fileHandler.GetContent();
-            Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
+            file = FileHandler.workFile();
+            Content = file.GetContent();
             if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
             {
                 hasScroll = false;
@@ -55,12 +54,7 @@ namespace AnimeList.Forms
             listBox.BeginUpdate();
             listBox.Items.Clear();
             var list = new List<AContent>();
-            if (!string.IsNullOrWhiteSpace(searchBox.Text))
-            {
-                query = searchBox.Text;
-                Sorted = StringOps.sortSearch(Content, query);
-                list = Sorted;
-            }
+            if (Sorted.Any()) list = Sorted;
             else list = Content;
             foreach (AContent item in list)
             {
@@ -74,7 +68,7 @@ namespace AnimeList.Forms
             listBox.EndUpdate();
         }
 
-        private void updateDesc(AContent content, int index)
+        private void updateDesc(AContent content,int index)
         {
             NameLabel.Text = content.name;
             description.Text = content.Description();
@@ -86,13 +80,13 @@ namespace AnimeList.Forms
             WatchButton.Visible = true;
             description.Visible = true;
             NameLabel.Visible = true;
-            watchButtonUpdate(content.inProgress, index);
+            watchButtonUpdate(content.inProgress,index);
         }
 
         internal void addContent(AContent content)
         {
             Content.Add(content);
-            fileHandler.writeContent(content);
+            file.writeContent(content);
             listBox.SelectedItems.Clear();
             listBox.Items.Add(StringOps.shorten(content.name, listBox));
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
@@ -127,7 +121,7 @@ namespace AnimeList.Forms
             }
         }
 
-        private void watchButtonUpdate(bool inProgress, int index)
+        private void watchButtonUpdate(bool inProgress,int index)
         {
             if (inProgress)
             {
@@ -161,14 +155,14 @@ namespace AnimeList.Forms
                 Content.RemoveAt(x);
                 listBox.Items.RemoveAt(x);
             }
-            fileHandler.removeContents(selected);
+            file.removeContents(selected);
             if (needsChage())
             {
                 writeList();
             }
         }
 
-        private void textFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void textDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = SpecialDirectories.Desktop;
@@ -241,9 +235,9 @@ namespace AnimeList.Forms
             }
             if (selected.Count == 1)
             {
-                updateDesc(Content[selected.First()], selected.First());
+                updateDesc(Content[selected.First()],selected.First());
             }
-            fileHandler.updateLines(selected, Content);
+            file.updateLines(selected, Content);
 
         }
 
@@ -268,7 +262,7 @@ namespace AnimeList.Forms
             (Content[index].name, Content[index].otherName) = (Content[index].otherName, Content[index].name);
             listBox.Items[current] = StringOps.shorten(Content[index].name, listBox);
             updateDesc(Content[index], index);
-            fileHandler.updateLine(index, Content[index]);
+            file.updateLine(index, Content[index]);
         }
 
         private void randomSelectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -283,8 +277,15 @@ namespace AnimeList.Forms
 
         private void searchBox_TextChanged(object sender, EventArgs e)
         {
-            if (Content.Any())
+            if (string.IsNullOrWhiteSpace(searchBox.Text))
             {
+                Sorted.Clear();
+                writeList();
+            }
+            else if (Content.Any())
+            {
+                query = searchBox.Text;
+                Sorted = StringOps.sortSearch(Content, query);
                 writeList();
             }
         }
@@ -325,7 +326,7 @@ namespace AnimeList.Forms
                 {
                     Content.RemoveAt(i);
                 }
-                fileHandler.removeContents(toRemove);
+                file.removeContents(toRemove);
                 writeList();
             }
         }
@@ -350,26 +351,24 @@ namespace AnimeList.Forms
         {
             int index = listBox.SelectedIndex;
             Content[index].inProgress = !Content[index].inProgress;
-            watchButtonUpdate(Content[index].inProgress, index);
-            fileHandler.updateLine(index, Content[index]);
+            watchButtonUpdate(Content[index].inProgress,index);
+            file.updateLine(index, Content[index]);
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index == -1) return;
             e.DrawBackground();
-            var selectedColor = new SolidBrush(Color.FromArgb(0, 120, 215));
-            var watchedColor = Brushes.Green;
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                e.Graphics.FillRectangle(selectedColor, e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(0, 120, 215)), e.Bounds);
                 e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
             }
             else
             {
                 if (Content[e.Index].inProgress)
                 {
-                    e.Graphics.FillRectangle(watchedColor, e.Bounds);
+                    e.Graphics.FillRectangle(Brushes.Green, e.Bounds);
                     e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
                 }
                 else
@@ -380,21 +379,5 @@ namespace AnimeList.Forms
             e.DrawFocusRectangle();
         }
 
-        private void fromJsonToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var openFile = new OpenFileDialog();
-            openFile.InitialDirectory = SpecialDirectories.Desktop;
-            openFile.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
-            openFile.CheckFileExists = true;
-            openFile.CheckPathExists = true;
-            openFile.ShowDialog();
-            string inputFilePath = openFile.FileName;
-            if (!string.IsNullOrWhiteSpace(inputFilePath))
-            {
-                fileHandler.copyJson(inputFilePath);
-            }
-            Content = fileHandler.GetContent();
-            writeList();
-        }
     }
 }

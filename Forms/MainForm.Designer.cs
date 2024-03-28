@@ -37,12 +37,9 @@ namespace AnimeList.Forms
             animeToolStripMenuItem = new ToolStripMenuItem();
             mangaToolStripMenuItem = new ToolStripMenuItem();
             textDumpToolStripMenuItem = new ToolStripMenuItem();
-            fromTextFileToolStripMenuItem = new ToolStripMenuItem();
-            fromJsonToolStripMenuItem = new ToolStripMenuItem();
-            utilitiesToolStripMenuItem = new ToolStripMenuItem();
-            randomSelectToolStripMenuItem1 = new ToolStripMenuItem();
-            selecToolStripMenuItem = new ToolStripMenuItem();
-            removeDuplicatesToolStripMenuItem1 = new ToolStripMenuItem();
+            randomSelectToolStripMenuItem = new ToolStripMenuItem();
+            removeDuplicatesToolStripMenuItem = new ToolStripMenuItem();
+            selectAllToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             NameLabel = new Label();
             removeButton = new Button();
@@ -50,7 +47,6 @@ namespace AnimeList.Forms
             SwapButton = new Button();
             searchBox = new TextBox();
             WatchButton = new Button();
-            exportToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -73,7 +69,7 @@ namespace AnimeList.Forms
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, utilitiesToolStripMenuItem, exportToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, randomSelectToolStripMenuItem, removeDuplicatesToolStripMenuItem, selectAllToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1373, 33);
@@ -91,7 +87,7 @@ namespace AnimeList.Forms
             // 
             manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animeToolStripMenuItem, mangaToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(270, 34);
+            manualToolStripMenuItem.Size = new Size(193, 34);
             manualToolStripMenuItem.Text = "Manual";
             // 
             // animeToolStripMenuItem
@@ -110,52 +106,31 @@ namespace AnimeList.Forms
             // 
             // textDumpToolStripMenuItem
             // 
-            textDumpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fromTextFileToolStripMenuItem, fromJsonToolStripMenuItem });
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(270, 34);
+            textDumpToolStripMenuItem.Size = new Size(193, 34);
             textDumpToolStripMenuItem.Text = "File dump";
+            textDumpToolStripMenuItem.Click += textDumpToolStripMenuItem_Click;
             // 
-            // fromTextFileToolStripMenuItem
+            // randomSelectToolStripMenuItem
             // 
-            fromTextFileToolStripMenuItem.Name = "fromTextFileToolStripMenuItem";
-            fromTextFileToolStripMenuItem.Size = new Size(218, 34);
-            fromTextFileToolStripMenuItem.Text = "From text file";
-            fromTextFileToolStripMenuItem.Click += textFileToolStripMenuItem_Click;
+            randomSelectToolStripMenuItem.Name = "randomSelectToolStripMenuItem";
+            randomSelectToolStripMenuItem.Size = new Size(145, 29);
+            randomSelectToolStripMenuItem.Text = "Random select";
+            randomSelectToolStripMenuItem.Click += randomSelectToolStripMenuItem_Click;
             // 
-            // fromJsonToolStripMenuItem
+            // removeDuplicatesToolStripMenuItem
             // 
-            fromJsonToolStripMenuItem.Name = "fromJsonToolStripMenuItem";
-            fromJsonToolStripMenuItem.Size = new Size(218, 34);
-            fromJsonToolStripMenuItem.Text = "From json";
-            fromJsonToolStripMenuItem.Click += fromJsonToolStripMenuItem_Click;
+            removeDuplicatesToolStripMenuItem.Name = "removeDuplicatesToolStripMenuItem";
+            removeDuplicatesToolStripMenuItem.Size = new Size(177, 29);
+            removeDuplicatesToolStripMenuItem.Text = "Remove duplicates";
+            removeDuplicatesToolStripMenuItem.Click += removeDuplicatesToolStripMenuItem_Click;
             // 
-            // utilitiesToolStripMenuItem
+            // selectAllToolStripMenuItem
             // 
-            utilitiesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { randomSelectToolStripMenuItem1, selecToolStripMenuItem, removeDuplicatesToolStripMenuItem1 });
-            utilitiesToolStripMenuItem.Name = "utilitiesToolStripMenuItem";
-            utilitiesToolStripMenuItem.Size = new Size(85, 29);
-            utilitiesToolStripMenuItem.Text = "Utilities";
-            // 
-            // randomSelectToolStripMenuItem1
-            // 
-            randomSelectToolStripMenuItem1.Name = "randomSelectToolStripMenuItem1";
-            randomSelectToolStripMenuItem1.Size = new Size(263, 34);
-            randomSelectToolStripMenuItem1.Text = "Random select";
-            randomSelectToolStripMenuItem1.Click += randomSelectToolStripMenuItem_Click;
-            // 
-            // selecToolStripMenuItem
-            // 
-            selecToolStripMenuItem.Name = "selecToolStripMenuItem";
-            selecToolStripMenuItem.Size = new Size(263, 34);
-            selecToolStripMenuItem.Text = "Select all";
-            selecToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
-            // 
-            // removeDuplicatesToolStripMenuItem1
-            // 
-            removeDuplicatesToolStripMenuItem1.Name = "removeDuplicatesToolStripMenuItem1";
-            removeDuplicatesToolStripMenuItem1.Size = new Size(263, 34);
-            removeDuplicatesToolStripMenuItem1.Text = "Remove duplicates";
-            removeDuplicatesToolStripMenuItem1.Click += removeDuplicatesToolStripMenuItem_Click;
+            selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            selectAllToolStripMenuItem.Size = new Size(96, 29);
+            selectAllToolStripMenuItem.Text = "Select all";
+            selectAllToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
             // 
             // description
             // 
@@ -245,12 +220,6 @@ namespace AnimeList.Forms
             WatchButton.Visible = false;
             WatchButton.Click += WatchButton_Click;
             // 
-            // exportToolStripMenuItem
-            // 
-            exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new Size(79, 29);
-            exportToolStripMenuItem.Text = "Export";
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -288,14 +257,10 @@ namespace AnimeList.Forms
         private ToolStripMenuItem mangaToolStripMenuItem;
         private Button RefreshButton;
         private Button SwapButton;
+        private ToolStripMenuItem randomSelectToolStripMenuItem;
         private TextBox searchBox;
+        private ToolStripMenuItem removeDuplicatesToolStripMenuItem;
+        private ToolStripMenuItem selectAllToolStripMenuItem;
         private Button WatchButton;
-        private ToolStripMenuItem fromTextFileToolStripMenuItem;
-        private ToolStripMenuItem fromJsonToolStripMenuItem;
-        private ToolStripMenuItem utilitiesToolStripMenuItem;
-        private ToolStripMenuItem randomSelectToolStripMenuItem1;
-        private ToolStripMenuItem selecToolStripMenuItem;
-        private ToolStripMenuItem removeDuplicatesToolStripMenuItem1;
-        private ToolStripMenuItem exportToolStripMenuItem;
     }
 }
