@@ -356,7 +356,7 @@ namespace AnimeList.Forms
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index == -1) return;
+            if (e.Index <0) return;
             e.DrawBackground();
             var selectedColor = new SolidBrush(Color.FromArgb(0, 120, 215));
             var watchedColor = Brushes.Green;
