@@ -16,6 +16,7 @@ namespace AnimeList.Forms
         {
             InitializeComponent();
             fileHandler = FileHandler.workFile();
+            listBoxScaling();
             Content = fileHandler.GetContent();
             Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
             if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
@@ -29,6 +30,14 @@ namespace AnimeList.Forms
             var NameToolTip = new ToolTip();
             NameToolTip.SetToolTip(NameLabel, "Click to Copy");
             writeList();
+        }
+
+        private void listBoxScaling()
+        {
+            int dpi = this.DeviceDpi;
+            double scale = (float)dpi / 96;
+            var scaled = listBox.ItemHeight * scale;
+            listBox.ItemHeight = (int) scaled;
         }
 
         private bool needsChage()
@@ -69,7 +78,7 @@ namespace AnimeList.Forms
             }
             for (int i = 0; i < listBox.Items.Count; i++)
             {
-                listBox.Items[i] = StringOps.shorten(listBox.Items[i].ToString(), listBox);
+                listBox.Items[i] = StringOps.listBoxAutoEllipsis(listBox.Items[i].ToString(), listBox);
             }
             listBox.EndUpdate();
         }
@@ -94,7 +103,8 @@ namespace AnimeList.Forms
             Content.Add(content);
             fileHandler.writeContent(content);
             listBox.SelectedItems.Clear();
-            listBox.Items.Add(StringOps.shorten(content.name, listBox));
+            listBox.Items.Add(StringOps.listBoxAutoEllipsis(content.name, listBox));
+            Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
                 query = searchBox.Text;
@@ -235,7 +245,7 @@ namespace AnimeList.Forms
                     for (int i = 0; i < output.Count; i++)
                     {
                         Content[selected[i]] = output[i];
-                        listBox.Items[selected[i]] = StringOps.shorten(output[i].name, listBox);
+                        listBox.Items[selected[i]] = StringOps.listBoxAutoEllipsis(output[i].name, listBox);
                     }
                 }
             }
@@ -266,7 +276,7 @@ namespace AnimeList.Forms
             }
             else index = current;
             (Content[index].name, Content[index].otherName) = (Content[index].otherName, Content[index].name);
-            listBox.Items[current] = StringOps.shorten(Content[index].name, listBox);
+            listBox.Items[current] = StringOps.listBoxAutoEllipsis(Content[index].name, listBox);
             updateDesc(Content[index], index);
             fileHandler.updateLine(index, Content[index]);
         }

@@ -89,8 +89,9 @@ namespace AnimeList.Utilities
             return name;
         }
 
-        internal static string shorten(string inputString,ListBox listBox1)
+        internal static string listBoxAutoEllipsis(string inputString,ListBox listBox1)
         {
+            if (string.IsNullOrWhiteSpace(inputString)) return "";
             int listBoxWidth = listBox1.ClientSize.Width;
             Graphics g = listBox1.CreateGraphics();
             float maxLength = g.MeasureString(inputString, listBox1.Font).Width;
@@ -101,7 +102,7 @@ namespace AnimeList.Utilities
                 foreach(char c in inputString)
                 {
                     string temp = shortenedString + c;
-                    if (g.MeasureString(temp, listBox1.Font).Width > availableLength) break;
+                    if (g.MeasureString(temp, listBox1.Font).Width > availableLength*0.96) break;
                     shortenedString += c;
                 }
                 return shortenedString.Trim()+"...";
