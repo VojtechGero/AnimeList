@@ -14,6 +14,7 @@ namespace AnimeList.Data
         public List<string> authors { get; set; }
         public int? started { get; set; }
         public bool inProgress { get; set; }
+        public float? Score { get; set; }
 
 
         internal string ToJson()

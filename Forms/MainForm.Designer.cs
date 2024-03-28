@@ -43,6 +43,10 @@ namespace AnimeList.Forms
             randomSelectToolStripMenuItem1 = new ToolStripMenuItem();
             selecToolStripMenuItem = new ToolStripMenuItem();
             removeDuplicatesToolStripMenuItem1 = new ToolStripMenuItem();
+            orderByToolStripMenuItem = new ToolStripMenuItem();
+            nameToolStripMenuItem = new ToolStripMenuItem();
+            scoreToolStripMenuItem = new ToolStripMenuItem();
+            actualOrderToolStripMenuItem = new ToolStripMenuItem();
             exportToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
             NameLabel = new Label();
@@ -74,7 +78,7 @@ namespace AnimeList.Forms
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, utilitiesToolStripMenuItem, exportToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, utilitiesToolStripMenuItem, orderByToolStripMenuItem, exportToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(4, 1, 0, 1);
@@ -158,6 +162,34 @@ namespace AnimeList.Forms
             removeDuplicatesToolStripMenuItem1.Size = new Size(174, 22);
             removeDuplicatesToolStripMenuItem1.Text = "Remove duplicates";
             removeDuplicatesToolStripMenuItem1.Click += removeDuplicatesToolStripMenuItem_Click;
+            // 
+            // orderByToolStripMenuItem
+            // 
+            orderByToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nameToolStripMenuItem, scoreToolStripMenuItem, actualOrderToolStripMenuItem });
+            orderByToolStripMenuItem.Name = "orderByToolStripMenuItem";
+            orderByToolStripMenuItem.Size = new Size(65, 22);
+            orderByToolStripMenuItem.Text = "Order by";
+            // 
+            // nameToolStripMenuItem
+            // 
+            nameToolStripMenuItem.Name = "nameToolStripMenuItem";
+            nameToolStripMenuItem.Size = new Size(180, 22);
+            nameToolStripMenuItem.Text = "Name";
+            nameToolStripMenuItem.Click += nameToolStripMenuItem_Click;
+            // 
+            // scoreToolStripMenuItem
+            // 
+            scoreToolStripMenuItem.Name = "scoreToolStripMenuItem";
+            scoreToolStripMenuItem.Size = new Size(180, 22);
+            scoreToolStripMenuItem.Text = "Score";
+            scoreToolStripMenuItem.Click += scoreToolStripMenuItem_Click;
+            // 
+            // actualOrderToolStripMenuItem
+            // 
+            actualOrderToolStripMenuItem.Name = "actualOrderToolStripMenuItem";
+            actualOrderToolStripMenuItem.Size = new Size(180, 22);
+            actualOrderToolStripMenuItem.Text = "Actual order";
+            actualOrderToolStripMenuItem.Click += actualOrderToolStripMenuItem_Click;
             // 
             // exportToolStripMenuItem
             // 
@@ -306,5 +338,9 @@ namespace AnimeList.Forms
         private ToolStripMenuItem selecToolStripMenuItem;
         private ToolStripMenuItem removeDuplicatesToolStripMenuItem1;
         private ToolStripMenuItem exportToolStripMenuItem;
+        private ToolStripMenuItem orderByToolStripMenuItem;
+        private ToolStripMenuItem nameToolStripMenuItem;
+        private ToolStripMenuItem scoreToolStripMenuItem;
+        private ToolStripMenuItem actualOrderToolStripMenuItem;
     }
 }

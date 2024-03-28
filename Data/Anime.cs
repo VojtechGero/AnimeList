@@ -11,7 +11,7 @@
         }
 
         internal Anime(long id, List<string> names, int? episodes, bool notOut, 
-                       List<string> genres, int? year)
+                       List<string> genres, int? year,float? score)
         {
             IsAnime = true;
             ID = id;
@@ -29,6 +29,7 @@
             }
             else otherName = null;
             inProgress = false;
+            this.Score = score;
         }
 
         internal override string Description()
@@ -42,6 +43,7 @@
             output += "Anime" + tab;
             if (notOut) output += "Currently Airing\n";
             else output += "Finished Airing\n";
+            if (Score is not null) output += $"Score: {Score:F2}\n";
             if (started is not null)
             {
                 if (count == 1) output += $"Aired: {started}\n";

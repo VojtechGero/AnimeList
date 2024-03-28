@@ -79,13 +79,15 @@ namespace AnimeList.Utilities
             {
                 year = input.Aired.From.Value.Year; ;
             }
+            float score;
             Anime anime = new Anime(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
                     episodes: input.Episodes,
                     notOut: input.Airing,
                     genres: genres,
-                    year: year);
+                    year: year,
+                    score: (float?) input.Score);
             return anime;
         }
 
@@ -97,6 +99,7 @@ namespace AnimeList.Utilities
             {
                 year = input.Published.From.Value.Year; ;
             }
+            float score;
             Manga manga = new Manga(
                     id: (long)input.MalId,
                     names: getTitles(input.Titles),
@@ -104,7 +107,8 @@ namespace AnimeList.Utilities
                     notOut: input.Publishing,
                     genres: genres,
                     authors: getAuthors(input.Authors),
-                    year: year);
+                    year: year,
+                    score: (float?)input.Score);
             return manga;
         }
 

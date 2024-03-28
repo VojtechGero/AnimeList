@@ -1,6 +1,9 @@
 using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
+using static AnimeList.Utilities.MainFormUtils;
+using System.Windows.Forms;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 namespace AnimeList.Forms
 {
     public partial class MainForm : Form
@@ -11,22 +14,29 @@ namespace AnimeList.Forms
         FileHandler fileHandler;
         string query;
         bool hasScroll;
+        SortType sortOrder = SortType.None;
         public MainForm()
         {
             InitializeComponent();
             fileHandler = FileHandler.workFile();
-            MainFormUtils.listBoxScaling(this.DeviceDpi, listBox);
+            listBoxScaling(this.DeviceDpi, listBox);
             Content = fileHandler.GetContent();
-            Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
+            Sorted = SortBy(Content, sortOrder);
             hasScroll = listBox.HasScroll();
             var NameToolTip = new ToolTip();
             NameToolTip.SetToolTip(NameLabel, "Click to Copy");
             writeList();
+            listBox.AutoEllipsis();
         }
 
         private void writeList()
         {
             listBox.BeginUpdate();
+            int selected = -1;
+            if (listBox.SelectedIndices.Count == 1)
+            {
+                selected = listBox.SelectedIndex;
+            }
             listBox.Items.Clear();
             var list = new List<AContent>();
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
@@ -41,14 +51,15 @@ namespace AnimeList.Forms
                 string name = item.name;
                 listBox.Items.Add(name);
             }
-            for (int i = 0; i < listBox.Items.Count; i++)
-            {
-                listBox.Items[i] = StringOps.listBoxAutoEllipsis(listBox.Items[i].ToString(), listBox);
-            }
+            listBox.AutoEllipsis();
             listBox.EndUpdate();
+            if (selected != -1)
+            {
+                listBox.SetSelected(selected, true);
+            }
         }
 
-        private void updateDesc(AContent content, int index)
+        private void updateDesc(AContent content)
         {
             NameLabel.Text = content.name;
             description.Text = content.Description();
@@ -60,7 +71,7 @@ namespace AnimeList.Forms
             WatchButton.Visible = true;
             description.Visible = true;
             NameLabel.Visible = true;
-            watchButtonUpdate(content.inProgress, index);
+            WatchButton.Text = WatchButtonUpdate(content.inProgress);
         }
 
         internal void addContent(AContent content)
@@ -68,8 +79,8 @@ namespace AnimeList.Forms
             Content.Add(content);
             fileHandler.writeContent(content);
             listBox.SelectedItems.Clear();
-            listBox.Items.Add(StringOps.listBoxAutoEllipsis(content.name, listBox));
-            Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
+            listBox.Items.Add(listBox.FormatEllipsis(content.name));
+            Sorted = SortBy(Content, SortType.None);
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
                 query = searchBox.Text;
@@ -94,25 +105,14 @@ namespace AnimeList.Forms
                 int select = listBox.SelectedIndex;
                 if (select != -1)
                 {
-                    if (Sorted.Any()) updateDesc(Sorted[select], select);
-                    else updateDesc(Content[select], select);
+                    if (Sorted.Any()) updateDesc(Sorted[select]);
+                    else updateDesc(Content[select]);
                     removeButton.Visible = true;
                     RefreshButton.Visible = true;
                 }
             }
         }
 
-        private void watchButtonUpdate(bool inProgress, int index)
-        {
-            if (inProgress)
-            {
-                WatchButton.Text = "UnWatch";
-            }
-            else
-            {
-                WatchButton.Text = "Watch";
-            }
-        }
         private void removeButton_Click(object sender, EventArgs e)
         {
             description.Visible = false;
@@ -126,18 +126,17 @@ namespace AnimeList.Forms
                 selected.Clear();
                 foreach (var i in temp)
                 {
-                    selected.Add(MainFormUtils.getIndex(Sorted[i].ID, Content));
+                    selected.Add(getIndex(Sorted[i].ID, Content));
                 }
             }
             listBox.SelectedItems.Clear();
             foreach (int x in selected)
             {
-                MessageBox.Show(Content[x].name);
                 Content.RemoveAt(x);
                 listBox.Items.RemoveAt(x);
             }
             fileHandler.removeContents(selected);
-            if (MainFormUtils.needsChage(hasScroll, listBox))
+            if (needsChage(hasScroll, listBox))
             {
                 hasScroll = listBox.HasScroll();
                 writeList();
@@ -176,13 +175,12 @@ namespace AnimeList.Forms
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if (MainFormUtils.needsChage(hasScroll,listBox))
+            if (needsChage(hasScroll, listBox))
             {
                 hasScroll = listBox.HasScroll();
                 writeList();
             }
         }
-
 
         private async void RefreshButton_Click(object sender, EventArgs e)
         {
@@ -194,7 +192,7 @@ namespace AnimeList.Forms
                 selected.Clear();
                 foreach (var i in temp)
                 {
-                    selected.Add(MainFormUtils.getIndex(Sorted[i].ID, Content));
+                    selected.Add(getIndex(Sorted[i].ID, Content));
                 }
             }
             foreach (int i in selected)
@@ -212,18 +210,18 @@ namespace AnimeList.Forms
                     for (int i = 0; i < output.Count; i++)
                     {
                         Content[selected[i]] = output[i];
-                        listBox.Items[selected[i]] = StringOps.listBoxAutoEllipsis(output[i].name, listBox);
+                        listBox.Items[selected[i]] = listBox.FormatEllipsis(output[i].name);
                     }
                 }
             }
+            sort(sortOrder);
             if (selected.Count == 1)
             {
-                updateDesc(Content[selected.First()], selected.First());
+                updateDesc(Content[selected.First()]);
+                listBox.SetSelected(selected.First(),true);
             }
             fileHandler.updateLines(selected, Content);
-
         }
-
 
         private void SwapButton_Click(object sender, EventArgs e)
         {
@@ -231,12 +229,12 @@ namespace AnimeList.Forms
             int current = listBox.SelectedIndex;
             if (Sorted.Any())
             {
-                index = MainFormUtils.getIndex(Sorted[current].ID,Content);
+                index = getIndex(Sorted[current].ID, Content);
             }
             else index = current;
             (Content[index].name, Content[index].otherName) = (Content[index].otherName, Content[index].name);
-            listBox.Items[current] = StringOps.listBoxAutoEllipsis(Content[index].name, listBox);
-            updateDesc(Content[index], index);
+            listBox.Items[current] = listBox.FormatEllipsis(Content[index].name);
+            updateDesc(Content[index]);
             fileHandler.updateLine(index, Content[index]);
         }
 
@@ -258,16 +256,6 @@ namespace AnimeList.Forms
             }
         }
 
-        private int getDuplicate(long id)
-        {
-            int output = -1;
-            for (int i = 0; i < Content.Count; i++)
-            {
-                if (Content[i].ID == id) return i;
-            }
-            return output;
-        }
-
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<long> map = new List<long>();
@@ -286,7 +274,7 @@ namespace AnimeList.Forms
                 {
                     if (toRemove.Contains(listBox.SelectedIndex))
                     {
-                        listBox.SelectedIndex = getDuplicate(Content[listBox.SelectedIndex].ID);
+                        listBox.SelectedIndex = getDuplicate(Content[listBox.SelectedIndex].ID, Content);
                     }
                 }
                 toRemove.Reverse();
@@ -307,21 +295,16 @@ namespace AnimeList.Forms
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listBox.BeginUpdate();
-            for (int i = 0; i < listBox.Items.Count; i++)
-            {
-                listBox.SetSelected(i, true);
-            }
-            listBox.EndUpdate();
+            listBox.SelectAll();
         }
 
         private void WatchButton_Click(object sender, EventArgs e)
         {
-            int index = MainFormUtils.getIndex(Sorted[listBox.SelectedIndex].ID,Content);
+            int index = getIndex(Sorted[listBox.SelectedIndex].ID, Content);
             Content[index].inProgress = !Content[index].inProgress;
-            watchButtonUpdate(Content[index].inProgress, index);
+            WatchButtonUpdate(Content[index].inProgress);
             fileHandler.updateLine(index, Content[index]);
-            listBox.Update();
+            sort(sortOrder);
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -369,7 +352,40 @@ namespace AnimeList.Forms
 
         private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
         {
-            MainFormUtils.listBoxScaling(this.DeviceDpi, listBox);
+            listBoxScaling(this.DeviceDpi, listBox);
+        }
+
+        private void sort(SortType sortType)
+        {
+            AContent selected = null;
+            if (listBox.SelectedIndices.Count==1)
+            {
+                selected = Sorted[listBox.SelectedIndex];
+            }
+            Sorted = SortBy(Content, sortType);
+            if(selected is not null)
+            {
+                listBox.SetSelected(getIndex(selected.ID, Sorted), true);
+            }
+            writeList();
+        }
+
+        private void nameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sortOrder = SortType.Aplhabetical;
+            sort(sortOrder);
+        }
+
+        private void scoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sortOrder = SortType.Score;
+            sort(sortOrder);
+        }
+
+        private void actualOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sortOrder = SortType.None;
+            sort(sortOrder);
         }
     }
 }

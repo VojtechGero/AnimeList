@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AnimeList.Components
 {
@@ -64,6 +65,39 @@ namespace AnimeList.Components
             base.OnPaint(e);
         }
 
+        public void AutoEllipsis()
+        {
+            BeginUpdate();
+            for (int i = 0; i < Items.Count; i++)
+            {
+                Items[i] = FormatEllipsis(Items[i].ToString());
+            }
+            EndUpdate();
+        }
+
+        public string FormatEllipsis(string inputString)
+        {
+            if (string.IsNullOrWhiteSpace(inputString)) return "";
+            int listBoxWidth = ClientSize.Width;
+            Graphics g = CreateGraphics();
+            float maxLength = g.MeasureString(inputString, Font).Width;
+            if (maxLength > listBoxWidth)
+            {
+                float availableLength = listBoxWidth;
+                string shortenedString = "";
+                foreach (char c in inputString)
+                {
+                    string temp = shortenedString + c;
+                    if (g.MeasureString(temp, Font).Width > availableLength * 0.96) break;
+                    shortenedString += c;
+                }
+                return shortenedString.Trim() + "...";
+            }
+            else
+            {
+                return inputString;
+            }
+        }
         public bool HasScroll()
         {
             if (Size.Height >= ItemHeight * Items.Count)
@@ -74,6 +108,16 @@ namespace AnimeList.Components
             {
                 return true;
             }
+        }
+
+        public void SelectAll()
+        {
+            BeginUpdate();
+            for (int i = 0; i < Items.Count; i++)
+            {
+                SetSelected(i, true);
+            }
+            EndUpdate();
         }
     }
 }

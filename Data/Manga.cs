@@ -1,4 +1,6 @@
-﻿namespace AnimeList.Data
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace AnimeList.Data
 {
     internal class Manga : AContent
     {
@@ -12,7 +14,7 @@
         }
 
         internal Manga(long id, List<string> names, int? count, bool notOut, 
-                       List<string> genres, List<string> authors, int? year)
+                       List<string> genres, List<string> authors, int? year,float? score)
         {
             IsAnime = false;
             ID = id;
@@ -40,6 +42,7 @@
             }
             else otherName = null;
             inProgress = false;
+            this.Score = score;
         }
 
         internal override string Description()
@@ -53,6 +56,7 @@
             output += "Manga" + tab;
             if (notOut) output += "Currently Publishing\n";
             else output += "Finished Publishing\n";
+            if (Score is not null) output += $"Score: {Score:F2}\n";
             if (started is not null)
             {
                 output += $"Started publishing: {started}\n";
