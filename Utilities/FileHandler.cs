@@ -41,12 +41,8 @@ namespace AnimeList.Utilities
             readContent();
             foreach (string s in data)
             {
-                string temp = s.Trim();
+                string temp = s.Trim().Trim(',');
                 if (temp == "[" || temp == "]") continue;
-                if(temp.Remove(0,temp.Length - 1) == ",")
-                {
-                    temp = temp.Remove(temp.Length - 1);
-                }
                 UnclassifiedContent content = JsonSerializer.Deserialize<UnclassifiedContent>(temp);
                 if(content.IsAnime)
                 {
@@ -117,6 +113,21 @@ namespace AnimeList.Utilities
                     data[t -1]= data[t -1].Remove(data[t - 1].Length-1);
                 }
                 data.RemoveAt(t);
+            }
+            writeAll();
+        }
+
+        internal void copyJson(string path)
+        {
+            string[] newText=File.ReadAllLines(path);
+            for(int i=1;i<newText.Length-1;i++)
+            {
+                if (data.Count - 2 > 0&& data[data.Count - 2].Last()!=',')
+                {
+                    data[data.Count - 2] = data[data.Count - 2] + ",";
+                }
+                if (newText[i].Last() != ',' && i!=newText.Length - 2) newText[i] += ',';
+                data.Insert(data.Count - 1, newText[i]);
             }
             writeAll();
         }
