@@ -46,6 +46,8 @@ namespace AnimeList.Forms
             orderByToolStripMenuItem = new ToolStripMenuItem();
             nameToolStripMenuItem = new ToolStripMenuItem();
             scoreToolStripMenuItem = new ToolStripMenuItem();
+            yearAiredToolStripMenuItem = new ToolStripMenuItem();
+            finishedToolStripMenuItem = new ToolStripMenuItem();
             actualOrderToolStripMenuItem = new ToolStripMenuItem();
             exportToolStripMenuItem = new ToolStripMenuItem();
             description = new Label();
@@ -66,11 +68,10 @@ namespace AnimeList.Forms
             listBox.Font = new Font("Segoe UI", 15F);
             listBox.FormattingEnabled = true;
             listBox.ItemHeight = 30;
-            listBox.Location = new Point(0, 24);
-            listBox.Margin = new Padding(2);
+            listBox.Location = new Point(0, 33);
             listBox.Name = "listBox";
             listBox.SelectionMode = SelectionMode.MultiExtended;
-            listBox.Size = new Size(367, 278);
+            listBox.Size = new Size(523, 470);
             listBox.TabIndex = 1;
             listBox.DrawItem += listBox_DrawItem;
             listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
@@ -81,8 +82,7 @@ namespace AnimeList.Forms
             menuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem, utilitiesToolStripMenuItem, orderByToolStripMenuItem, exportToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(4, 1, 0, 1);
-            menuStrip1.Size = new Size(961, 24);
+            menuStrip1.Size = new Size(1373, 33);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -90,27 +90,27 @@ namespace AnimeList.Forms
             // 
             addToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { manualToolStripMenuItem, textDumpToolStripMenuItem });
             addToolStripMenuItem.Name = "addToolStripMenuItem";
-            addToolStripMenuItem.Size = new Size(41, 22);
+            addToolStripMenuItem.Size = new Size(62, 29);
             addToolStripMenuItem.Text = "Add";
             // 
             // manualToolStripMenuItem
             // 
             manualToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animeToolStripMenuItem, mangaToolStripMenuItem });
             manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            manualToolStripMenuItem.Size = new Size(127, 22);
+            manualToolStripMenuItem.Size = new Size(193, 34);
             manualToolStripMenuItem.Text = "Manual";
             // 
             // animeToolStripMenuItem
             // 
             animeToolStripMenuItem.Name = "animeToolStripMenuItem";
-            animeToolStripMenuItem.Size = new Size(111, 22);
+            animeToolStripMenuItem.Size = new Size(169, 34);
             animeToolStripMenuItem.Text = "Anime";
             animeToolStripMenuItem.Click += animeToolStripMenuItem_Click;
             // 
             // mangaToolStripMenuItem
             // 
             mangaToolStripMenuItem.Name = "mangaToolStripMenuItem";
-            mangaToolStripMenuItem.Size = new Size(111, 22);
+            mangaToolStripMenuItem.Size = new Size(169, 34);
             mangaToolStripMenuItem.Text = "Manga";
             mangaToolStripMenuItem.Click += mangaToolStripMenuItem_Click;
             // 
@@ -118,20 +118,20 @@ namespace AnimeList.Forms
             // 
             textDumpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fromTextFileToolStripMenuItem, fromJsonToolStripMenuItem });
             textDumpToolStripMenuItem.Name = "textDumpToolStripMenuItem";
-            textDumpToolStripMenuItem.Size = new Size(127, 22);
+            textDumpToolStripMenuItem.Size = new Size(193, 34);
             textDumpToolStripMenuItem.Text = "File dump";
             // 
             // fromTextFileToolStripMenuItem
             // 
             fromTextFileToolStripMenuItem.Name = "fromTextFileToolStripMenuItem";
-            fromTextFileToolStripMenuItem.Size = new Size(144, 22);
+            fromTextFileToolStripMenuItem.Size = new Size(218, 34);
             fromTextFileToolStripMenuItem.Text = "From text file";
             fromTextFileToolStripMenuItem.Click += textFileToolStripMenuItem_Click;
             // 
             // fromJsonToolStripMenuItem
             // 
             fromJsonToolStripMenuItem.Name = "fromJsonToolStripMenuItem";
-            fromJsonToolStripMenuItem.Size = new Size(144, 22);
+            fromJsonToolStripMenuItem.Size = new Size(218, 34);
             fromJsonToolStripMenuItem.Text = "From json";
             fromJsonToolStripMenuItem.Click += fromJsonToolStripMenuItem_Click;
             // 
@@ -139,72 +139,86 @@ namespace AnimeList.Forms
             // 
             utilitiesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { randomSelectToolStripMenuItem1, selecToolStripMenuItem, removeDuplicatesToolStripMenuItem1 });
             utilitiesToolStripMenuItem.Name = "utilitiesToolStripMenuItem";
-            utilitiesToolStripMenuItem.Size = new Size(58, 22);
+            utilitiesToolStripMenuItem.Size = new Size(85, 29);
             utilitiesToolStripMenuItem.Text = "Utilities";
             // 
             // randomSelectToolStripMenuItem1
             // 
             randomSelectToolStripMenuItem1.Name = "randomSelectToolStripMenuItem1";
-            randomSelectToolStripMenuItem1.Size = new Size(174, 22);
+            randomSelectToolStripMenuItem1.Size = new Size(263, 34);
             randomSelectToolStripMenuItem1.Text = "Random select";
             randomSelectToolStripMenuItem1.Click += randomSelectToolStripMenuItem_Click;
             // 
             // selecToolStripMenuItem
             // 
             selecToolStripMenuItem.Name = "selecToolStripMenuItem";
-            selecToolStripMenuItem.Size = new Size(174, 22);
+            selecToolStripMenuItem.Size = new Size(263, 34);
             selecToolStripMenuItem.Text = "Select all";
             selecToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
             // 
             // removeDuplicatesToolStripMenuItem1
             // 
             removeDuplicatesToolStripMenuItem1.Name = "removeDuplicatesToolStripMenuItem1";
-            removeDuplicatesToolStripMenuItem1.Size = new Size(174, 22);
+            removeDuplicatesToolStripMenuItem1.Size = new Size(263, 34);
             removeDuplicatesToolStripMenuItem1.Text = "Remove duplicates";
             removeDuplicatesToolStripMenuItem1.Click += removeDuplicatesToolStripMenuItem_Click;
             // 
             // orderByToolStripMenuItem
             // 
-            orderByToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nameToolStripMenuItem, scoreToolStripMenuItem, actualOrderToolStripMenuItem });
+            orderByToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nameToolStripMenuItem, scoreToolStripMenuItem, yearAiredToolStripMenuItem, finishedToolStripMenuItem, actualOrderToolStripMenuItem });
             orderByToolStripMenuItem.Name = "orderByToolStripMenuItem";
-            orderByToolStripMenuItem.Size = new Size(65, 22);
+            orderByToolStripMenuItem.Size = new Size(99, 29);
             orderByToolStripMenuItem.Text = "Order by";
             // 
             // nameToolStripMenuItem
             // 
             nameToolStripMenuItem.Name = "nameToolStripMenuItem";
-            nameToolStripMenuItem.Size = new Size(180, 22);
+            nameToolStripMenuItem.Size = new Size(270, 34);
             nameToolStripMenuItem.Text = "Name";
             nameToolStripMenuItem.Click += nameToolStripMenuItem_Click;
             // 
             // scoreToolStripMenuItem
             // 
             scoreToolStripMenuItem.Name = "scoreToolStripMenuItem";
-            scoreToolStripMenuItem.Size = new Size(180, 22);
+            scoreToolStripMenuItem.Size = new Size(270, 34);
             scoreToolStripMenuItem.Text = "Score";
             scoreToolStripMenuItem.Click += scoreToolStripMenuItem_Click;
+            // 
+            // yearAiredToolStripMenuItem
+            // 
+            yearAiredToolStripMenuItem.Name = "yearAiredToolStripMenuItem";
+            yearAiredToolStripMenuItem.Size = new Size(270, 34);
+            yearAiredToolStripMenuItem.Text = "Oldest to newest";
+            yearAiredToolStripMenuItem.Click += yearAiredToolStripMenuItem_Click;
+            // 
+            // finishedToolStripMenuItem
+            // 
+            finishedToolStripMenuItem.Name = "finishedToolStripMenuItem";
+            finishedToolStripMenuItem.Size = new Size(270, 34);
+            finishedToolStripMenuItem.Text = "Finished";
+            finishedToolStripMenuItem.Click += finishedToolStripMenuItem_Click;
             // 
             // actualOrderToolStripMenuItem
             // 
             actualOrderToolStripMenuItem.Name = "actualOrderToolStripMenuItem";
-            actualOrderToolStripMenuItem.Size = new Size(180, 22);
+            actualOrderToolStripMenuItem.Size = new Size(270, 34);
             actualOrderToolStripMenuItem.Text = "Actual order";
             actualOrderToolStripMenuItem.Click += actualOrderToolStripMenuItem_Click;
             // 
             // exportToolStripMenuItem
             // 
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new Size(53, 22);
+            exportToolStripMenuItem.Size = new Size(79, 29);
             exportToolStripMenuItem.Text = "Export";
+            exportToolStripMenuItem.Click += exportToolStripMenuItem_Click;
             // 
             // description
             // 
             description.AutoSize = true;
             description.Font = new Font("Segoe UI", 12F);
-            description.Location = new Point(371, 84);
-            description.Margin = new Padding(2, 0, 2, 0);
+            description.Location = new Point(530, 140);
             description.Name = "description";
-            description.Size = new Size(87, 21);
+            description.Size = new Size(132, 32);
             description.TabIndex = 3;
             description.Text = "description";
             description.Visible = false;
@@ -214,10 +228,9 @@ namespace AnimeList.Forms
             NameLabel.AutoSize = true;
             NameLabel.Font = new Font("Segoe UI", 15F);
             NameLabel.ForeColor = SystemColors.ControlText;
-            NameLabel.Location = new Point(371, 56);
-            NameLabel.Margin = new Padding(2, 0, 2, 0);
+            NameLabel.Location = new Point(530, 93);
             NameLabel.Name = "NameLabel";
-            NameLabel.Size = new Size(64, 28);
+            NameLabel.Size = new Size(97, 41);
             NameLabel.TabIndex = 4;
             NameLabel.Text = "Name";
             NameLabel.Visible = false;
@@ -227,10 +240,9 @@ namespace AnimeList.Forms
             // 
             removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             removeButton.Font = new Font("Segoe UI", 14F);
-            removeButton.Location = new Point(820, 262);
-            removeButton.Margin = new Padding(2);
+            removeButton.Location = new Point(1171, 437);
             removeButton.Name = "removeButton";
-            removeButton.Size = new Size(132, 33);
+            removeButton.Size = new Size(189, 55);
             removeButton.TabIndex = 5;
             removeButton.Text = "Remove";
             removeButton.UseVisualStyleBackColor = true;
@@ -241,10 +253,9 @@ namespace AnimeList.Forms
             // 
             RefreshButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             RefreshButton.Font = new Font("Segoe UI", 14F);
-            RefreshButton.Location = new Point(684, 262);
-            RefreshButton.Margin = new Padding(2);
+            RefreshButton.Location = new Point(977, 437);
             RefreshButton.Name = "RefreshButton";
-            RefreshButton.Size = new Size(132, 33);
+            RefreshButton.Size = new Size(189, 55);
             RefreshButton.TabIndex = 6;
             RefreshButton.Text = "Refresh";
             RefreshButton.UseVisualStyleBackColor = true;
@@ -255,10 +266,9 @@ namespace AnimeList.Forms
             // 
             SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SwapButton.Font = new Font("Segoe UI", 14F);
-            SwapButton.Location = new Point(684, 226);
-            SwapButton.Margin = new Padding(2);
+            SwapButton.Location = new Point(977, 377);
             SwapButton.Name = "SwapButton";
-            SwapButton.Size = new Size(132, 33);
+            SwapButton.Size = new Size(189, 55);
             SwapButton.TabIndex = 7;
             SwapButton.Text = "Swap names";
             SwapButton.UseVisualStyleBackColor = true;
@@ -270,9 +280,10 @@ namespace AnimeList.Forms
             searchBox.BorderStyle = BorderStyle.FixedSingle;
             searchBox.Dock = DockStyle.Top;
             searchBox.Font = new Font("Segoe UI", 12F);
-            searchBox.Location = new Point(367, 24);
+            searchBox.Location = new Point(523, 33);
+            searchBox.Margin = new Padding(4, 5, 4, 5);
             searchBox.Name = "searchBox";
-            searchBox.Size = new Size(594, 29);
+            searchBox.Size = new Size(850, 39);
             searchBox.TabIndex = 8;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
@@ -280,10 +291,9 @@ namespace AnimeList.Forms
             // 
             WatchButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             WatchButton.Font = new Font("Segoe UI", 14F);
-            WatchButton.Location = new Point(820, 226);
-            WatchButton.Margin = new Padding(2);
+            WatchButton.Location = new Point(1171, 377);
             WatchButton.Name = "WatchButton";
-            WatchButton.Size = new Size(132, 33);
+            WatchButton.Size = new Size(189, 55);
             WatchButton.TabIndex = 9;
             WatchButton.Text = "Watch";
             WatchButton.UseVisualStyleBackColor = true;
@@ -292,9 +302,9 @@ namespace AnimeList.Forms
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(961, 302);
+            ClientSize = new Size(1373, 503);
             Controls.Add(removeButton);
             Controls.Add(WatchButton);
             Controls.Add(RefreshButton);
@@ -305,7 +315,6 @@ namespace AnimeList.Forms
             Controls.Add(listBox);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(2);
             Name = "MainForm";
             Text = "THE LIST";
             DpiChanged += MainForm_DpiChanged;
@@ -342,5 +351,7 @@ namespace AnimeList.Forms
         private ToolStripMenuItem nameToolStripMenuItem;
         private ToolStripMenuItem scoreToolStripMenuItem;
         private ToolStripMenuItem actualOrderToolStripMenuItem;
+        private ToolStripMenuItem yearAiredToolStripMenuItem;
+        private ToolStripMenuItem finishedToolStripMenuItem;
     }
 }

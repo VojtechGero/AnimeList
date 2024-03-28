@@ -75,6 +75,31 @@ namespace AnimeList.Components
             EndUpdate();
         }
 
+        public void MyDrawItem(DrawItemEventArgs e,List<AContent> Sorted)
+        {
+            if (e.Index < 0) return;
+            e.DrawBackground();
+            var selectedColor = new SolidBrush(Color.FromArgb(0, 120, 215));
+            var watchedColor = Brushes.Green;
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(selectedColor, e.Bounds);
+                e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+            }
+            else
+            {
+                if (Sorted[e.Index].inProgress)
+                {
+                    e.Graphics.FillRectangle(watchedColor, e.Bounds);
+                    e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+                }
+                else
+                {
+                    e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds, StringFormat.GenericDefault);
+                }
+            }
+            e.DrawFocusRectangle();
+        }
         public string FormatEllipsis(string inputString)
         {
             if (string.IsNullOrWhiteSpace(inputString)) return "";

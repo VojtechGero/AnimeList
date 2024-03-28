@@ -1,13 +1,6 @@
 ﻿using AnimeList.Components;
 using AnimeList.Data;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Microsoft.VisualBasic.FileIO;
 
 namespace AnimeList.Utilities
 {
@@ -15,14 +8,16 @@ namespace AnimeList.Utilities
     {
         internal enum SortType : int
         {
-            None=0,
-            Aplhabetical=1,
-            Score=2
+            None,
+            Aplhabetical,
+            Score,
+            Finished,
+            Aired
         }
 
         internal static void listBoxScaling(int dpi,MyListBox listBox)
         {
-            double scale = (float)dpi / 96;
+            double scale = (double)dpi / 96;
             var scaled = listBox.ItemHeight * scale;
             listBox.ItemHeight = (int)scaled;
         }
@@ -65,17 +60,34 @@ namespace AnimeList.Utilities
                 return "Watch";
             }
         }
+        
+        internal static string ChooseFile(string fileType)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = SpecialDirectories.Desktop;
+            openFile.Filter = $"{fileType} files (*.{fileType})|*.{fileType}|All files (*.*)|*.*";
+            openFile.CheckFileExists = true;
+            openFile.CheckPathExists = true;
+            openFile.ShowDialog();
+            return openFile.FileName;
+        }
 
         internal static List<AContent> SortBy(List<AContent> Content, SortType s)
         {
             IEnumerable<AContent> Sorted = Content;
-            switch ((int)s)
+            switch (s)
             {
-                case 1:
+                case SortType.Aplhabetical:
                     Sorted=Sorted.OrderBy(content => content.name);
                     break;
-                case 2:
+                case SortType.Score:
                     Sorted = Sorted.OrderByDescending(content => content.Score);
+                    break;
+                case SortType.Finished:
+                    Sorted = Sorted.OrderBy(content => content.notOut);
+                    break;
+                case SortType.Aired:
+                    Sorted = Sorted.OrderBy(content => content.started);
                     break;
             }
             return Sorted.OrderByDescending(content => content.inProgress).ToList();

@@ -2,8 +2,6 @@ using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
 using static AnimeList.Utilities.MainFormUtils;
-using System.Windows.Forms;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 namespace AnimeList.Forms
 {
     public partial class MainForm : Form
@@ -19,26 +17,20 @@ namespace AnimeList.Forms
         {
             InitializeComponent();
             fileHandler = FileHandler.workFile();
-            listBoxScaling(this.DeviceDpi, listBox);
+            listBoxScaling(DeviceDpi, listBox);
             Content = fileHandler.GetContent();
-            Sorted = SortBy(Content, sortOrder);
             hasScroll = listBox.HasScroll();
             var NameToolTip = new ToolTip();
             NameToolTip.SetToolTip(NameLabel, "Click to Copy");
-            writeList();
+            sortWrite();
             listBox.AutoEllipsis();
         }
 
         private void writeList()
         {
             listBox.BeginUpdate();
-            int selected = -1;
-            if (listBox.SelectedIndices.Count == 1)
-            {
-                selected = listBox.SelectedIndex;
-            }
             listBox.Items.Clear();
-            var list = new List<AContent>();
+            List<AContent> list;
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
                 query = searchBox.Text;
@@ -51,12 +43,9 @@ namespace AnimeList.Forms
                 string name = item.name;
                 listBox.Items.Add(name);
             }
+
             listBox.AutoEllipsis();
             listBox.EndUpdate();
-            if (selected != -1)
-            {
-                listBox.SetSelected(selected, true);
-            }
         }
 
         private void updateDesc(AContent content)
@@ -81,12 +70,7 @@ namespace AnimeList.Forms
             listBox.SelectedItems.Clear();
             listBox.Items.Add(listBox.FormatEllipsis(content.name));
             Sorted = SortBy(Content, SortType.None);
-            if (!string.IsNullOrWhiteSpace(searchBox.Text))
-            {
-                query = searchBox.Text;
-                Sorted = StringOps.sortSearch(Content, query);
-                writeList();
-            }
+            sortWrite();
         }
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,7 +103,6 @@ namespace AnimeList.Forms
             NameLabel.Visible = false;
             SwapButton.Visible = false;
             var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
-            selected.Reverse();
             if (Sorted.Any())
             {
                 List<int> temp = new List<int>(selected);
@@ -130,6 +113,7 @@ namespace AnimeList.Forms
                 }
             }
             listBox.SelectedItems.Clear();
+            selected.Reverse();
             foreach (int x in selected)
             {
                 Content.RemoveAt(x);
@@ -145,13 +129,7 @@ namespace AnimeList.Forms
 
         private void textFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var openFile = new OpenFileDialog();
-            openFile.InitialDirectory = SpecialDirectories.Desktop;
-            openFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            openFile.CheckFileExists = true;
-            openFile.CheckPathExists = true;
-            openFile.ShowDialog();
-            string inputFile = openFile.FileName;
+            string inputFile = ChooseFile("txt");
             if (!string.IsNullOrWhiteSpace(inputFile))
             {
                 var fileHandleDialog = new FileHandleDialog(inputFile, this);
@@ -214,12 +192,7 @@ namespace AnimeList.Forms
                     }
                 }
             }
-            sort(sortOrder);
-            if (selected.Count == 1)
-            {
-                updateDesc(Content[selected.First()]);
-                listBox.SetSelected(selected.First(),true);
-            }
+            sortWrite();
             fileHandler.updateLines(selected, Content);
         }
 
@@ -252,7 +225,7 @@ namespace AnimeList.Forms
         {
             if (Content.Any())
             {
-                writeList();
+                sortWrite();
             }
         }
 
@@ -283,7 +256,7 @@ namespace AnimeList.Forms
                     Content.RemoveAt(i);
                 }
                 fileHandler.removeContents(toRemove);
-                writeList();
+                sortWrite();
             }
         }
 
@@ -304,50 +277,23 @@ namespace AnimeList.Forms
             Content[index].inProgress = !Content[index].inProgress;
             WatchButtonUpdate(Content[index].inProgress);
             fileHandler.updateLine(index, Content[index]);
-            sort(sortOrder);
+            sortWrite();
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index < 0) return;
-            e.DrawBackground();
-            var selectedColor = new SolidBrush(Color.FromArgb(0, 120, 215));
-            var watchedColor = Brushes.Green;
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-            {
-                e.Graphics.FillRectangle(selectedColor, e.Bounds);
-                e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
-            }
-            else
-            {
-                if (Sorted[e.Index].inProgress)
-                {
-                    e.Graphics.FillRectangle(watchedColor, e.Bounds);
-                    e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
-                }
-                else
-                {
-                    e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds, StringFormat.GenericDefault);
-                }
-            }
-            e.DrawFocusRectangle();
+            listBox.MyDrawItem(e, Sorted);
         }
 
         private void fromJsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var openFile = new OpenFileDialog();
-            openFile.InitialDirectory = SpecialDirectories.Desktop;
-            openFile.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
-            openFile.CheckFileExists = true;
-            openFile.CheckPathExists = true;
-            openFile.ShowDialog();
-            string inputFilePath = openFile.FileName;
+            string inputFilePath=ChooseFile("json");
             if (!string.IsNullOrWhiteSpace(inputFilePath))
             {
                 fileHandler.copyJson(inputFilePath);
             }
             Content = fileHandler.GetContent();
-            writeList();
+            sortWrite();
         }
 
         private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
@@ -355,37 +301,60 @@ namespace AnimeList.Forms
             listBoxScaling(this.DeviceDpi, listBox);
         }
 
-        private void sort(SortType sortType)
+        private void sortWrite()
         {
             AContent selected = null;
-            if (listBox.SelectedIndices.Count==1)
+            if (listBox.SelectedIndices.Count == 1)
             {
                 selected = Sorted[listBox.SelectedIndex];
             }
-            Sorted = SortBy(Content, sortType);
-            if(selected is not null)
+            if (string.IsNullOrWhiteSpace(searchBox.Text))
             {
-                listBox.SetSelected(getIndex(selected.ID, Sorted), true);
+                Sorted = SortBy(Content, sortOrder);
             }
             writeList();
+            if (selected is not null)
+            {
+                var index = getIndex(selected.ID, Sorted);
+                listBox.ClearSelected();
+                listBox.SetSelected(index, true);
+            }
         }
-
         private void nameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             sortOrder = SortType.Aplhabetical;
-            sort(sortOrder);
+            sortWrite();
         }
-
         private void scoreToolStripMenuItem_Click(object sender, EventArgs e)
         {
             sortOrder = SortType.Score;
-            sort(sortOrder);
+            sortWrite();
         }
-
         private void actualOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             sortOrder = SortType.None;
-            sort(sortOrder);
+            sortWrite();
+        }
+        private void yearAiredToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sortOrder = SortType.Aired;
+            sortWrite();
+        }
+        private void finishedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sortOrder = SortType.Finished;
+            sortWrite();
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openFolder = new FolderBrowserDialog();
+            DialogResult result = openFolder.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFolder.SelectedPath))
+            {
+                string path= openFolder.SelectedPath;
+                fileHandler.exportJson(path);
+            }
         }
     }
 }

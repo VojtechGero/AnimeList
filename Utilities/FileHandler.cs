@@ -42,7 +42,7 @@ namespace AnimeList.Utilities
             foreach (string s in data)
             {
                 string temp = s.Trim().Trim(',');
-                if (temp == "[" || temp == "]") continue;
+                if (temp == "[" || temp == "]" || string.IsNullOrWhiteSpace(temp)) continue;
                 UnclassifiedContent content = JsonSerializer.Deserialize<UnclassifiedContent>(temp);
                 if(content.IsAnime)
                 {
@@ -108,7 +108,7 @@ namespace AnimeList.Utilities
             foreach(int i in indices)
             {
                 int t = i + 1;
-                if (t== data.Count - 2&&t!=2)
+                if (t== data.Count - 2&&t>2)
                 {
                     data[t -1]= data[t -1].Remove(data[t - 1].Length-1);
                 }
@@ -130,6 +130,18 @@ namespace AnimeList.Utilities
                 data.Insert(data.Count - 1, newText[i]);
             }
             writeAll();
+        }
+
+        internal void exportJson(string path)
+        {
+            string filePath = path + "\\AnimeList.json";
+            int i = 1;
+            while (File.Exists(filePath))
+            {
+                filePath = path + $"\\AnimeList({i}).json";
+                i++;
+            }
+            File.WriteAllLines(filePath, data);
         }
     }
 }
