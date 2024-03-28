@@ -263,11 +263,11 @@ namespace AnimeList.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(961, 302);
-            Controls.Add(WatchButton);
-            Controls.Add(searchBox);
-            Controls.Add(SwapButton);
-            Controls.Add(RefreshButton);
             Controls.Add(removeButton);
+            Controls.Add(WatchButton);
+            Controls.Add(RefreshButton);
+            Controls.Add(SwapButton);
+            Controls.Add(searchBox);
             Controls.Add(NameLabel);
             Controls.Add(description);
             Controls.Add(listBox);
@@ -276,6 +276,7 @@ namespace AnimeList.Forms
             Margin = new Padding(2);
             Name = "MainForm";
             Text = "THE LIST";
+            DpiChanged += MainForm_DpiChanged;
             Resize += MainForm_Resize;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

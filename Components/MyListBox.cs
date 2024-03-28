@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnimeList.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -61,6 +62,18 @@ namespace AnimeList.Components
                 }
             }
             base.OnPaint(e);
+        }
+
+        public bool HasScroll()
+        {
+            if (Size.Height >= ItemHeight * Items.Count)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

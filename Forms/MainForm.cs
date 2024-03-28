@@ -1,7 +1,6 @@
 using Microsoft.VisualBasic.FileIO;
 using AnimeList.Utilities;
 using AnimeList.Data;
-using System.Reflection;
 namespace AnimeList.Forms
 {
     public partial class MainForm : Form
@@ -16,47 +15,13 @@ namespace AnimeList.Forms
         {
             InitializeComponent();
             fileHandler = FileHandler.workFile();
-            listBoxScaling();
+            MainFormUtils.listBoxScaling(this.DeviceDpi, listBox);
             Content = fileHandler.GetContent();
             Sorted = Content.OrderByDescending(content => content.inProgress).ToList();
-            if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
-            {
-                hasScroll = false;
-            }
-            else
-            {
-                hasScroll = true;
-            }
+            hasScroll = listBox.HasScroll();
             var NameToolTip = new ToolTip();
             NameToolTip.SetToolTip(NameLabel, "Click to Copy");
             writeList();
-        }
-
-        private void listBoxScaling()
-        {
-            int dpi = this.DeviceDpi;
-            double scale = (float)dpi / 96;
-            var scaled = listBox.ItemHeight * scale;
-            listBox.ItemHeight = (int) scaled;
-        }
-
-        private bool needsChage()
-        {
-            bool n;
-            if (listBox.Size.Height >= listBox.ItemHeight * Content.Count)
-            {
-                n = false;
-            }
-            else
-            {
-                n = true;
-            }
-            if (n != hasScroll)
-            {
-                hasScroll = n;
-                return true;
-            }
-            else return false;
         }
 
         private void writeList()
@@ -70,7 +35,7 @@ namespace AnimeList.Forms
                 Sorted = StringOps.sortSearch(Content, query);
                 list = Sorted;
             }
-            else list = Content;
+            else list = Sorted;
             foreach (AContent item in list)
             {
                 string name = item.name;
@@ -161,7 +126,7 @@ namespace AnimeList.Forms
                 selected.Clear();
                 foreach (var i in temp)
                 {
-                    selected.Add(getIndex(Sorted[i].ID));
+                    selected.Add(MainFormUtils.getIndex(Sorted[i].ID, Content));
                 }
             }
             listBox.SelectedItems.Clear();
@@ -172,8 +137,9 @@ namespace AnimeList.Forms
                 listBox.Items.RemoveAt(x);
             }
             fileHandler.removeContents(selected);
-            if (needsChage())
+            if (MainFormUtils.needsChage(hasScroll, listBox))
             {
+                hasScroll = listBox.HasScroll();
                 writeList();
             }
         }
@@ -210,8 +176,9 @@ namespace AnimeList.Forms
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if (needsChage())
+            if (MainFormUtils.needsChage(hasScroll,listBox))
             {
+                hasScroll = listBox.HasScroll();
                 writeList();
             }
         }
@@ -227,7 +194,7 @@ namespace AnimeList.Forms
                 selected.Clear();
                 foreach (var i in temp)
                 {
-                    selected.Add(getIndex(Sorted[i].ID));
+                    selected.Add(MainFormUtils.getIndex(Sorted[i].ID, Content));
                 }
             }
             foreach (int i in selected)
@@ -257,14 +224,6 @@ namespace AnimeList.Forms
 
         }
 
-        private int getIndex(long id)
-        {
-            for (int i = 0; i < Content.Count; i++)
-            {
-                if (Content[i].ID == id) return i;
-            }
-            return -1;
-        }
 
         private void SwapButton_Click(object sender, EventArgs e)
         {
@@ -272,7 +231,7 @@ namespace AnimeList.Forms
             int current = listBox.SelectedIndex;
             if (Sorted.Any())
             {
-                index = getIndex(Sorted[current].ID);
+                index = MainFormUtils.getIndex(Sorted[current].ID,Content);
             }
             else index = current;
             (Content[index].name, Content[index].otherName) = (Content[index].otherName, Content[index].name);
@@ -358,15 +317,16 @@ namespace AnimeList.Forms
 
         private void WatchButton_Click(object sender, EventArgs e)
         {
-            int index = listBox.SelectedIndex;
+            int index = MainFormUtils.getIndex(Sorted[listBox.SelectedIndex].ID,Content);
             Content[index].inProgress = !Content[index].inProgress;
             watchButtonUpdate(Content[index].inProgress, index);
             fileHandler.updateLine(index, Content[index]);
+            listBox.Update();
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index <0) return;
+            if (e.Index < 0) return;
             e.DrawBackground();
             var selectedColor = new SolidBrush(Color.FromArgb(0, 120, 215));
             var watchedColor = Brushes.Green;
@@ -377,7 +337,7 @@ namespace AnimeList.Forms
             }
             else
             {
-                if (Content[e.Index].inProgress)
+                if (Sorted[e.Index].inProgress)
                 {
                     e.Graphics.FillRectangle(watchedColor, e.Bounds);
                     e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
@@ -405,6 +365,11 @@ namespace AnimeList.Forms
             }
             Content = fileHandler.GetContent();
             writeList();
+        }
+
+        private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
+        {
+            MainFormUtils.listBoxScaling(this.DeviceDpi, listBox);
         }
     }
 }
