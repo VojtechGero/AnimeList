@@ -1,64 +1,62 @@
 ﻿using AnimeList.Data;
 using AnimeList.Utilities;
-using System;
-using System.Reflection;
-namespace AnimeList.Forms
+namespace AnimeList.Forms;
+
+public partial class UpdateDialog : Form
 {
-    public partial class UpdateDialog : Form
+    public List<AContent> content;
+    bool stopParsing;
+    public UpdateDialog(List<AContent> content)
     {
-        public List<AContent> content;
-        bool stopParsing;
-        public UpdateDialog(List<AContent> content)
-        {
-            InitializeComponent();
-            stopParsing = false;
-            this.content = content;
-            setupProgressBar();
-            
-        }
+        InitializeComponent();
+        stopParsing = false;
+        this.content = content;
+        setupProgressBar();
+        
+    }
 
-        void setupProgressBar()
-        {
-            progressBar.Value = 0;
-            progressBar.Maximum = content.Count * 10;
-        }
+    void setupProgressBar()
+    {
+        progressBar.Value = 0;
+        progressBar.Maximum = content.Count * 10;
+    }
 
-        private async Task<AContent> update(AContent a,MalInterface m)
+    private async Task<AContent> update(AContent toUpdate,MalInterface m)
+    {
+        ContentNameLabel.Text = $"Updating {toUpdate.name}";
+        AContent newContent;
+        if (toUpdate.IsAnime)
         {
-            ContentNameLabel.Text = $"Updating {a.name}";
-            AContent temp;
-            if (a.IsAnime)
-            {
-                temp = await m.pullAnimeId(a.ID);
-            }
-            else
-            {
-                temp = await m.pullMangaId(a.ID);
-            }
-            if (temp.otherName == a.name)
-            {
-                (temp.name, temp.otherName) = (temp.otherName, temp.name);
-            }
-            progressBar.PerformStep();
-            return temp;
+            newContent = await m.pullAnimeId(toUpdate.ID);
         }
+        else
+        {
+            newContent = await m.pullMangaId(toUpdate.ID);
+        }
+        if (newContent.otherName == toUpdate.name)
+        {
+            (newContent.name, newContent.otherName) = (newContent.otherName, newContent.name);
+        }
+        newContent.inProgress = toUpdate.inProgress;
+        progressBar.PerformStep();
+        return newContent;
+    }
 
-        private void UpradeRemoveDialog_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            stopParsing = true;
-        }
+    private void UpradeRemoveDialog_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        stopParsing = true;
+    }
 
-        private async void UpdateDialog_Shown(object sender, EventArgs e)
+    private async void UpdateDialog_Shown(object sender, EventArgs e)
+    {
+        
+        MalInterface mal = new MalInterface();
+        ContentNameLabel.Visible = true;
+        for(int i=0;i<content.Count;i++)
         {
-            
-            MalInterface mal = new MalInterface();
-            ContentNameLabel.Visible = true;
-            for(int i=0;i<content.Count;i++)
-            {
-                if (stopParsing) break;
-                content[i] = await update(content[i],mal);
-            }
-            this.DialogResult = DialogResult.OK;
+            if (stopParsing) break;
+            content[i] = await update(content[i],mal);
         }
+        this.DialogResult = DialogResult.OK;
     }
 }

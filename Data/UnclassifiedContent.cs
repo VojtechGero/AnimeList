@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace AnimeList.Data;
 
-namespace AnimeList.Data
+internal class UnclassifiedContent : AContent
 {
-    internal class UnclassifiedContent : AContent
-    {
-        //required for json deserialization
-        public UnclassifiedContent() { }
+    //required for json deserialization
+    public UnclassifiedContent() { }
 
-        internal override string Description()
-        {
-            throw new NotImplementedException();
-        }
+    internal override string Description()
+    {
+        throw new NotImplementedException();
     }
 }
