@@ -1,5 +1,6 @@
 ﻿using AnimeList.Data;
 using AnimeList.Utilities;
+using Timer = System.Windows.Forms.Timer;
 
 namespace AnimeList.Forms;
 
@@ -12,7 +13,7 @@ public partial class AddDialog : Form
     List<Button> Buttons;
     bool Parsing, IdError,IsAnime;
 
-    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+    Timer timer = new Timer();
 
     public AddDialog(MainForm form, bool isAnime)
     {
@@ -35,6 +36,7 @@ public partial class AddDialog : Form
     {
         Parsing = true;
         timer.Stop();
+        IdError = false;
         if (string.IsNullOrWhiteSpace(idField.Text) && !string.IsNullOrWhiteSpace(searchBox.Text))
         {
             await parseSearch();
@@ -50,27 +52,29 @@ public partial class AddDialog : Form
 
     private async Task parseId()
     {
-
-        long id = long.Parse(idField.Text);
-        AContent contentFromId;
-        if (IsAnime)
+        if (long.TryParse(idField.Text, out long id))
         {
-            contentFromId = await MalI.pullAnimeId(id);
-        }
-        else
-        {
-            contentFromId = await MalI.pullMangaId(id);
-        }
-        if (contentFromId != null)
-        {
-            list.Clear();
-            list.Add(contentFromId);
-            IdError = false;
-        }
-        else
-        {
-            IdError = true;
-        }
+            AContent contentFromId;
+            if (IsAnime)
+            {
+                contentFromId = await MalI.pullAnimeId(id);
+            }
+            else
+            {
+                contentFromId = await MalI.pullMangaId(id);
+            }
+            if (contentFromId != null)
+            {
+                list.Clear();
+                list.Add(contentFromId);
+                IdError = false;
+            }
+            else
+            {
+                IdError = true;
+            }
+        } else IdError = true;
+        
     }
 
     private async Task parseSearch()
@@ -154,7 +158,7 @@ public partial class AddDialog : Form
         int index = Buttons.IndexOf(clickedButton);
         AContent toAdd = list[index];
         Form1.addContent(toAdd);
-        this.Dispose();
+        this.Close();
     }
 
     private void reDrawButtons()

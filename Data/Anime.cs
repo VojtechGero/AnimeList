@@ -14,7 +14,7 @@ internal class Anime : AContent
                    List<string> genres, int? year,float? score)
     {
         IsAnime = true;
-        ID = id;
+        Id = id;
         name = names.Last();
         if (episodes is not null)
         {

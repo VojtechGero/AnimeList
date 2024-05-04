@@ -89,6 +89,18 @@ internal class StringOps
         return name;
     }
 
+    internal static string GetLink(AContent content)
+    {
+        string def = "https://myanimelist.net/";
+        if (content.IsAnime)
+        {
+            def += "anime";
+        }
+        else def += "manga";
+        def += $"/{content.Id}";
+        return def;
+    }
+
     internal static string getFileName(string filePath)
     {
         string[] strings = filePath.Split("\\");

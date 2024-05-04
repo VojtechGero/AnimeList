@@ -36,6 +36,7 @@
             StatsLabel.AutoSize = true;
             StatsLabel.Font = new Font("Segoe UI", 15F);
             StatsLabel.Location = new Point(12, 9);
+            StatsLabel.Margin = new Padding(10);
             StatsLabel.Name = "StatsLabel";
             StatsLabel.Size = new Size(97, 41);
             StatsLabel.TabIndex = 0;
@@ -45,6 +46,8 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(800, 450);
             Controls.Add(StatsLabel);
             Name = "StatsDialog";

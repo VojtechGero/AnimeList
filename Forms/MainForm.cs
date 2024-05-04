@@ -1,6 +1,7 @@
 using AnimeList.Utilities;
 using AnimeList.Data;
 using static AnimeList.Utilities.MainFormUtils;
+using System.Diagnostics;
 namespace AnimeList.Forms;
 
 public partial class MainForm : Form
@@ -17,13 +18,13 @@ public partial class MainForm : Form
     {
         InitializeComponent();
         fileHandler = FileHandler.workFile();
-        listBoxScaling(DeviceDpi, listBox);
+        listBoxScaling(DeviceDpi, ContentListBox);
         RawContent = fileHandler.GetContent();
-        hasScroll = listBox.HasScroll();
+        hasScroll = ContentListBox.HasScroll();
         NameToolTip = new ToolTip();
         NameToolTip.SetToolTip(NameLabel, "Click to Copy");
         sortWrite();
-        listBox.AutoEllipsis();
+        ContentListBox.AutoEllipsis();
     }
 
     private void writeList()
@@ -36,7 +37,7 @@ public partial class MainForm : Form
             list = Sorted;
         }
         else list = Sorted;
-        listBox.WriteContent(list);
+        ContentListBox.WriteContent(list);
     }
 
     private void updateDesc(AContent content)
@@ -49,8 +50,7 @@ public partial class MainForm : Form
         }
         else SwapButton.Visible = false;
         WatchButton.Visible = true;
-        description.Visible = true;
-        NameLabel.Visible = true;
+        showDescription(true);
         WatchButton.Text = WatchButtonUpdate(content.inProgress);
     }
 
@@ -58,25 +58,24 @@ public partial class MainForm : Form
     {
         RawContent.Add(content);
         fileHandler.writeContent(content);
-        var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
-        listBox.SelectedItems.Clear();
-        listBox.Items.Add(listBox.FormatEllipsis(content.name));
-        listBox.selectIndices(selected);
+        var selected = new List<int>(ContentListBox.SelectedIndices.Cast<int>());
+        ContentListBox.SelectedItems.Clear();
+        ContentListBox.Items.Add(ContentListBox.FormatEllipsis(content.name));
+        ContentListBox.selectIndices(selected);
         sortWrite();
     }
 
     private void listBox_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (listBox.SelectedIndices.Count > 1 || listBox.SelectedIndex == -1)
+        if (ContentListBox.SelectedIndices.Count > 1 || ContentListBox.SelectedIndex == -1)
         {
-            description.Visible = false;
-            NameLabel.Visible = false;
+            showDescription(false);
             SwapButton.Visible = false;
             WatchButton.Visible = false;
         }
         else
         {
-            int select = listBox.SelectedIndex;
+            int select = ContentListBox.SelectedIndex;
             if (select != -1)
             {
                 updateDesc(Sorted[select]);
@@ -86,17 +85,23 @@ public partial class MainForm : Form
         RefreshButton.Visible = true;
     }
 
+    private void showDescription(bool show)
+    {
+        description.Visible = show;
+        NameLabel.Visible = show;
+        MalLogo.Visible = show;
+    }
+
     private void removeButton_Click(object sender, EventArgs e)
     {
-        description.Visible = false;
-        NameLabel.Visible = false;
+        showDescription(false);
         SwapButton.Visible = false;
         List<int> selected = new List<int>();
-        listBox.BeginUpdate();
-        foreach (var i in listBox.SelectedIndices.Cast<int>().Reverse())
+        ContentListBox.BeginUpdate();
+        foreach (var i in ContentListBox.SelectedIndices.Cast<int>().Reverse())
         {
-            selected.Add(getIndex(Sorted[i].ID, RawContent));
-            listBox.Items.RemoveAt(i);
+            selected.Add(getIndex(Sorted[i].Id, RawContent));
+            ContentListBox.Items.RemoveAt(i);
         }
         selected.Sort();
         selected.Reverse();
@@ -105,11 +110,11 @@ public partial class MainForm : Form
             RawContent.RemoveAt(x);
         }
         fileHandler.removeContents(selected);
-        if (needsChage(hasScroll, listBox))
+        if (needsChage(hasScroll, ContentListBox))
         {
-            hasScroll = listBox.HasScroll();
+            hasScroll = ContentListBox.HasScroll();
         }
-        listBox.EndUpdate();
+        ContentListBox.EndUpdate();
 
         sortWrite();
     }
@@ -138,16 +143,16 @@ public partial class MainForm : Form
     }
     private void MainForm_Resize(object sender, EventArgs e)
     {
-        if (needsChage(hasScroll, listBox))
+        if (needsChage(hasScroll, ContentListBox))
         {
-            hasScroll = listBox.HasScroll();
+            hasScroll = ContentListBox.HasScroll();
             writeList();
         }
     }
 
     private async void RefreshButton_Click(object sender, EventArgs e)
     {
-        var selected = new List<int>(listBox.SelectedIndices.Cast<int>());
+        var selected = new List<int>(ContentListBox.SelectedIndices.Cast<int>());
         List<AContent> list = new List<AContent>();
         if (Sorted.Any())
         {
@@ -155,7 +160,7 @@ public partial class MainForm : Form
             selected.Clear();
             foreach (var i in temp)
             {
-                selected.Add(getIndex(Sorted[i].ID, RawContent));
+                selected.Add(getIndex(Sorted[i].Id, RawContent));
             }
         }
         foreach (int i in selected)
@@ -170,7 +175,7 @@ public partial class MainForm : Form
         for (int i = 0; i < output.Count; i++)
         {
             RawContent[selected[i]] = output[i];
-            listBox.Items[selected[i]] = listBox.FormatEllipsis(output[i].name);
+            ContentListBox.Items[selected[i]] = ContentListBox.FormatEllipsis(output[i].name);
         }
         sortWrite();
         fileHandler.updateLines(selected, RawContent);
@@ -179,14 +184,14 @@ public partial class MainForm : Form
     private void SwapButton_Click(object sender, EventArgs e)
     {
         int index;
-        int current = listBox.SelectedIndex;
+        int current = ContentListBox.SelectedIndex;
         if (Sorted.Any())
         {
-            index = getIndex(Sorted[current].ID, RawContent);
+            index = getIndex(Sorted[current].Id, RawContent);
         }
         else index = current;
         (RawContent[index].name, RawContent[index].otherName) = (RawContent[index].otherName, RawContent[index].name);
-        listBox.Items[current] = listBox.FormatEllipsis(RawContent[index].name);
+        ContentListBox.Items[current] = ContentListBox.FormatEllipsis(RawContent[index].name);
         updateDesc(RawContent[index]);
         fileHandler.updateLine(index, RawContent[index]);
     }
@@ -195,9 +200,9 @@ public partial class MainForm : Form
     {
         if (RawContent.Any())
         {
-            listBox.ClearSelected();
+            ContentListBox.ClearSelected();
             var rand = new Random();
-            listBox.SelectedIndex = rand.Next(RawContent.Count);
+            ContentListBox.SelectedIndex = rand.Next(RawContent.Count);
         }
     }
 
@@ -215,17 +220,17 @@ public partial class MainForm : Form
         List<int> toRemove = new List<int>();
         for (int i = 0; i < RawContent.Count; i++)
         {
-            if (map.Contains(RawContent[i].ID))
+            if (map.Contains(RawContent[i].Id))
             {
                 toRemove.Add(i);
             }
-            else map.Add(RawContent[i].ID);
+            else map.Add(RawContent[i].Id);
         }
         if (toRemove.Any())
         {
-            if (listBox.SelectedIndices.Count == 1 && toRemove.Contains(listBox.SelectedIndex))
+            if (ContentListBox.SelectedIndices.Count == 1 && toRemove.Contains(ContentListBox.SelectedIndex))
             {
-                listBox.SelectedIndex = getDuplicate(RawContent[listBox.SelectedIndex].ID, RawContent);
+                ContentListBox.SelectedIndex = getDuplicate(RawContent[ContentListBox.SelectedIndex].Id, RawContent);
             }
             toRemove.Reverse();
             foreach (int i in toRemove)
@@ -239,7 +244,7 @@ public partial class MainForm : Form
 
     private void NameLabel_MouseClick(object sender, MouseEventArgs e)
     {
-        var index = listBox.SelectedIndex;
+        var index = ContentListBox.SelectedIndex;
         Clipboard.SetText(Sorted[index].name);
         var Mouse = NameLabel.PointToClient(Cursor.Position);
         NameToolTip.Show($"Copied: {Sorted[index].name}", NameLabel,
@@ -248,12 +253,12 @@ public partial class MainForm : Form
 
     private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        listBox.SelectAll();
+        ContentListBox.SelectAll();
     }
 
     private void WatchButton_Click(object sender, EventArgs e)
     {
-        int index = getIndex(Sorted[listBox.SelectedIndex].ID, RawContent);
+        int index = getIndex(Sorted[ContentListBox.SelectedIndex].Id, RawContent);
         RawContent[index].inProgress = !RawContent[index].inProgress;
         WatchButtonUpdate(RawContent[index].inProgress);
         fileHandler.updateLine(index, RawContent[index]);
@@ -262,7 +267,7 @@ public partial class MainForm : Form
 
     private void listBox_DrawItem(object sender, DrawItemEventArgs e)
     {
-        listBox.MyDrawItem(e, Sorted);
+        ContentListBox.MyDrawItem(e, Sorted);
     }
 
     private void fromJsonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -278,15 +283,15 @@ public partial class MainForm : Form
 
     private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
     {
-        listBoxScaling(DeviceDpi, listBox);
+        listBoxScaling(DeviceDpi, ContentListBox);
     }
 
     private void sortWrite()
     {
         AContent? selected = null;
-        if (listBox.SelectedIndices.Count == 1)
+        if (ContentListBox.SelectedIndices.Count == 1)
         {
-            selected = Sorted[listBox.SelectedIndex];
+            selected = Sorted[ContentListBox.SelectedIndex];
         }
         if (string.IsNullOrWhiteSpace(searchBox.Text))
         {
@@ -295,9 +300,9 @@ public partial class MainForm : Form
         writeList();
         if (selected is not null)
         {
-            var index = getIndex(selected.ID, Sorted);
-            listBox.ClearSelected();
-            listBox.SetSelected(index, true);
+            var index = getIndex(selected.Id, Sorted);
+            ContentListBox.ClearSelected();
+            ContentListBox.SetSelected(index, true);
         }
     }
     private void nameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -317,9 +322,15 @@ public partial class MainForm : Form
     }
     private void yearAiredToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        sortOrder = SortType.Aired;
+        sortOrder = SortType.AiredDescending;
         sortWrite();
     }
+    private void newestToOldestToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        sortOrder = SortType.AiredAscending;
+        sortWrite();
+    }
+
     private void finishedToolStripMenuItem_Click(object sender, EventArgs e)
     {
         sortOrder = SortType.Finished;
@@ -328,22 +339,18 @@ public partial class MainForm : Form
 
     private void toJsonToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var openFolder = new FolderBrowserDialog();
-        DialogResult result = openFolder.ShowDialog();
-        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFolder.SelectedPath))
+        var path = ChooseFolder();
+        if (path is not null)
         {
-            string path = openFolder.SelectedPath;
             fileHandler.exportJson(path);
         }
     }
 
     private void toTxtToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var openFolder = new FolderBrowserDialog();
-        DialogResult result = openFolder.ShowDialog();
-        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFolder.SelectedPath))
+        var path = ChooseFolder();
+        if (path is not null)
         {
-            string path = openFolder.SelectedPath;
             var names = RawContent.Select(x => x.name).ToList();
             fileHandler.exportTxt(path, names);
         }
@@ -351,7 +358,17 @@ public partial class MainForm : Form
 
     private void statsToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        StatsDialog stats=new StatsDialog(RawContent);
+        StatsDialog stats = new StatsDialog(RawContent);
         stats.ShowDialog();
+    }
+
+    private void MalLogo_Click(object sender, EventArgs e)
+    {
+        var content = Sorted[ContentListBox.SelectedIndex];
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = StringOps.GetLink(content),
+            UseShellExecute = true
+        });
     }
 }

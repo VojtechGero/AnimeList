@@ -27,11 +27,11 @@ public partial class UpdateDialog : Form
         AContent newContent;
         if (toUpdate.IsAnime)
         {
-            newContent = await m.pullAnimeId(toUpdate.ID);
+            newContent = await m.pullAnimeId(toUpdate.Id);
         }
         else
         {
-            newContent = await m.pullMangaId(toUpdate.ID);
+            newContent = await m.pullMangaId(toUpdate.Id);
         }
         if (newContent.otherName == toUpdate.name)
         {

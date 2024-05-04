@@ -1,20 +1,12 @@
 ﻿using AnimeList.Components;
 using AnimeList.Data;
 using Microsoft.VisualBasic.FileIO;
+using System.Globalization;
 
 namespace AnimeList.Utilities;
 
 internal static class MainFormUtils
 {
-    internal enum SortType
-    {
-        None,
-        Aplhabetical,
-        Score,
-        Finished,
-        Aired
-    }
-
     internal static void listBoxScaling(int dpi,MyListBox listBox)
     {
         double scale = (double)dpi / 96;
@@ -26,7 +18,7 @@ internal static class MainFormUtils
     {
         for (int i = 0; i < Content.Count; i++)
         {
-            if (Content[i].ID == id) return i;
+            if (Content[i].Id == id) return i;
         }
         return -1;
     }
@@ -45,7 +37,7 @@ internal static class MainFormUtils
     {
         for (int i = 0; i < Content.Count; i++)
         {
-            if (Content[i].ID == id) return i;
+            if (Content[i].Id == id) return i;
         }
         return -1;
     }
@@ -66,24 +58,34 @@ internal static class MainFormUtils
         return openFile.FileName;
     }
 
+    internal static string? ChooseFolder()
+    {
+        var openFolder = new FolderBrowserDialog();
+        DialogResult result = openFolder.ShowDialog();
+        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFolder.SelectedPath))
+        {
+            return openFolder.SelectedPath;
+        }
+        return null;
+    }
+
+    private static IEnumerable<AContent> SortContent(IEnumerable<AContent> list,SortType s)
+    {
+        return s switch
+        {
+            SortType.Aplhabetical => list.OrderBy(content => content.name),
+            SortType.Score => list.OrderByDescending(content => content.Score),
+            SortType.Finished => list.OrderBy(content => content.notOut),
+            SortType.AiredDescending => list.OrderBy(content => content.started),
+            SortType.AiredAscending => list.OrderByDescending (content => content.started),
+            _ => list
+        };
+    }
+
     internal static List<AContent> SortBy(List<AContent> Content, SortType s)
     {
-        IEnumerable<AContent> Sorted = Content;
-        switch (s)
-        {
-            case SortType.Aplhabetical:
-                Sorted=Sorted.OrderBy(content => content.name);
-                break;
-            case SortType.Score:
-                Sorted = Sorted.OrderByDescending(content => content.Score);
-                break;
-            case SortType.Finished:
-                Sorted = Sorted.OrderBy(content => content.notOut);
-                break;
-            case SortType.Aired:
-                Sorted = Sorted.OrderBy(content => content.started);
-                break;
-        }
+        IEnumerable<AContent> Sorted = SortContent(Content, s);
         return Sorted.OrderByDescending(content => content.inProgress).ToList();
     }
+
 }

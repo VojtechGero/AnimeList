@@ -30,7 +30,7 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        listBox = new MyListBox();
+        ContentListBox = new MyListBox();
         menuStrip1 = new MenuStrip();
         addToolStripMenuItem = new ToolStripMenuItem();
         manualToolStripMenuItem = new ToolStripMenuItem();
@@ -48,6 +48,7 @@ partial class MainForm
         nameToolStripMenuItem = new ToolStripMenuItem();
         scoreToolStripMenuItem = new ToolStripMenuItem();
         yearAiredToolStripMenuItem = new ToolStripMenuItem();
+        newestToOldestToolStripMenuItem = new ToolStripMenuItem();
         finishedToolStripMenuItem = new ToolStripMenuItem();
         actualOrderToolStripMenuItem = new ToolStripMenuItem();
         exportToolStripMenuItem = new ToolStripMenuItem();
@@ -60,24 +61,26 @@ partial class MainForm
         SwapButton = new Button();
         searchBox = new TextBox();
         WatchButton = new Button();
+        MalLogo = new PictureBox();
         menuStrip1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)MalLogo).BeginInit();
         SuspendLayout();
         // 
-        // listBox
+        // ContentListBox
         // 
-        listBox.BorderStyle = BorderStyle.FixedSingle;
-        listBox.Dock = DockStyle.Left;
-        listBox.DrawMode = DrawMode.OwnerDrawFixed;
-        listBox.Font = new Font("Segoe UI", 15F);
-        listBox.FormattingEnabled = true;
-        listBox.ItemHeight = 30;
-        listBox.Location = new Point(0, 33);
-        listBox.Name = "listBox";
-        listBox.SelectionMode = SelectionMode.MultiExtended;
-        listBox.Size = new Size(523, 470);
-        listBox.TabIndex = 1;
-        listBox.DrawItem += listBox_DrawItem;
-        listBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
+        ContentListBox.BorderStyle = BorderStyle.FixedSingle;
+        ContentListBox.Dock = DockStyle.Left;
+        ContentListBox.DrawMode = DrawMode.OwnerDrawFixed;
+        ContentListBox.Font = new Font("Segoe UI", 15F);
+        ContentListBox.FormattingEnabled = true;
+        ContentListBox.ItemHeight = 30;
+        ContentListBox.Location = new Point(0, 33);
+        ContentListBox.Name = "ContentListBox";
+        ContentListBox.SelectionMode = SelectionMode.MultiExtended;
+        ContentListBox.Size = new Size(523, 491);
+        ContentListBox.TabIndex = 1;
+        ContentListBox.DrawItem += listBox_DrawItem;
+        ContentListBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
         // 
         // menuStrip1
         // 
@@ -148,34 +151,34 @@ partial class MainForm
         // randomSelectToolStripMenuItem1
         // 
         randomSelectToolStripMenuItem1.Name = "randomSelectToolStripMenuItem1";
-        randomSelectToolStripMenuItem1.Size = new Size(270, 34);
+        randomSelectToolStripMenuItem1.Size = new Size(263, 34);
         randomSelectToolStripMenuItem1.Text = "Random select";
         randomSelectToolStripMenuItem1.Click += randomSelectToolStripMenuItem_Click;
         // 
         // selecToolStripMenuItem
         // 
         selecToolStripMenuItem.Name = "selecToolStripMenuItem";
-        selecToolStripMenuItem.Size = new Size(270, 34);
+        selecToolStripMenuItem.Size = new Size(263, 34);
         selecToolStripMenuItem.Text = "Select all";
         selecToolStripMenuItem.Click += selectAllToolStripMenuItem_Click;
         // 
         // removeDuplicatesToolStripMenuItem1
         // 
         removeDuplicatesToolStripMenuItem1.Name = "removeDuplicatesToolStripMenuItem1";
-        removeDuplicatesToolStripMenuItem1.Size = new Size(270, 34);
+        removeDuplicatesToolStripMenuItem1.Size = new Size(263, 34);
         removeDuplicatesToolStripMenuItem1.Text = "Remove duplicates";
         removeDuplicatesToolStripMenuItem1.Click += removeDuplicatesToolStripMenuItem_Click;
         // 
         // statsToolStripMenuItem
         // 
         statsToolStripMenuItem.Name = "statsToolStripMenuItem";
-        statsToolStripMenuItem.Size = new Size(270, 34);
+        statsToolStripMenuItem.Size = new Size(263, 34);
         statsToolStripMenuItem.Text = "Stats";
         statsToolStripMenuItem.Click += statsToolStripMenuItem_Click;
         // 
         // orderByToolStripMenuItem
         // 
-        orderByToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nameToolStripMenuItem, scoreToolStripMenuItem, yearAiredToolStripMenuItem, finishedToolStripMenuItem, actualOrderToolStripMenuItem });
+        orderByToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nameToolStripMenuItem, scoreToolStripMenuItem, yearAiredToolStripMenuItem, newestToOldestToolStripMenuItem, finishedToolStripMenuItem, actualOrderToolStripMenuItem });
         orderByToolStripMenuItem.Name = "orderByToolStripMenuItem";
         orderByToolStripMenuItem.Size = new Size(99, 29);
         orderByToolStripMenuItem.Text = "Order by";
@@ -200,6 +203,13 @@ partial class MainForm
         yearAiredToolStripMenuItem.Size = new Size(248, 34);
         yearAiredToolStripMenuItem.Text = "Oldest to newest";
         yearAiredToolStripMenuItem.Click += yearAiredToolStripMenuItem_Click;
+        // 
+        // newestToOldestToolStripMenuItem
+        // 
+        newestToOldestToolStripMenuItem.Name = "newestToOldestToolStripMenuItem";
+        newestToOldestToolStripMenuItem.Size = new Size(248, 34);
+        newestToOldestToolStripMenuItem.Text = "Newest to oldest";
+        newestToOldestToolStripMenuItem.Click += newestToOldestToolStripMenuItem_Click;
         // 
         // finishedToolStripMenuItem
         // 
@@ -240,7 +250,7 @@ partial class MainForm
         // 
         description.AutoSize = true;
         description.Font = new Font("Segoe UI", 12F);
-        description.Location = new Point(530, 140);
+        description.Location = new Point(530, 149);
         description.Name = "description";
         description.Size = new Size(132, 32);
         description.TabIndex = 3;
@@ -252,7 +262,7 @@ partial class MainForm
         NameLabel.AutoSize = true;
         NameLabel.Font = new Font("Segoe UI", 15F);
         NameLabel.ForeColor = SystemColors.ControlText;
-        NameLabel.Location = new Point(530, 93);
+        NameLabel.Location = new Point(591, 91);
         NameLabel.Name = "NameLabel";
         NameLabel.Size = new Size(97, 41);
         NameLabel.TabIndex = 4;
@@ -264,7 +274,7 @@ partial class MainForm
         // 
         removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         removeButton.Font = new Font("Segoe UI", 14F);
-        removeButton.Location = new Point(1171, 437);
+        removeButton.Location = new Point(1171, 458);
         removeButton.Name = "removeButton";
         removeButton.Size = new Size(189, 55);
         removeButton.TabIndex = 5;
@@ -277,7 +287,7 @@ partial class MainForm
         // 
         RefreshButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         RefreshButton.Font = new Font("Segoe UI", 14F);
-        RefreshButton.Location = new Point(977, 437);
+        RefreshButton.Location = new Point(977, 458);
         RefreshButton.Name = "RefreshButton";
         RefreshButton.Size = new Size(189, 55);
         RefreshButton.TabIndex = 6;
@@ -290,7 +300,7 @@ partial class MainForm
         // 
         SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         SwapButton.Font = new Font("Segoe UI", 14F);
-        SwapButton.Location = new Point(977, 377);
+        SwapButton.Location = new Point(977, 398);
         SwapButton.Name = "SwapButton";
         SwapButton.Size = new Size(189, 55);
         SwapButton.TabIndex = 7;
@@ -315,7 +325,7 @@ partial class MainForm
         // 
         WatchButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         WatchButton.Font = new Font("Segoe UI", 14F);
-        WatchButton.Location = new Point(1171, 377);
+        WatchButton.Location = new Point(1171, 398);
         WatchButton.Name = "WatchButton";
         WatchButton.Size = new Size(189, 55);
         WatchButton.TabIndex = 9;
@@ -324,11 +334,24 @@ partial class MainForm
         WatchButton.Visible = false;
         WatchButton.Click += WatchButton_Click;
         // 
+        // MalLogo
+        // 
+        MalLogo.Image = Properties.Resources.MyAnimeList_Logo;
+        MalLogo.Location = new Point(530, 91);
+        MalLogo.Name = "MalLogo";
+        MalLogo.Size = new Size(55, 55);
+        MalLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+        MalLogo.TabIndex = 10;
+        MalLogo.TabStop = false;
+        MalLogo.Visible = false;
+        MalLogo.Click += MalLogo_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1373, 503);
+        ClientSize = new Size(1373, 524);
+        Controls.Add(MalLogo);
         Controls.Add(removeButton);
         Controls.Add(WatchButton);
         Controls.Add(RefreshButton);
@@ -336,7 +359,7 @@ partial class MainForm
         Controls.Add(searchBox);
         Controls.Add(NameLabel);
         Controls.Add(description);
-        Controls.Add(listBox);
+        Controls.Add(ContentListBox);
         Controls.Add(menuStrip1);
         MainMenuStrip = menuStrip1;
         Name = "MainForm";
@@ -345,12 +368,13 @@ partial class MainForm
         Resize += MainForm_Resize;
         menuStrip1.ResumeLayout(false);
         menuStrip1.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)MalLogo).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
 
     #endregion
-    private MyListBox listBox;
+    private MyListBox ContentListBox;
     private MenuStrip menuStrip1;
     private ToolStripMenuItem addToolStripMenuItem;
     private ToolStripMenuItem manualToolStripMenuItem;
@@ -380,4 +404,6 @@ partial class MainForm
     private ToolStripMenuItem toJsonToolStripMenuItem;
     private ToolStripMenuItem toTxtToolStripMenuItem;
     private ToolStripMenuItem statsToolStripMenuItem;
+    private ToolStripMenuItem newestToOldestToolStripMenuItem;
+    private PictureBox MalLogo;
 }

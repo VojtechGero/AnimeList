@@ -5,7 +5,7 @@ namespace AnimeList.Data;
 public abstract class AContent
 {
     public bool IsAnime { get; set; }
-    public long ID { get; set; }
+    public long Id { get; set; }
     public string name { get; set; }
     public string otherName { get; set; }
     public int count { get; set; }

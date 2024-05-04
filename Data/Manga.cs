@@ -15,7 +15,7 @@ internal class Manga : AContent
                    List<string> genres, List<string> authors, int? year,float? score)
     {
         IsAnime = false;
-        ID = id;
+        Id = id;
         name = names.Last();
         if (count is not null)
         {
