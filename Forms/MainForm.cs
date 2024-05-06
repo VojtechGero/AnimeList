@@ -1,7 +1,7 @@
-using AnimeList.Utilities;
 using AnimeList.Data;
-using static AnimeList.Utilities.MainFormUtils;
+using AnimeList.Utilities;
 using System.Diagnostics;
+using static AnimeList.Utilities.MainFormUtils;
 namespace AnimeList.Forms;
 
 public partial class MainForm : Form
@@ -13,6 +13,7 @@ public partial class MainForm : Form
     string query;
     bool hasScroll;
     ToolTip NameToolTip;
+    ToolTip LinkToolTip;
     SortType sortOrder = SortType.None;
     public MainForm()
     {
@@ -23,12 +24,19 @@ public partial class MainForm : Form
         hasScroll = ContentListBox.HasScroll();
         NameToolTip = new ToolTip();
         NameToolTip.SetToolTip(NameLabel, "Click to Copy");
+        LinkToolTip = new ToolTip();
+        LinkToolTip.SetToolTip(MalLogo, "My Anime List");
         sortWrite();
         ContentListBox.AutoEllipsis();
     }
 
     private void writeList()
     {
+        AContent? selected = null;
+        if (ContentListBox.SelectedIndices.Count == 1)
+        {
+            selected = Sorted[ContentListBox.SelectedIndex];
+        }
         List<AContent> list;
         if (!string.IsNullOrWhiteSpace(searchBox.Text))
         {
@@ -37,6 +45,12 @@ public partial class MainForm : Form
             list = Sorted;
         }
         else list = Sorted;
+        if (selected is not null)
+        {
+            var index = getIndex(selected.Id, Sorted);
+            ContentListBox.ClearSelected();
+            ContentListBox.SetSelected(index, true);
+        }
         ContentListBox.WriteContent(list);
     }
 
@@ -76,10 +90,7 @@ public partial class MainForm : Form
         else
         {
             int select = ContentListBox.SelectedIndex;
-            if (select != -1)
-            {
-                updateDesc(Sorted[select]);
-            }
+            if (select != -1) updateDesc(Sorted[select]);
         }
         removeButton.Visible = true;
         RefreshButton.Visible = true;
@@ -115,7 +126,6 @@ public partial class MainForm : Form
             hasScroll = ContentListBox.HasScroll();
         }
         ContentListBox.EndUpdate();
-
         sortWrite();
     }
 
@@ -208,10 +218,7 @@ public partial class MainForm : Form
 
     private void searchBox_TextChanged(object sender, EventArgs e)
     {
-        if (RawContent.Any())
-        {
-            sortWrite();
-        }
+        if (RawContent.Any()) sortWrite();
     }
 
     private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -370,5 +377,25 @@ public partial class MainForm : Form
             FileName = StringOps.GetLink(content),
             UseShellExecute = true
         });
+    }
+
+    private void MalLogo_MouseEnter(object sender, EventArgs e)
+    {
+        MalLogo.Cursor = Cursors.Hand;
+    }
+
+    private void MalLogo_MouseLeave(object sender, EventArgs e)
+    {
+        MalLogo.Cursor = Cursors.Default;
+    }
+
+    private void NameLabel_MouseEnter(object sender, EventArgs e)
+    {
+        NameLabel.Cursor = Cursors.Hand;
+    }
+
+    private void NameLabel_MouseLeave(object sender, EventArgs e)
+    {
+        NameLabel.Cursor = Cursors.Default;
     }
 }

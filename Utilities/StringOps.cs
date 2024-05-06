@@ -7,7 +7,7 @@ internal class StringOps
     internal static List<AContent> sortSearch(List<AContent> list, string query)
     {
         return list
-        .OrderByDescending(s => relevance(s,query))
+        .OrderByDescending(s => relevance(s, query))
         .ToList();
     }
 
@@ -23,9 +23,10 @@ internal class StringOps
             if (value(content.name, query) > value(content.otherName, query))
             {
                 name = content.name;
-            }else name= content.otherName;
+            }
+            else name = content.otherName;
         }
-        return value(name,query);
+        return value(name, query);
     }
 
     private static int value(string name, string query)
@@ -45,8 +46,8 @@ internal class StringOps
         {
             return s.Length;
         }
-        s=s.ToLower();
-        t=t.ToLower();
+        s = s.ToLower();
+        t = t.ToLower();
         int n = s.Length;
         int m = t.Length;
         int[,] d = new int[n + 1, m + 1];
@@ -68,11 +69,11 @@ internal class StringOps
 
     static int relevanceByWords(string str, string query)
     {
-        str=str.ToLower();
-        query=query.ToLower();
+        str = str.ToLower();
+        query = query.ToLower();
         string[] wordsInQuery = query.Split(' ');
-        int count=0;
-        foreach(string word in wordsInQuery)
+        int count = 0;
+        foreach (string word in wordsInQuery)
         {
             if (str.Contains(word)) count++;
         }
@@ -81,10 +82,10 @@ internal class StringOps
 
     internal static string formatName(string name)
     {
-        if(name.Contains(", "))
+        if (name.Contains(", "))
         {
             string[] s = name.Split(", ");
-            name = s[1]+" "+s[0];
+            name = s[1] + " " + s[0];
         }
         return name;
     }

@@ -1,6 +1,4 @@
 ﻿using AnimeList.Data;
-using System.Collections.Generic;
-using System.Windows.Forms;
 namespace AnimeList.Components;
 
 internal class MyListBox : ListBox
@@ -69,7 +67,7 @@ internal class MyListBox : ListBox
         EndUpdate();
     }
 
-    public void MyDrawItem(DrawItemEventArgs e,List<AContent> Sorted)
+    public void MyDrawItem(DrawItemEventArgs e, List<AContent> Sorted)
     {
         if (e.Index < 0) return;
         e.DrawBackground();
@@ -145,7 +143,7 @@ internal class MyListBox : ListBox
     public void selectIndices(List<int> list)
     {
         BeginUpdate();
-        foreach(int i in list)
+        foreach (int i in list)
         {
             SetSelected(i, true);
         }

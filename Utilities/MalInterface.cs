@@ -1,7 +1,7 @@
-﻿using JikanDotNet.Exceptions;
-using JikanDotNet.Config;
+﻿using AnimeList.Data;
 using JikanDotNet;
-using AnimeList.Data;
+using JikanDotNet.Config;
+using JikanDotNet.Exceptions;
 using Anime = AnimeList.Data.Anime;
 using Manga = AnimeList.Data.Manga;
 
@@ -21,7 +21,7 @@ internal class MalInterface
 
     private List<string> getTitles(ICollection<TitleEntry> entries)
     {
-        List<string> titles=new List<string>();
+        List<string> titles = new List<string>();
         if (entries.Count > 1)
         {
             string english, def;
@@ -39,8 +39,9 @@ internal class MalInterface
             {
                 if (def == "")
                 {
-                    titles.Add (english);
-                }else if (english == "")
+                    titles.Add(english);
+                }
+                else if (english == "")
                 {
                     titles.Add(def);
                 }
@@ -50,7 +51,7 @@ internal class MalInterface
                     titles.Add(english);
                 }
             }
-        } 
+        }
         else
         {
             titles.Add(entries.First().Title);
@@ -75,7 +76,7 @@ internal class MalInterface
     private Anime toAnime(JikanDotNet.Anime input)
     {
         var genres = getGerners(input.Genres);
-        int? year= null;
+        int? year = null;
         if (input.Aired.From is not null)
         {
             year = input.Aired.From.Value.Year; ;
@@ -87,7 +88,7 @@ internal class MalInterface
                 notOut: input.Airing,
                 genres: genres,
                 year: year,
-                score: (float?) input.Score);
+                score: (float?)input.Score);
         return anime;
     }
 
@@ -121,7 +122,7 @@ internal class MalInterface
         return authors;
     }
 
-    internal async Task<Anime> pullAnimeId(long id)
+    internal async Task<Anime> GetAnimeId(long id)
     {
         try
         {
@@ -130,7 +131,7 @@ internal class MalInterface
         }
         catch (JikanRequestException)
         {
-            return await pullAnimeId(id);
+            return await GetAnimeId(id);
         }
         catch (JikanValidationException)
         {
@@ -138,7 +139,7 @@ internal class MalInterface
         }
     }
 
-    internal async Task<Manga> pullMangaId(long id)
+    internal async Task<Manga> GetMangaId(long id)
     {
         try
         {
@@ -147,7 +148,7 @@ internal class MalInterface
         }
         catch (JikanRequestException)
         {
-            return await pullMangaId(id);
+            return await GetMangaId(id);
         }
         catch (JikanValidationException)
         {
@@ -160,7 +161,7 @@ internal class MalInterface
         try
         {
             var animes = await jikan.SearchAnimeAsync(query);
-            if(animes is null)
+            if (animes is null)
             {
                 return null;
             }
@@ -170,7 +171,7 @@ internal class MalInterface
             {
                 if (i > 4) break;
                 i++;
-                if(item is not null)
+                if (item is not null)
                 {
                     Anime a = toAnime(item);
                     animeList.Add(a);

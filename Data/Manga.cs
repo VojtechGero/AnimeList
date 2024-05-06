@@ -11,8 +11,8 @@ internal class Manga : AContent
         }
     }
 
-    internal Manga(long id, List<string> names, int? count, bool notOut, 
-                   List<string> genres, List<string> authors, int? year,float? score)
+    internal Manga(long id, List<string> names, int? count, bool notOut,
+                   List<string> genres, List<string> authors, int? year, float? score)
     {
         IsAnime = false;
         Id = id;

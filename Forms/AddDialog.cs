@@ -11,7 +11,7 @@ public partial class AddDialog : Form
     List<AContent> list;
     List<Label> Labels;
     List<Button> Buttons;
-    bool Parsing, IdError,IsAnime;
+    bool Parsing, IdError, IsAnime;
 
     Timer timer = new Timer();
 
@@ -24,7 +24,7 @@ public partial class AddDialog : Form
         MalI = new MalInterface();
         addButtons();
         addLabels();
-        this.Height = Buttons.Last().Bottom+Buttons.Last().Height*2;
+        this.Height = Buttons.Last().Bottom + Buttons.Last().Height * 2;
         this.Form1 = form;
         IdError = Parsing = false;
         timer.Tick += new EventHandler(parseInput);
@@ -57,11 +57,11 @@ public partial class AddDialog : Form
             AContent contentFromId;
             if (IsAnime)
             {
-                contentFromId = await MalI.pullAnimeId(id);
+                contentFromId = await MalI.GetAnimeId(id);
             }
             else
             {
-                contentFromId = await MalI.pullMangaId(id);
+                contentFromId = await MalI.GetMangaId(id);
             }
             if (contentFromId != null)
             {
@@ -73,8 +73,9 @@ public partial class AddDialog : Form
             {
                 IdError = true;
             }
-        } else IdError = true;
-        
+        }
+        else IdError = true;
+
     }
 
     private async Task parseSearch()
@@ -83,13 +84,13 @@ public partial class AddDialog : Form
         var content = new List<AContent>();
         if (IsAnime)
         {
-            content=await MalI.searchAnime(searchBox.Text);
+            content = await MalI.searchAnime(searchBox.Text);
         }
         else
         {
-            content=await MalI.searchManga(searchBox.Text);
+            content = await MalI.searchManga(searchBox.Text);
         }
-        if(content is null)
+        if (content is null)
         {
             MessageBox.Show("Server or internet error");
             this.Close();

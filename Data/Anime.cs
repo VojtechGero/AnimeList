@@ -10,8 +10,8 @@ internal class Anime : AContent
         }
     }
 
-    internal Anime(long id, List<string> names, int? episodes, bool notOut, 
-                   List<string> genres, int? year,float? score)
+    internal Anime(long id, List<string> names, int? episodes, bool notOut,
+                   List<string> genres, int? year, float? score)
     {
         IsAnime = true;
         Id = id;

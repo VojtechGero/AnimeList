@@ -77,7 +77,7 @@ partial class MainForm
         ContentListBox.Location = new Point(0, 33);
         ContentListBox.Name = "ContentListBox";
         ContentListBox.SelectionMode = SelectionMode.MultiExtended;
-        ContentListBox.Size = new Size(523, 491);
+        ContentListBox.Size = new Size(523, 504);
         ContentListBox.TabIndex = 1;
         ContentListBox.DrawItem += listBox_DrawItem;
         ContentListBox.SelectedIndexChanged += listBox_SelectedIndexChanged;
@@ -269,12 +269,14 @@ partial class MainForm
         NameLabel.Text = "Name";
         NameLabel.Visible = false;
         NameLabel.MouseClick += NameLabel_MouseClick;
+        NameLabel.MouseEnter += NameLabel_MouseEnter;
+        NameLabel.MouseLeave += NameLabel_MouseLeave;
         // 
         // removeButton
         // 
         removeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         removeButton.Font = new Font("Segoe UI", 14F);
-        removeButton.Location = new Point(1171, 458);
+        removeButton.Location = new Point(1171, 471);
         removeButton.Name = "removeButton";
         removeButton.Size = new Size(189, 55);
         removeButton.TabIndex = 5;
@@ -287,7 +289,7 @@ partial class MainForm
         // 
         RefreshButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         RefreshButton.Font = new Font("Segoe UI", 14F);
-        RefreshButton.Location = new Point(977, 458);
+        RefreshButton.Location = new Point(977, 471);
         RefreshButton.Name = "RefreshButton";
         RefreshButton.Size = new Size(189, 55);
         RefreshButton.TabIndex = 6;
@@ -300,7 +302,7 @@ partial class MainForm
         // 
         SwapButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         SwapButton.Font = new Font("Segoe UI", 14F);
-        SwapButton.Location = new Point(977, 398);
+        SwapButton.Location = new Point(977, 411);
         SwapButton.Name = "SwapButton";
         SwapButton.Size = new Size(189, 55);
         SwapButton.TabIndex = 7;
@@ -325,7 +327,7 @@ partial class MainForm
         // 
         WatchButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         WatchButton.Font = new Font("Segoe UI", 14F);
-        WatchButton.Location = new Point(1171, 398);
+        WatchButton.Location = new Point(1171, 411);
         WatchButton.Name = "WatchButton";
         WatchButton.Size = new Size(189, 55);
         WatchButton.TabIndex = 9;
@@ -337,7 +339,7 @@ partial class MainForm
         // MalLogo
         // 
         MalLogo.Image = Properties.Resources.MyAnimeList_Logo;
-        MalLogo.Location = new Point(530, 91);
+        MalLogo.Location = new Point(530, 80);
         MalLogo.Name = "MalLogo";
         MalLogo.Size = new Size(55, 55);
         MalLogo.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -345,12 +347,14 @@ partial class MainForm
         MalLogo.TabStop = false;
         MalLogo.Visible = false;
         MalLogo.Click += MalLogo_Click;
+        MalLogo.MouseEnter += MalLogo_MouseEnter;
+        MalLogo.MouseLeave += MalLogo_MouseLeave;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1373, 524);
+        ClientSize = new Size(1373, 537);
         Controls.Add(MalLogo);
         Controls.Add(removeButton);
         Controls.Add(WatchButton);

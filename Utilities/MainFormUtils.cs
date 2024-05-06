@@ -1,20 +1,19 @@
 ﻿using AnimeList.Components;
 using AnimeList.Data;
 using Microsoft.VisualBasic.FileIO;
-using System.Globalization;
 
 namespace AnimeList.Utilities;
 
 internal static class MainFormUtils
 {
-    internal static void listBoxScaling(int dpi,MyListBox listBox)
+    internal static void listBoxScaling(int dpi, MyListBox listBox)
     {
         double scale = (double)dpi / 96;
         var scaled = listBox.ItemHeight * scale;
         listBox.ItemHeight = (int)scaled;
     }
 
-    internal static int getIndex(long id,List<AContent> Content)
+    internal static int getIndex(long id, List<AContent> Content)
     {
         for (int i = 0; i < Content.Count; i++)
         {
@@ -23,7 +22,7 @@ internal static class MainFormUtils
         return -1;
     }
 
-    internal static bool needsChage(bool hasScroll,MyListBox listBox)
+    internal static bool needsChage(bool hasScroll, MyListBox listBox)
     {
         bool n = listBox.HasScroll();
         if (n != hasScroll)
@@ -33,7 +32,7 @@ internal static class MainFormUtils
         else return false;
     }
 
-    internal static int getDuplicate(long id,List<AContent> Content)
+    internal static int getDuplicate(long id, List<AContent> Content)
     {
         for (int i = 0; i < Content.Count; i++)
         {
@@ -46,7 +45,7 @@ internal static class MainFormUtils
     {
         return watching ? "UnWatch" : "Watch";
     }
-    
+
     internal static string ChooseFile(string fileType)
     {
         var openFile = new OpenFileDialog();
@@ -69,7 +68,7 @@ internal static class MainFormUtils
         return null;
     }
 
-    private static IEnumerable<AContent> SortContent(IEnumerable<AContent> list,SortType s)
+    private static IEnumerable<AContent> SortContent(IEnumerable<AContent> list, SortType s)
     {
         return s switch
         {
@@ -77,7 +76,7 @@ internal static class MainFormUtils
             SortType.Score => list.OrderByDescending(content => content.Score),
             SortType.Finished => list.OrderBy(content => content.notOut),
             SortType.AiredDescending => list.OrderBy(content => content.started),
-            SortType.AiredAscending => list.OrderByDescending (content => content.started),
+            SortType.AiredAscending => list.OrderByDescending(content => content.started),
             _ => list
         };
     }

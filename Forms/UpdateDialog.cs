@@ -12,7 +12,7 @@ public partial class UpdateDialog : Form
         stopParsing = false;
         this.content = content;
         setupProgressBar();
-        
+
     }
 
     void setupProgressBar()
@@ -21,17 +21,17 @@ public partial class UpdateDialog : Form
         progressBar.Maximum = content.Count * 10;
     }
 
-    private async Task<AContent> update(AContent toUpdate,MalInterface m)
+    private async Task<AContent> update(AContent toUpdate, MalInterface m)
     {
         ContentNameLabel.Text = $"Updating {toUpdate.name}";
         AContent newContent;
         if (toUpdate.IsAnime)
         {
-            newContent = await m.pullAnimeId(toUpdate.Id);
+            newContent = await m.GetAnimeId(toUpdate.Id);
         }
         else
         {
-            newContent = await m.pullMangaId(toUpdate.Id);
+            newContent = await m.GetMangaId(toUpdate.Id);
         }
         if (newContent.otherName == toUpdate.name)
         {
@@ -49,14 +49,13 @@ public partial class UpdateDialog : Form
 
     private async void UpdateDialog_Shown(object sender, EventArgs e)
     {
-        
+
         MalInterface mal = new MalInterface();
         ContentNameLabel.Visible = true;
-        for(int i=0;i<content.Count;i++)
+        for (int i = 0; i < content.Count; i++)
         {
             if (stopParsing) break;
-            content[i] = await update(content[i],mal);
+            content[i] = await update(content[i], mal);
         }
-        this.DialogResult = DialogResult.OK;
     }
 }

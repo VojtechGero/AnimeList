@@ -30,7 +30,7 @@ public partial class FileHandleDialog : Form
         return content.First();
     }
 
-    async Task parseLine(string name,MalInterface mal)
+    async Task parseLine(string name, MalInterface mal)
     {
         List<AContent> content = new List<AContent>();
         string query = name.Trim();
@@ -52,7 +52,7 @@ public partial class FileHandleDialog : Form
         foreach (string name in names)
         {
             if (stopParsing) break;
-            await parseLine(name,mal);
+            await parseLine(name, mal);
         }
         Close();
     }
