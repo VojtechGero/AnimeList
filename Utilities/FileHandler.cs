@@ -17,7 +17,7 @@ public class FileHandler
 
     internal static FileHandler workFile()
     {
-        string file = ".\\AnimeList.json";
+        string file = @".\AnimeList.json";
         if (!File.Exists(file))
         {
             File.AppendAllLines(file, start);
@@ -46,11 +46,11 @@ public class FileHandler
             UnclassifiedContent content = JsonSerializer.Deserialize<UnclassifiedContent>(temp);
             if (content.IsAnime)
             {
-                contents.Add(new Anime(content));
+                contents.Add(ContentMapper.Map<Anime>(content));
             }
             else
             {
-                contents.Add(new Manga(content));
+                contents.Add(ContentMapper.Map<Manga>(content));
             }
         }
         return contents;
@@ -134,11 +134,11 @@ public class FileHandler
 
     internal void exportJson(string path)
     {
-        string filePath = path + "\\AnimeList.json";
+        string filePath = path + @"\AnimeList.json";
         int i = 1;
         while (File.Exists(filePath))
         {
-            filePath = path + $"\\AnimeList({i}).json";
+            filePath = path + $@"\AnimeList({i}).json";
             i++;
         }
         File.WriteAllLines(filePath, data);
@@ -146,11 +146,11 @@ public class FileHandler
 
     internal void exportTxt(string path, IEnumerable<string> names)
     {
-        string filePath = path + "\\AnimeList.txt";
+        string filePath = path + @"\AnimeList.txt";
         int i = 1;
         while (File.Exists(filePath))
         {
-            filePath = path + $"\\AnimeList({i}).txt";
+            filePath = path + $@"\AnimeList({i}).txt";
             i++;
         }
         File.WriteAllLines(filePath, names);

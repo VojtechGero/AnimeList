@@ -41,11 +41,6 @@ internal static class MainFormUtils
         return -1;
     }
 
-    internal static string WatchButtonUpdate(bool watching)
-    {
-        return watching ? "UnWatch" : "Watch";
-    }
-
     internal static string ChooseFile(string fileType)
     {
         var openFile = new OpenFileDialog();
@@ -72,11 +67,11 @@ internal static class MainFormUtils
     {
         return s switch
         {
-            SortType.Aplhabetical => list.OrderBy(content => content.name),
+            SortType.Aplhabetical => list.OrderBy(content => content.Name),
             SortType.Score => list.OrderByDescending(content => content.Score),
-            SortType.Finished => list.OrderBy(content => content.notOut),
-            SortType.AiredDescending => list.OrderBy(content => content.started),
-            SortType.AiredAscending => list.OrderByDescending(content => content.started),
+            SortType.Finished => list.OrderBy(content => content.NotOut),
+            SortType.AiredDescending => list.OrderBy(content => content.Started),
+            SortType.AiredAscending => list.OrderByDescending(content => content.Started),
             _ => list
         };
     }
@@ -84,7 +79,7 @@ internal static class MainFormUtils
     internal static List<AContent> SortBy(List<AContent> Content, SortType s)
     {
         IEnumerable<AContent> Sorted = SortContent(Content, s);
-        return Sorted.OrderByDescending(content => content.inProgress).ToList();
+        return Sorted.OrderByDescending(content => content.InProgress).ToList();
     }
 
 }

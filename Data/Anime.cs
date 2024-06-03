@@ -1,59 +1,55 @@
 ﻿namespace AnimeList.Data;
 
-internal class Anime : AContent
+public class Anime : AContent
 {
-    internal Anime(UnclassifiedContent a)
-    {
-        foreach (var prop in a.GetType().GetProperties())
-        {
-            GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(a, null), null);
-        }
-    }
 
-    internal Anime(long id, List<string> names, int? episodes, bool notOut,
+    public Anime() { }
+
+    public Anime(long id, List<string> names, int? episodes, bool notOut,
                    List<string> genres, int? year, float? score)
     {
         IsAnime = true;
         Id = id;
-        name = names.Last();
+        Name = names.Last();
         if (episodes is not null)
         {
-            this.count = (int)episodes;
+            this.Count = (int)episodes;
         }
-        this.notOut = notOut;
-        this.genres = genres;
-        started = year;
+        this.NotOut = notOut;
+        this.Genres = genres;
+        Started = year;
         if (names.Count > 1)
         {
-            otherName = names.First();
+            OtherName = names.First();
         }
-        else otherName = null;
-        inProgress = false;
+        else OtherName = null;
+        InProgress = false;
         this.Score = score;
     }
 
-    internal override string Description()
+
+    public override string Description()
     {
         string output = "";
         const string tab = "    ";
-        if (otherName is not null)
+        if (OtherName is not null)
         {
-            output += $"({otherName})\n";
+            output += $"({OtherName})\n";
         }
         output += "Anime" + tab;
-        if (notOut) output += "Currently Airing\n";
+        if (NotOut) output += "Currently Airing\n";
         else output += "Finished Airing\n";
         if (Score is not null) output += $"Score: {Score:F2}\n";
-        if (started is not null)
+        if (Started is not null)
         {
-            if (count == 1) output += $"Aired: {started}\n";
-            else output += $"Started airing: {started}\n";
+            if (Count == 1) output += $"Aired: {Started}\n";
+            else output += $"Started airing: {Started}\n";
         }
-        if (count > 0) output += $"Episodes: {count}\n";
-        if (genres is not null)
+        if (Count > 0) output += $"Episodes: {Count}\n";
+        if (Genres is not null)
         {
-            if (genres.Count > 0) output += "Genres:\n";
-            foreach (string g in genres)
+            if (Genres.Count > 0) output += "Genres:\n";
+            foreach (string g in Genres)
             {
                 output += $"{tab}{g}\n";
             }

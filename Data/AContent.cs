@@ -6,21 +6,21 @@ public abstract class AContent
 {
     public bool IsAnime { get; set; }
     public long Id { get; set; }
-    public string name { get; set; }
-    public string otherName { get; set; }
-    public int count { get; set; }
-    public bool notOut { get; set; }
-    public List<string> genres { get; set; }
-    public List<string> authors { get; set; }
-    public int? started { get; set; }
-    public bool inProgress { get; set; }
+    public string Name { get; set; }
+    public string OtherName { get; set; }
+    public int Count { get; set; }
+    public bool NotOut { get; set; }
+    public List<string> Genres { get; set; }
+    public List<string> Authors { get; set; }
+    public int? Started { get; set; }
+    public bool InProgress { get; set; }
     public float? Score { get; set; }
 
 
-    internal string ToJson()
+    public string ToJson()
     {
         return JsonSerializer.Serialize(this);
     }
 
-    internal abstract string Description();
+    public abstract string Description();
 }

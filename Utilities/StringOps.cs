@@ -14,17 +14,17 @@ internal class StringOps
     private static int relevance(AContent content, string query)
     {
         string name;
-        if (content.otherName is null)
+        if (content.OtherName is null)
         {
-            name = content.name;
+            name = content.Name;
         }
         else
         {
-            if (value(content.name, query) > value(content.otherName, query))
+            if (value(content.Name, query) > value(content.OtherName, query))
             {
-                name = content.name;
+                name = content.Name;
             }
-            else name = content.otherName;
+            else name = content.OtherName;
         }
         return value(name, query);
     }
@@ -104,7 +104,7 @@ internal class StringOps
 
     internal static string getFileName(string filePath)
     {
-        string[] strings = filePath.Split("\\");
+        string[] strings = filePath.Split(@"\");
         return strings.Last();
     }
 }

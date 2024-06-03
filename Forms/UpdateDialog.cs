@@ -23,7 +23,7 @@ public partial class UpdateDialog : Form
 
     private async Task<AContent> update(AContent toUpdate, MalInterface m)
     {
-        ContentNameLabel.Text = $"Updating {toUpdate.name}";
+        ContentNameLabel.Text = $"Updating {toUpdate.Name}";
         AContent newContent;
         if (toUpdate.IsAnime)
         {
@@ -33,11 +33,11 @@ public partial class UpdateDialog : Form
         {
             newContent = await m.GetMangaId(toUpdate.Id);
         }
-        if (newContent.otherName == toUpdate.name)
+        if (newContent.OtherName == toUpdate.Name)
         {
-            (newContent.name, newContent.otherName) = (newContent.otherName, newContent.name);
+            (newContent.Name, newContent.OtherName) = (newContent.OtherName, newContent.Name);
         }
-        newContent.inProgress = toUpdate.inProgress;
+        newContent.InProgress = toUpdate.InProgress;
         progressBar.PerformStep();
         return newContent;
     }
@@ -57,5 +57,6 @@ public partial class UpdateDialog : Form
             if (stopParsing) break;
             content[i] = await update(content[i], mal);
         }
+        this.Close();
     }
 }

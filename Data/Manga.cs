@@ -1,28 +1,22 @@
 ﻿namespace AnimeList.Data;
 
-internal class Manga : AContent
+public class Manga : AContent
 {
 
-    internal Manga(UnclassifiedContent a)
-    {
-        foreach (var prop in a.GetType().GetProperties())
-        {
-            GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(a, null), null);
-        }
-    }
+    public Manga() { }
 
-    internal Manga(long id, List<string> names, int? count, bool notOut,
+    public Manga(long id, List<string> names, int? count, bool notOut,
                    List<string> genres, List<string> authors, int? year, float? score)
     {
         IsAnime = false;
         Id = id;
-        name = names.Last();
+        Name = names.Last();
         if (count is not null)
         {
-            this.count = (int)count;
+            this.Count = (int)count;
         }
-        this.notOut = notOut;
-        this.genres = genres;
+        this.NotOut = notOut;
+        this.Genres = genres;
         if (authors.Count > 3)
         {
             List<string> a = new List<string>();
@@ -30,52 +24,52 @@ internal class Manga : AContent
             {
                 a.Add(authors[i]);
             }
-            this.authors = a;
+            this.Authors = a;
         }
-        else this.authors = authors;
-        started = year;
+        else this.Authors = authors;
+        Started = year;
         if (names.Count > 1)
         {
-            otherName = names.First();
+            OtherName = names.First();
         }
-        else otherName = null;
-        inProgress = false;
+        else OtherName = null;
+        InProgress = false;
         this.Score = score;
     }
 
-    internal override string Description()
+    public override string Description()
     {
         string output = "";
         const string tab = "    ";
-        if (otherName is not null)
+        if (OtherName is not null)
         {
-            output += $"({otherName})\n";
+            output += $"({OtherName})\n";
         }
         output += "Manga" + tab;
-        if (notOut) output += "Currently Publishing\n";
+        if (NotOut) output += "Currently Publishing\n";
         else output += "Finished Publishing\n";
         if (Score is not null) output += $"Score: {Score:F2}\n";
-        if (started is not null)
+        if (Started is not null)
         {
-            output += $"Started publishing: {started}\n";
+            output += $"Started publishing: {Started}\n";
         }
-        if (count > 0) output += $"Chapters: {count}\n";
-        if (authors is not null)
+        if (Count > 0) output += $"Chapters: {Count}\n";
+        if (Authors is not null)
         {
-            int c = authors.Count;
+            int c = Authors.Count;
             if (c > 0)
             {
                 output += "Author:\n";
-                foreach (string author in authors)
+                foreach (string author in Authors)
                 {
                     output += $"{tab}{author}\n";
                 }
             }
         }
-        if (genres is not null)
+        if (Genres is not null)
         {
-            if (genres.Count > 0) output += "Genres:\n";
-            foreach (string g in genres)
+            if (Genres.Count > 0) output += "Genres:\n";
+            foreach (string g in Genres)
             {
                 output += $"{tab}{g}\n";
             }

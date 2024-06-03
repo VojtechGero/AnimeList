@@ -80,7 +80,7 @@ internal class MyListBox : ListBox
         }
         else
         {
-            if (Sorted[e.Index].inProgress)
+            if (Sorted[e.Index].InProgress)
             {
                 e.Graphics.FillRectangle(watchedColor, e.Bounds);
                 e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
@@ -133,7 +133,7 @@ internal class MyListBox : ListBox
         Items.Clear();
         foreach (AContent item in list)
         {
-            string name = item.name;
+            string name = item.Name;
             Items.Add(name);
         }
         AutoEllipsis();

@@ -56,16 +56,16 @@ public partial class MainForm : Form
 
     private void updateDesc(AContent content)
     {
-        NameLabel.Text = content.name;
+        NameLabel.Text = content.Name;
         description.Text = content.Description();
-        if (content.otherName is not null)
+        if (content.OtherName is not null)
         {
             SwapButton.Visible = true;
         }
         else SwapButton.Visible = false;
         WatchButton.Visible = true;
         showDescription(true);
-        WatchButton.Text = WatchButtonUpdate(content.inProgress);
+        WatchButton.Text = content.InProgress ? "UnWatch" : "Watch";
     }
 
     internal void addContent(AContent content)
@@ -74,7 +74,7 @@ public partial class MainForm : Form
         fileHandler.writeContent(content);
         var selected = new List<int>(ContentListBox.SelectedIndices.Cast<int>());
         ContentListBox.SelectedItems.Clear();
-        ContentListBox.Items.Add(ContentListBox.FormatEllipsis(content.name));
+        ContentListBox.Items.Add(ContentListBox.FormatEllipsis(content.Name));
         ContentListBox.selectIndices(selected);
         sortWrite();
     }
@@ -185,7 +185,7 @@ public partial class MainForm : Form
         for (int i = 0; i < output.Count; i++)
         {
             RawContent[selected[i]] = output[i];
-            ContentListBox.Items[selected[i]] = ContentListBox.FormatEllipsis(output[i].name);
+            ContentListBox.Items[selected[i]] = ContentListBox.FormatEllipsis(output[i].Name);
         }
         sortWrite();
         fileHandler.updateLines(selected, RawContent);
@@ -200,8 +200,8 @@ public partial class MainForm : Form
             index = getIndex(Sorted[current].Id, RawContent);
         }
         else index = current;
-        (RawContent[index].name, RawContent[index].otherName) = (RawContent[index].otherName, RawContent[index].name);
-        ContentListBox.Items[current] = ContentListBox.FormatEllipsis(RawContent[index].name);
+        (RawContent[index].Name, RawContent[index].OtherName) = (RawContent[index].OtherName, RawContent[index].Name);
+        ContentListBox.Items[current] = ContentListBox.FormatEllipsis(RawContent[index].Name);
         updateDesc(RawContent[index]);
         fileHandler.updateLine(index, RawContent[index]);
     }
@@ -252,9 +252,9 @@ public partial class MainForm : Form
     private void NameLabel_MouseClick(object sender, MouseEventArgs e)
     {
         var index = ContentListBox.SelectedIndex;
-        Clipboard.SetText(Sorted[index].name);
+        Clipboard.SetText(Sorted[index].Name);
         var Mouse = NameLabel.PointToClient(Cursor.Position);
-        NameToolTip.Show($"Copied: {Sorted[index].name}", NameLabel,
+        NameToolTip.Show($"Copied: {Sorted[index].Name}", NameLabel,
             Mouse.X, Mouse.Y + Cursor.Size.Height / 2 - 2, 1000);
     }
 
@@ -266,8 +266,7 @@ public partial class MainForm : Form
     private void WatchButton_Click(object sender, EventArgs e)
     {
         int index = getIndex(Sorted[ContentListBox.SelectedIndex].Id, RawContent);
-        RawContent[index].inProgress = !RawContent[index].inProgress;
-        WatchButtonUpdate(RawContent[index].inProgress);
+        RawContent[index].InProgress = !RawContent[index].InProgress;
         fileHandler.updateLine(index, RawContent[index]);
         sortWrite();
     }
@@ -358,7 +357,7 @@ public partial class MainForm : Form
         var path = ChooseFolder();
         if (path is not null)
         {
-            var names = RawContent.Select(x => x.name).ToList();
+            var names = RawContent.Select(x => x.Name).ToList();
             fileHandler.exportTxt(path, names);
         }
     }

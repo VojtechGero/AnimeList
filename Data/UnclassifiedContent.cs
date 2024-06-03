@@ -5,7 +5,7 @@ internal class UnclassifiedContent : AContent
     //required for json deserialization
     public UnclassifiedContent() { }
 
-    internal override string Description()
+    public override string Description()
     {
         throw new NotImplementedException();
     }

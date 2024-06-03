@@ -170,7 +170,7 @@ public partial class AddDialog : Form
             if (i < n)
             {
                 Buttons[i].Visible = true;
-                Labels[i].Text = list[i].name;
+                Labels[i].Text = list[i].Name;
                 Labels[i].Visible = true;
             }
             else
